@@ -21,6 +21,9 @@ color_dict = {
     'Agrarisch natuurmengsel': 'yellow',
     'Grasland, tijdelijk': 'orange'
 }
+def get_pos(lat, lng):
+    return lat, lng
+
 
 # Show the page title and description.
 st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
@@ -59,11 +62,6 @@ def style_function(x):
     """
     return {"color":x['properties']['color'], "weight":2}
 
-#df = load_parquet()
-gdf = load_geojson()
-st.dataframe(
-    gdf['color'].head()
-)
 # Create a map with the GeoJSON data using folium
 m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
@@ -77,9 +75,25 @@ folium.GeoJson(data=gdf,
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 # Add the Folium map to the Streamlit app using the st_folium library
+
+# When the user interacts with the map
+map = st_folium(
+    m,
+    width=620, height=580,
+    key="folium_map"
+)
+data = None
+
+if map.get("last_clicked"):
+    data = map["last_clicked"]
+if data is not None:
+    st.write(data) # Writes to the app
+"""
 st_folium = st.container()
 with st_folium:
     folium_static(m, width=700, height=500)
+"""
+
 
 # Display the data as a table using `st.dataframe`.
 """
