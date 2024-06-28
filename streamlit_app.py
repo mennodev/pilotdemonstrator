@@ -91,7 +91,7 @@ gid_to_plot = 71757
 
 if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-if data is not None:
+if gid_to_plot is not None:
 
     st.write(gid_to_plot) # Writes to the app
 """
