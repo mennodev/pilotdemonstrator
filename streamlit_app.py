@@ -32,18 +32,21 @@ def load_geojson():
     # Convert the GeoDataFrame to a DataFrame
     df = pd.DataFrame(gdf)
     return df
-    
+
+def style_function(x):
+    return {"color":"blue", "weight":3}
+
 
 df = load_parquet()
 vector = load_geojson()
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(gdf_fields.total_bounds[[1, 3]]) / 2, sum(gdf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
-folium.GeoJson(data=gdf_fields,
+folium.GeoJson(data=gdf,
                         name = 'Grass fields',
                         style_function=style_function,
-                        tooltip = folium.GeoJsonTooltip(fields=['fieldcode','mowing_dates'])
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','gws_gewas','gewascode'])
             ).add_to(m)
 
 # Set the basemap URL
