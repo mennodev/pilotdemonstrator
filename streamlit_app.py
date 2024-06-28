@@ -4,7 +4,7 @@ import geopandas as gpd
 import streamlit as st
 from streamlit_folium import folium_static
 import folium
-
+from streamlit_folium import st_folium
 # Helper functions
 
 # Translation dictionary
