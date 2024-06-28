@@ -2,3 +2,4 @@ streamlit
 geopandas
 pyarrow
 folium
+streamlit_folium
