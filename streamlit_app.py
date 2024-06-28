@@ -25,8 +25,11 @@ def get_pos(lat, lng):
     return lat, lng
 
 def get_gid_from_tooltip(tooltip_info):
+    """
+    very hacky but could not find any normal way to get only gid from tooltip
+    """
     splitter = str(tooltip_info).split('gid')
-    gid = splitter[1]
+    gid = int(splitter[1].split("management")[0])
     return gid
 # Show the page title and description.
 st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
