@@ -5,6 +5,23 @@ import streamlit as st
 from streamlit_folium import folium_static
 import folium
 
+# Helper functions
+
+# Translation dictionary
+translation_dict = {
+    'Grasland, blijvend': 'Grassland, permanent',
+    'Grasland, natuurlijk. Met landbouwactiviteiten.': 'Natural grassland with agricultural activities',
+    'Agrarisch natuurmengsel': 'Mixed nature and agricultural seeds',
+    'Grasland, tijdelijk': 'Grassland, temporary'
+}
+# Color dictionary
+color_dict = {
+    'Grasland, blijvend': 'green',
+    'Grasland, natuurlijk. Met landbouwactiviteiten.': 'darkgreen',
+    'Agrarisch natuurmengsel': 'yellow',
+    'Grasland, tijdelijk': 'orange'
+}
+
 # Show the page title and description.
 st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
 st.title("📈 Analysis of cadency for grassland monitoring for the CAP")
@@ -24,18 +41,24 @@ def load_data():
 
 def load_parquet():
     df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    
     return df
 
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
+    # translate to English
+    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
+    gdf['color'] = gdf['gws_gewas'].map(color_dict)
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
     return gdf
 
 def style_function(x):
-    return {"color":"blue", "weight":3}
-
+    """
+    Use color column to assign color
+    """
+    return {"color":x["color"], "weight":3}
 
 df = load_parquet()
 gdf = load_geojson()
@@ -46,7 +69,7 @@ m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds
 folium.GeoJson(data=gdf,
                         name = 'Grass fields',
                         style_function=style_function,
-                        tooltip = folium.GeoJsonTooltip(fields=['gid','gws_gewas','gewascode'])
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
             ).add_to(m)
 
 # Set the basemap URL
@@ -58,6 +81,7 @@ with st_folium:
     folium_static(m, width=700, height=500)
 
 # Display the data as a table using `st.dataframe`.
+"""
 st.dataframe(
     df,
     use_container_width=True,
@@ -79,3 +103,4 @@ chart = (
     .properties(height=320)
 )
 st.altair_chart(chart, use_container_width=True)
+"""
