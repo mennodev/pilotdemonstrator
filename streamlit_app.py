@@ -33,10 +33,10 @@ def load_geojson():
     
 
 df = load_parquet()
-vector = load_geojson()
+#vector = load_geojson()
 
 # Create a map with the GeoJSON data
-st.map(vector)    
+#st.map(vector)    
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
