@@ -25,7 +25,6 @@ def get_pos(lat, lng):
     return lat, lng
 
 def get_gid_from_tooltip(tooltip_info):
-    st.text(str(tooltip_info))
     splitter = str(tooltip_info).split('gid')
     gid = splitter[0]
     return gid
@@ -93,7 +92,6 @@ gid_to_plot = 71757
 if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
 if gid_to_plot is not None:
-
     st.write(gid_to_plot) # Writes to the app
 """
 st_folium = st.container()
