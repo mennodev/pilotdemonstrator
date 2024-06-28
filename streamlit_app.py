@@ -41,7 +41,6 @@ def load_data():
 
 def load_parquet():
     df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
-    
     return df
 
 def load_geojson():
@@ -60,7 +59,7 @@ def style_function(x):
     """
     return {"color":x["color"], "weight":2}
 
-df = load_parquet()
+#df = load_parquet()
 gdf = load_geojson()
 st.dataframe(
     gdf.head(),
