@@ -30,15 +30,15 @@ def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
     # Convert the GeoDataFrame to a DataFrame
-    df = pd.DataFrame(gdf)
-    return df
+    #df = pd.DataFrame(gdf)
+    return gdf
 
 def style_function(x):
     return {"color":"blue", "weight":3}
 
 
 df = load_parquet()
-vector = load_geojson()
+gdf = load_geojson()
 
 # Create a map with the GeoJSON data using folium
 m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
