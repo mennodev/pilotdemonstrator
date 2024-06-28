@@ -17,7 +17,7 @@ st.write(
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
+    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet")
     return df
 
 def load_geojson():
