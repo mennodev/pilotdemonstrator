@@ -62,7 +62,7 @@ def style_function(x):
 #df = load_parquet()
 gdf = load_geojson()
 st.dataframe(
-    gdf.head()
+    gdf['color'].head()
 )
 # Create a map with the GeoJSON data using folium
 m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
