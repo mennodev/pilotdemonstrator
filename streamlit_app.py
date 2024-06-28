@@ -1,15 +1,14 @@
 import altair as alt
 import pandas as pd
+import geopandas as gpd
 import streamlit as st
 
 # Show the page title and description.
-st.set_page_config(page_title="Movies dataset", page_icon="🎬")
-st.title("🎬 Movies dataset")
+st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
+st.title("📈 Analysis of cadency for grassland monitoring for the CAP")
 st.write(
     """
-    This app visualizes data from [The Movie Database (TMDB)](https://www.kaggle.com/datasets/tmdb/tmdb-movie-metadata).
-    It shows which movie genre performed best at the box office over the years. Just 
-    click on the widgets below to explore!
+    This app visualizes data to illustrate the means to monitor grasslands in the CAP as a pilot demonstrator!
     """
 )
 
@@ -18,48 +17,41 @@ st.write(
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/movies_genres_summary.csv")
+    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_jan-jun.csv")
     return df
 
+def load_geojson():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
+    # Convert the GeoDataFrame to a DataFrame
+    df = pd.DataFrame(gdf)
+    return df
+    
 
 df = load_data()
+vector = load_geojson()
 
-# Show a multiselect widget with the genres using `st.multiselect`.
-genres = st.multiselect(
-    "Genres",
-    df.genre.unique(),
-    ["Action", "Adventure", "Biography", "Comedy", "Drama", "Horror"],
-)
-
-# Show a slider widget with the years using `st.slider`.
-years = st.slider("Years", 1986, 2006, (2000, 2016))
-
-# Filter the dataframe based on the widget input and reshape it.
-df_filtered = df[(df["genre"].isin(genres)) & (df["year"].between(years[0], years[1]))]
-df_reshaped = df_filtered.pivot_table(
-    index="year", columns="genre", values="gross", aggfunc="sum", fill_value=0
-)
-df_reshaped = df_reshaped.sort_values(by="year", ascending=False)
-
+# Create a map with the GeoJSON data
+st.map(vector)    
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
-    df_reshaped,
+    df,
     use_container_width=True,
-    column_config={"year": st.column_config.TextColumn("Year")},
+    column_config={"gid": st.column_config.TextColumn("gid")},
 )
 
 # Display the data as an Altair chart using `st.altair_chart`.
 df_chart = pd.melt(
-    df_reshaped.reset_index(), id_vars="year", var_name="genre", value_name="gross"
+    df.reset_index()
 )
 chart = (
     alt.Chart(df_chart)
     .mark_line()
     .encode(
-        x=alt.X("year:N", title="Year"),
-        y=alt.Y("gross:Q", title="Gross earnings ($)"),
-        color="genre:N",
+        x=alt.X("date:N", title="Date"),
+        y=alt.Y("NDVI:Q", title="NDVI"),
+        color="gid:N",
     )
     .properties(height=320)
 )
