@@ -2,6 +2,8 @@ import altair as alt
 import pandas as pd
 import geopandas as gpd
 import streamlit as st
+from streamlit_folium import folium_static
+import folium
 
 # Show the page title and description.
 st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
@@ -17,7 +19,7 @@ st.write(
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 def load_data():
-    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet")
+    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
     return df
 
 def load_parquet():
@@ -33,10 +35,24 @@ def load_geojson():
     
 
 df = load_parquet()
-#vector = load_geojson()
+vector = load_geojson()
 
-# Create a map with the GeoJSON data
-#st.map(vector)    
+# Create a map with the GeoJSON data using folium
+m = folium.Map(location=[sum(gdf_fields.total_bounds[[1, 3]]) / 2, sum(gdf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add geojson and add some styling
+folium.GeoJson(data=gdf_fields,
+                        name = 'Grass fields',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['fieldcode','mowing_dates'])
+            ).add_to(m)
+
+# Set the basemap URL
+osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
+# Add the Folium map to the Streamlit app using the st_folium library
+st_folium = st.container()
+with st_folium:
+    folium_static(m, width=700, height=500)
 
 # Display the data as a table using `st.dataframe`.
 st.dataframe(
