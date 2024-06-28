@@ -57,7 +57,7 @@ def style_function(x):
     """
     Use color column to assign color
     """
-    return {"color":x["color"], "weight":2}
+    return {"color":x['properties']['color'], "weight":2}
 
 #df = load_parquet()
 gdf = load_geojson()
