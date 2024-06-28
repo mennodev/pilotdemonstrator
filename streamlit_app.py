@@ -20,6 +20,10 @@ def load_data():
     df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet")
     return df
 
+def load_parquet():
+    df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    return df
+
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
@@ -28,7 +32,7 @@ def load_geojson():
     return df
     
 
-df = load_data()
+df = load_parquet()
 vector = load_geojson()
 
 # Create a map with the GeoJSON data
