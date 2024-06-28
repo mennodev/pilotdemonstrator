@@ -89,7 +89,7 @@ data = None
 if map.get("last_object_clicked_tooltip"):
     data = map["last_object_clicked_tooltip"]
 if data is not None:
-    st.write(data[0]) # Writes to the app
+    st.write(data) # Writes to the app
 """
 st_folium = st.container()
 with st_folium:
