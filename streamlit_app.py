@@ -62,6 +62,8 @@ def style_function(x):
     """
     return {"color":x['properties']['color'], "weight":2}
 
+gdf = load_geojson()
+
 # Create a map with the GeoJSON data using folium
 m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
