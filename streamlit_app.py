@@ -24,7 +24,10 @@ color_dict = {
 def get_pos(lat, lng):
     return lat, lng
 
-
+def get_gid_from_tooltip(tooltip_info):
+    splitter = tooltip_info.split(' ')
+    gid = splitter[1]
+    return gid
 # Show the page title and description.
 st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
 st.title("📈 Analysis of cadency for grassland monitoring for the CAP")
@@ -84,12 +87,13 @@ map = st_folium(
     width=620, height=580,
     key="folium_map"
 )
-data = None
+gid_to_plot = 71757
 
 if map.get("last_object_clicked_tooltip"):
-    data = map["last_object_clicked_tooltip"]
+    gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
 if data is not None:
-    st.write(data) # Writes to the app
+
+    st.write(gid_to_plot) # Writes to the app
 """
 st_folium = st.container()
 with st_folium:
