@@ -6,8 +6,12 @@ from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
 
-# setup page config
-st.set_page_config(page_title="Welcome",page_icon="🏡",)
+# setup page config using modules
+Navbar()
+
+#    st.title(f'🔥 Individual Checker')
+
+#st.set_page_config(page_title="Welcome",page_icon="🏡",)
 
 
 st.title("Pilot demonstrator showcase")
@@ -19,7 +23,7 @@ st.write(
     """
 )
 # add extra attention seeker to invite clicking on tabs
-st.sidebar.success("Select a tab to choose the AOI")
+st.sidebar.success("Select a tab above to choose the AOI")
 
 
 
@@ -27,7 +31,7 @@ st.sidebar.success("Select a tab to choose the AOI")
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 
-def load_AOI_geojsons():
+def load_AOIs_geojsons():
     # Read GeoJSON data into a GeoDataFrame
     gdf1 = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
     gdf2 = gpd.read_file("data/vectors/AOI_NOP.geojson")
