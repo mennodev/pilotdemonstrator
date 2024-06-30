@@ -57,7 +57,17 @@ def style_function_fw(x):
 betuwe,nop,fw = load_AOIs_geojsons()
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=8)
+m = folium.Map(location=[sum(fw.total_bounds[[1, 3]]) / 2, sum(fw.total_bounds[[0, 2]]) / 2], zoom_start=8)
+
+
+# Set the basemap URL
+osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
+
+# Add the Folium map to the Streamlit app using the st_folium library
+#st_folium = st.container()
+#with st_folium:
+#    folium_static(m, width=900, height=600)
 # add geojson and add some styling
 folium.GeoJson(data=betuwe,
                         name = 'Betuwe',
@@ -76,15 +86,6 @@ folium.GeoJson(data=fw,
                         style_function=style_function_fw,
                         tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
-
-# Set the basemap URL
-osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
-
-# Add the Folium map to the Streamlit app using the st_folium library
-#st_folium = st.container()
-#with st_folium:
-#    folium_static(m, width=900, height=600)
 
 map = st_folium(
     m,
