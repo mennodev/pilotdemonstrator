@@ -9,7 +9,6 @@ from modules.nav import Navbar
 # setup page config using modules
 Navbar()
 
-
 st.title("Pilot demonstrator showcase")
 
 st.header("Welcome to the webapp landing page showcasing pilot demonstrator elements.")
@@ -18,8 +17,7 @@ st.write(
     With the tabs in the sidebar different options to visualize the demonstrators in the AOIs are given.
     """
 )
-# add extra attention seeker to invite clicking on tabs
-st.sidebar.success("Select a tab above to choose the AOI")
+
 
 
 
@@ -52,19 +50,19 @@ m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds
 folium.GeoJson(data=betuwe,
                         name = 'Betuwe',
                         style_function={"color": 'green', "weight":2},
-                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 folium.GeoJson(data=nop,
                         name = 'Noord Oost Polder',
                         style_function={"color": 'orange', "weight":2},
-                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 folium.GeoJson(data=fw,
                         name = 'Friese wouden',
                         style_function={"color": 'dark green', "weight":2},
-                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 # Set the basemap URL
