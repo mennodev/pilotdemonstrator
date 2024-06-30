@@ -109,41 +109,18 @@ map = st_folium(
     width=900, height=600,
     key="folium_map"
 )
-gid_to_plot = 71757
+df = load_parquet()
 
 if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
 if gid_to_plot is not None:
-    st.write(gid_to_plot) # Writes to the app
-
-"""
-st_folium = st.container()
-with st_folium:
-    folium_static(m, width=700, height=500)
-"""
-
-
-# Display the data as a table using `st.dataframe`.
-"""
-st.dataframe(
-    df,
-    use_container_width=True,
-    column_config={"gid": st.column_config.TextColumn("gid")},
-)
-
-# Display the data as an Altair chart using `st.altair_chart`.
-df_chart = pd.melt(
-    df.reset_index()
-)
-chart = (
-    alt.Chart(df_chart)
-    .mark_line()
-    .encode(
-        x=alt.X("date:N", title="Date"),
-        y=alt.Y("NDVI:Q", title="NDVI"),
-        color="gid:N",
-    )
-    .properties(height=320)
-)
-st.altair_chart(chart, use_container_width=True)
-"""
+    # subselect data
+    df_selection = df.loc[df['gid'] == gid_to_plot]
+    
+    # Display line chart
+    chart = alt.Chart(df_selection).mark_line().encode(
+                x=alt.X(df_selection['date'].values(), title='Date'),
+                y=alt.Y(df_selection['NDVI'].values(), title='NDVI'),
+                #color='genre:N'
+                ).properties(height=320)
+    st.altair_chart(chart, use_container_width=True)
