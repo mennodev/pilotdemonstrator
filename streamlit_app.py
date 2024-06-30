@@ -80,7 +80,14 @@ folium.GeoJson(data=fw,
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
+
 # Add the Folium map to the Streamlit app using the st_folium library
-st_folium = st.container()
-with st_folium:
-    folium_static(m, width=900, height=600)
+#st_folium = st.container()
+#with st_folium:
+#    folium_static(m, width=900, height=600)
+
+map = st_folium(
+    m,
+    width=900, height=600,
+    key="folium_map"
+)

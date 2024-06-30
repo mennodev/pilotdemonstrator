@@ -106,7 +106,7 @@ folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_t
 # When the user interacts with the map
 map = st_folium(
     m,
-    width=620, height=580,
+    width=900, height=600,
     key="folium_map"
 )
 gid_to_plot = 71757
