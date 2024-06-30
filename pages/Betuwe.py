@@ -110,7 +110,7 @@ map = st_folium(
     key="folium_map"
 )
 df = load_parquet()
-
+gid_to_plot = 71757
 if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
 if gid_to_plot is not None:
