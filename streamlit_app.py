@@ -40,13 +40,13 @@ def style_function_betuwe(x):
     """
     Use color column to assign color
     """
-    return {"color": 'green', "weight":2}
+    return {"color": 'darkgreen', "weight":2}
 
 def style_function_nop(x):
     """
     Use color column to assign color
     """
-    return {"color": 'lightgreen', "weight":2}
+    return {"color": 'darkgreen', "weight":2}
 
 def style_function_fw(x):
     """
