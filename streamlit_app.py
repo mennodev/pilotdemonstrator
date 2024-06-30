@@ -9,10 +9,6 @@ from modules.nav import Navbar
 # setup page config using modules
 Navbar()
 
-#    st.title(f'🔥 Individual Checker')
-
-#st.set_page_config(page_title="Welcome",page_icon="🏡",)
-
 
 st.title("Pilot demonstrator showcase")
 
@@ -53,19 +49,19 @@ betuwe,nop,fw = load_AOIs_geojsons()
 # Create a map with the GeoJSON data using folium
 m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=8)
 # add geojson and add some styling
-folium.GeoJson(data=gdf1,
+folium.GeoJson(data=betuwe,
                         name = 'Betuwe',
                         style_function={"color": 'green', "weight":2},
                         tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
-folium.GeoJson(data=gdf2,
+folium.GeoJson(data=nop,
                         name = 'Noord Oost Polder',
                         style_function={"color": 'orange', "weight":2},
                         tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
-folium.GeoJson(data=gdf3,
+folium.GeoJson(data=fw,
                         name = 'Friese wouden',
                         style_function={"color": 'dark green', "weight":2},
                         tooltip = folium.GeoJsonTooltip(fields=['AOI'])
