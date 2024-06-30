@@ -116,7 +116,7 @@ if map.get("last_object_clicked_tooltip"):
 if gid_to_plot is not None:
     # subselect data
     df_selection = df.loc[df['gid'] == gid_to_plot]
-    
+    st.dataframe(data=df_selection.head(20))
     # Display line chart
     chart = alt.Chart(df_selection).mark_line().encode(
                 x=alt.X(df_selection['date'].values(), title='Date'),
