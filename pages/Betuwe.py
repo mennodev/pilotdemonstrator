@@ -123,5 +123,5 @@ if gid_to_plot is not None:
                 y=alt.Y('NDVI:Q', title='NDVI'),
                 #color='genre:N'
                 ).properties(height=320)
-    st.title('Chart of succesfull NDVI reads by Sentinel-2')
+    st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
