@@ -46,13 +46,13 @@ def style_function_nop(x):
     """
     Use color column to assign color
     """
-    return {"color": 'light green', "weight":2}
+    return {"color": 'lightgreen', "weight":2}
 
 def style_function_fw(x):
     """
     Use color column to assign color
     """
-    return {"color": 'dark green', "weight":2}
+    return {"color": 'darkgreen', "weight":2}
 
 betuwe,nop,fw = load_AOIs_geojsons()
 
