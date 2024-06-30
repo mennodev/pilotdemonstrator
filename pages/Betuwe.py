@@ -116,11 +116,12 @@ if map.get("last_object_clicked_tooltip"):
 if gid_to_plot is not None:
     # subselect data
     df_selection = df.loc[df['gid'] == gid_to_plot]
-    st.dataframe(data=df_selection.head(20))
+    #st.dataframe(data=df_selection.head(20))
     # Display line chart
     chart = alt.Chart(df_selection).mark_line().encode(
                 x=alt.X('date:T', title='Date'),
                 y=alt.Y('NDVI:Q', title='NDVI'),
                 #color='genre:N'
                 ).properties(height=320)
+    st.title('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
