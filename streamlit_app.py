@@ -5,7 +5,7 @@ import streamlit as st
 from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
-
+from modules.nav import Navbar
 # setup page config using modules
 Navbar()
 

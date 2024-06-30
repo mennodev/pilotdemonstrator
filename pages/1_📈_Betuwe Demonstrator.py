@@ -5,6 +5,26 @@ import streamlit as st
 from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
+from modules.nav import Navbar
+# setup page config using modules
+Navbar()
+# setup page config
+#st.set_page_config(page_title="Welcome",page_icon="🏡",)
+
+
+st.title("Grassland monitoring")
+
+st.header("Welcome to the webapp landing page.")
+st.write(
+    """With the tabs in the sidebar different options to visualize the grassland monitor are given.
+    One option is to graph the NDVI over time of the grassland plots. The second option is to plot the NDVI on a map per date.
+    """
+)
+# add extra attention seeker to invite clicking on tabs
+st.sidebar.success("Select a tab above")
+
+
+
 # Helper functions
 
 # Translation dictionary
@@ -96,6 +116,7 @@ if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
 if gid_to_plot is not None:
     st.write(gid_to_plot) # Writes to the app
+
 """
 st_folium = st.container()
 with st_folium:
