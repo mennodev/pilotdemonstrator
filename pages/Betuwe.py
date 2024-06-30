@@ -12,13 +12,12 @@ Navbar()
 #st.set_page_config(page_title="Welcome",page_icon="🏡",)
 
 
-st.title("Grassland monitoring")
+st.title("Pilot demonstrator focusing on grassland monitoring for the CAP")
 
-st.header("Welcome to the webapp landing page.")
+st.header("Welcome to the demonstrator part for AOI Betuwe.")
 st.write(
-    """With the tabs in the sidebar different options to visualize the grassland monitor are given.
-    One option is to graph the NDVI over time of the grassland plots. The second option is to plot the NDVI on a map per date.
-    """
+    """Below you find a series of data visualization developed in the pilot demonstrator. 
+    With the tabs in the sidebar you can go to the starting page or to other AOIs focusing on other elements of the CAP"""
 )
 
 
