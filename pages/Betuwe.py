@@ -52,7 +52,7 @@ def get_gid_from_tooltip(tooltip_info):
     gid = int(splitter[1].split("management")[0])
     return gid
 # Show the page title and description.
-st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
+#st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
 st.title("📈 Analysis of cadency for grassland monitoring for the CAP")
 st.write(
     """
