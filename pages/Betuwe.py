@@ -20,8 +20,7 @@ st.write(
     One option is to graph the NDVI over time of the grassland plots. The second option is to plot the NDVI on a map per date.
     """
 )
-# add extra attention seeker to invite clicking on tabs
-st.sidebar.success("Select a tab above")
+
 
 
 

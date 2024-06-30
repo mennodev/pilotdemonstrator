@@ -1,3 +1,8 @@
+import streamlit as st
+from modules.nav import Navbar
+# setup page config using modules
+Navbar()
+
 st.title("NOP")
 
 st.header("Pilot demonstrator for the NOP")
