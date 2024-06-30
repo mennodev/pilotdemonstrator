@@ -36,11 +36,23 @@ def load_AOIs_geojsons():
     #df = pd.DataFrame(gdf)
     return gdf1,gdf2,gdf3
 
-def style_function(x):
+def style_function_betuwe(x):
     """
     Use color column to assign color
     """
-    return {"color":x['properties']['color'], "weight":2}
+    return {"color": 'green', "weight":2}
+
+def style_function_nop(x):
+    """
+    Use color column to assign color
+    """
+    return {"color": 'orange', "weight":2}
+
+def style_function_fw(x):
+    """
+    Use color column to assign color
+    """
+    return {"color": 'darkgreen', "weight":2}
 
 betuwe,nop,fw = load_AOIs_geojsons()
 
@@ -49,20 +61,20 @@ m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds
 # add geojson and add some styling
 folium.GeoJson(data=betuwe,
                         name = 'Betuwe',
-                        style_function={"color": 'green', "weight":2},
-                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        style_function=style_function_betuwe,
+                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 folium.GeoJson(data=nop,
                         name = 'Noord Oost Polder',
-                        style_function={"color": 'orange', "weight":2},
-                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        style_function=style_function_nop,
+                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 folium.GeoJson(data=fw,
                         name = 'Friese wouden',
-                        style_function={"color": 'dark green', "weight":2},
-                        #tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+                        style_function=style_function_fw,
+                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
 
 # Set the basemap URL
