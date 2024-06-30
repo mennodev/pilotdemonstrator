@@ -119,8 +119,8 @@ if gid_to_plot is not None:
     st.dataframe(data=df_selection.head(20))
     # Display line chart
     chart = alt.Chart(df_selection).mark_line().encode(
-                x=alt.X(df_selection['date'].values(), title='Date'),
-                y=alt.Y(df_selection['NDVI'].values(), title='NDVI'),
+                x=alt.X(df_selection['date'], title='Date'),
+                y=alt.Y(df_selection['NDVI'], title='NDVI'),
                 #color='genre:N'
                 ).properties(height=320)
     st.altair_chart(chart, use_container_width=True)
