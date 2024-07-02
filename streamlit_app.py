@@ -78,11 +78,11 @@ def get_AOI_to_describe(tooltip_info):
     This AOI is selected to demonstrate High Diversity Landscape Features within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
     """
     AOI = str(tooltip_info).split('AOI')[1]
-    if AOI == 'Betuwe':
+    if AOI is 'Betuwe':
         return betuwe_description
-    elif AOI == 'Noord Oost Polder (NOP)':
+    elif AOI is 'Noord Oost Polder (NOP)':
         return nop_description
-    elif AOI == 'Friese Wouden':
+    elif AOI is 'Friese Wouden':
         return fw_description
     else: return AOI
 
