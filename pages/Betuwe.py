@@ -120,7 +120,7 @@ m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 raster_path = 'data/rasters/Betuwe_clouds_heatmap_2016-2024.tif'
 try:
-    m1.add_raster(raster_path, indexes=1,layer_name='Cloudliness',colormap='viridis')
+    m1.add_raster(raster_path, bands=[1],layer_name='Cloudliness',colormap='viridis')
 except ImportError as e:
     st.write(f"Something went wrong {e}")
 m1.to_streamlit(height=600)
