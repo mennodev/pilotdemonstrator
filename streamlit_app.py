@@ -79,11 +79,11 @@ def get_AOI_to_describe(tooltip_info):
     """
     st.write(str(tooltip_info))
     AOI = str(tooltip_info).split('AOI')[1]
-    if AOI is 'Betuwe':
+    if 'Betuwe' in AOI:
         return betuwe_description
-    elif AOI is 'Noord Oost Polder (NOP)':
+    elif 'Noord Oost Polder (NOP)' in AOI:
         return nop_description
-    elif AOI is 'Friese Wouden':
+    elif 'Friese Wouden' in AOI:
         return fw_description
     else: return AOI
 
