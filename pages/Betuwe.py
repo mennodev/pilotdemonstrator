@@ -119,7 +119,7 @@ m1.add_tile_layer(
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 raster_path = 'data/rasters/cloudliness_betuwe1.png'
-m1.add_raster_legacy(raster_path, layer_name='Cloudliness',colormap='viridis',)
+m1.add_raster(raster_path, layer_name='Cloudliness',colormap='viridis',)
 m1.to_streamlit(height=600)
 """
 map = st_folium(
