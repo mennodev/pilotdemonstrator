@@ -106,20 +106,24 @@ folium.GeoJson(data=betuwe,
                         ).add_to(m1)
 # add raster to the map
 image_bounds = [[51.8516565150000019,5.2416696829999996], [51.9855054920000015,5.8974398399999997]]
+
+
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m1)
-map = st_folium(
-    m1,
-    width=900, height=600,
-    key="folium_map"
-)
 folium.raster_layers.ImageOverlay(
     image='data/rasters/cloudliness_betuwe1.png',
     name="Cloudliness heatmap",
     opacity=1,
     bounds=image_bounds,
 ).add_to(m1)
+
+map = st_folium(
+    m1,
+    width=900, height=600,
+    key="folium_map"
+)
+
 # Add the Folium map to the Streamlit app using the st_folium library
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
