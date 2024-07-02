@@ -7,7 +7,7 @@ import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
 import leafmap.foliumap as leafmap
-
+import localtileserver
 
 
 # setup page config using modules
