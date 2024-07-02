@@ -118,7 +118,7 @@ m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
 #)
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
-raster_path = 'data/rasters/Betuwe_clouds_heatmap_2016-2024.tif'
+raster_path = 'data/rasters/betuwe_clouds_heatmap_2016_2024.tif'
 try:
     m1.add_raster(raster_path, indexes=[1],vmin=35, vmax=43,layer_name='Cloudliness')
 except ImportError as e:
