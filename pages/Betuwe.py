@@ -87,7 +87,7 @@ def style_function_betuwe(x):
     """
     Use color column to assign color
     """
-    return {"color":'darkgreen', 'fillOpacity': .2 , "weight":2}
+    return {"color":'darkgreen', 'fillOpacity': .1 , "weight":2}
 
 
 # Start of writing and plotting parts execute on screen
@@ -105,7 +105,7 @@ folium.GeoJson(data=betuwe,
                         style_function=style_function_betuwe,
                         ).add_to(m1)
 # add raster to the map
-image_bounds = [[5.2416696829999996, 51.8516565150000019], [5.8974398399999997, 51.9855054920000015]]
+image_bounds = [[51.8516565150000019,5.2416696829999996], [51.9855054920000015,5.8974398399999997]]
 folium.raster_layers.ImageOverlay(
     image='data/rasters/cloudliness_betuwe1.png',
     name="Cloudliness heatmap",
@@ -126,13 +126,30 @@ map = st_folium(
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
 # When the user interacts with the map
-"""
+# Create a map with the GeoJSON data using folium
+
+geojson = load_geojson()
+
+m = folium.Map(location=[sum(geojson.total_bounds[[1, 3]]) / 2, sum(geojson.total_bounds[[0, 2]]) / 2], zoom_start=11)
+# add geojson and add some styling
+folium.GeoJson(data=geojson,
+                        name = 'Betuwe',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m)
+
+
+# Set the basemap URL
+osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
     width=900, height=600,
     key="folium_map"
 )
+
 df = load_parquet()
+
 gid_to_plot = 71757
 if map.get("last_object_clicked_tooltip"):
     gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
@@ -148,4 +165,3 @@ if gid_to_plot is not None:
                 ).properties(height=320)
     st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
-"""
