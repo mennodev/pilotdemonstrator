@@ -61,23 +61,23 @@ def get_AOI_to_describe(tooltip_info):
     """
     very hacky but could not find any normal way to get info from tooltip
     """
-    betuwe_description = """
+    betuwe_description = f"""
     The Betuwe is an area in the center of the Netherlands between two major Dutch rivers; the Meuse and the Rhine. 
     It is a floodprone area with river deposited soils including heavy clay.
     In agricultural terms it is a widely known fruit producing area and has many grassland areas used predominantly for dairy cows.
-    This AOI is selected to demonstrate regulation related to grassland management like ploughing and undersowing within the CAP.
+    This AOI is selected to demonstrate regulation related to grassland management like **mowing** and **buffer strips** within the CAP.
     """
 
-    nop_description = """The Noordoostpolder (NOP) is an area of reclaimed land from the in-land see 'Zuiderzee' (currently lake 'IJsselmeer') taken in use around 1942. 
+    nop_description = f"""The Noordoostpolder (NOP) is an area of reclaimed land from the in-land see 'Zuiderzee' (currently lake 'IJsselmeer') taken in use around 1942. 
     The soil is very fertile and it is a major agricultural area for field produce including large fields of tulips, wheat, carrot, potatoes.
-    This AOI is selected to demonstrate regulation related to management like ploughing and undersowing within the CAP.
+    This AOI is selected to demonstrate regulation related to management like **ploughing** and **undersowing** within the CAP.
     """
 
-    fw_description = """
+    fw_description = f"""
     The Friese Wouden is a part in eastern Friesland at the border with province Groningen with agriculture predominantly focused on grasslands and maize for (dairy) cattle.
     Historically the area had many woodlands and wooded banks, tree lines are used for parcel delineation. 
     Furthermore this areas holds also many natural ponds created by collapsing ice lumps (so-called Pingo ruines) during melting after the ice-age and also has many water draining ditches. 
-    This AOI is selected to demonstrate High Diversity Landscape Features within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
+    This AOI is selected to demonstrate **High Diversity Landscape Features** within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
     """
     AOI = str(tooltip_info).split('AOI')[1]
     if 'Betuwe' in AOI:
