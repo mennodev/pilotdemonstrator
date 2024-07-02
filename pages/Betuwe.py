@@ -116,10 +116,17 @@ folium.raster_layers.ImageOverlay(
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m1)
+map = st_folium(
+    m1,
+    width=900, height=600,
+    key="folium_map"
+)
+
 # Add the Folium map to the Streamlit app using the st_folium library
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
 # When the user interacts with the map
+"""
 map = st_folium(
     m,
     width=900, height=600,
@@ -141,3 +148,4 @@ if gid_to_plot is not None:
                 ).properties(height=320)
     st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
+"""
