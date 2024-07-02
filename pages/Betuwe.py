@@ -100,7 +100,7 @@ betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 # Create a map with the GeoJSON data using folium
 m1 = folium.Map(location=[sum(betuwe.total_bounds[[1, 3]]) / 2, sum(betuwe.total_bounds[[0, 2]]) / 2], zoom_start=11)
 # add geojson and add some styling
-folium.GeoJson(data=gdf,
+folium.GeoJson(data=betuwe,
                         name = 'Betuwe',
                         style_function=style_function_betuwe,
                         ).add_to(m1)
