@@ -6,6 +6,8 @@ from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
+import leafmap
+
 # setup page config using modules
 Navbar()
 # setup page config
@@ -90,40 +92,43 @@ def style_function_betuwe(x):
     return {"color":'darkgreen', 'fillOpacity': .1 , "weight":2}
 
 
+style = {
+    "stroke": True,
+    "color": "darkgreen",
+    "weight": 2,
+    "opacity": 1,
+    "fill": True,
+    "fillColor": "darkgreen",
+    "fillOpacity": 0.1,
+}
+
+m.add_geojson(url, layer_name="Countries", style=style)
+m
+
 # Start of writing and plotting parts execute on screen
 
 st.subheader("Topic 1 : General optical data availability")
 st.write("Explore general cloudliness in the AOI")
+# initialize leafmap
+m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
+# add different basemap layers
+m1.add_basemap(
+    url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+    name="Google Satellite",
+    attribution="Google",
+)
 betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
-
-
-# Create a map with the GeoJSON data using folium
-m1 = folium.Map(location=[sum(betuwe.total_bounds[[1, 3]]) / 2, sum(betuwe.total_bounds[[0, 2]]) / 2], zoom_start=11)
-# add geojson and add some styling
-folium.GeoJson(data=betuwe,
-                        name = 'Betuwe',
-                        style_function=style_function_betuwe,
-                        ).add_to(m1)
-# add raster to the map
-image_bounds = [[51.8516565150000019,5.2416696829999996], [51.9855054920000015,5.8974398399999997]]
-
-
-# Set the basemap URL
-osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m1)
-folium.raster_layers.ImageOverlay(
-    image='data/rasters/cloudliness_betuwe1.png',
-    name="Cloudliness heatmap",
-    opacity=1,
-    bounds=image_bounds,
-).add_to(m1)
-
+m1.add_geojson(betuwe, layer_name="Countries", style=style)
+raster_path = 'data/rasters/cloudliness_betuwe1.png'
+m1.add_raster(raster_path, layer_name='Cloudliness')
+m1.to_streamlit(height=600)
+"""
 map = st_folium(
     m1,
     width=900, height=600,
     key="folium_map"
 )
-
+"""
 # Add the Folium map to the Streamlit app using the st_folium library
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")

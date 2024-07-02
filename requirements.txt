@@ -3,3 +3,4 @@ geopandas
 pyarrow
 folium
 streamlit_folium
+leafmap
