@@ -119,7 +119,10 @@ m1.add_tile_layer(
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 raster_path = 'data/rasters/cloudliness_betuwe1.png'
-m1.add_raster(raster_path, layer_name='Cloudliness',colormap='viridis',)
+try:
+    m1.add_raster(raster_path, layer_name='Cloudliness',colormap='viridis',)
+except ImportError as e:
+    st.write(e)
 m1.to_streamlit(height=600)
 """
 map = st_folium(
