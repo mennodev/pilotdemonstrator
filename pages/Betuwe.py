@@ -111,16 +111,16 @@ st.write("Explore general cloudliness in the AOI")
 # initialize leafmap
 m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
 # add different basemap layers
-m1.add_tile_layer(
-    url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-    name="Google Satellite",
-    attribution="Google",
-)
+#m1.add_tile_layer(
+#    url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+#    name="Google Satellite",
+#    attribution="Google",
+#)
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
-m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
-raster_path = 'data/rasters/cloudliness_betuwe1.png'
+#m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
+raster_path = 'data/rasters/Betuwe_clouds_heatmap_2016-2024.tif'
 try:
-    m1.add_raster(raster_path, layer_name='Cloudliness',colormap='viridis',)
+    m1.add_raster(raster_path, indexes=1,layer_name='Cloudliness',colormap='viridis')
 except ImportError as e:
     st.write(f"Something went wrong {e}")
 m1.to_streamlit(height=600)
