@@ -44,7 +44,7 @@ def download_file_from_temporary_download_url(download_url, filename):
 
 
 def main():
-    api_key = "<API_KEY>"
+    api_key = "eyJvcmciOiI1ZTU1NGUxOTI3NGE5NjAwMDEyYTNlYjEiLCJpZCI6IjFhNDU1YWFhNjY1YTQ2NGNhNTIzM2QyNmQyMGM4M2YxIiwiaCI6Im11cm11cjEyOCJ9"
     dataset_name = "Actuele10mindataKNMIstations"
     dataset_version = "2"
     logger.info(f"Fetching latest file of {dataset_name} version {dataset_version}")

@@ -19,7 +19,11 @@ st.write(
     """Below you find a series of data visualization developed in the pilot demonstrator. 
     With the tabs in the sidebar you can go to the starting page or to other AOIs focusing on other elements of the CAP"""
 )
-
+st.write("""
+The Betuwe is an area in the center of the Netherlands between two major Dutch rivers; the Meuse and the Rhine. 
+It is a floodprone area with river deposited soils including heavy clay. 
+In agricultural terms it is a widely known fruit producing area and has many grassland areas used predominantly for dairy cows.
+""")
 
 
 

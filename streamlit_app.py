@@ -9,12 +9,12 @@ from modules.nav import Navbar
 # setup page config using modules
 Navbar()
 
-st.title("Pilot demonstrator showcase")
+st.title("Pilot demonstrator CAP showcase")
 
-st.header("Welcome to the webapp landing page showcasing pilot demonstrator elements.")
+st.header("Welcome to the webapp landing page showcasing Common Agricultural Policy (CAP) pilot demonstrator elements.")
 st.write(
     """
-    With the tabs in the sidebar different options to visualize the demonstrators in the AOIs are given.
+    Click on the tabs in the sidebar to view different visualizations developed in the chosen AOIs
     """
 )
 
@@ -24,6 +24,7 @@ st.write(
 # Load the data from a CSV. We're caching this so it doesn't reload every time the app
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
+
 
 def load_AOIs_geojsons():
     # Read GeoJSON data into a GeoDataFrame
@@ -54,10 +55,41 @@ def style_function_fw(x):
     """
     return {"color": 'darkgreen', "weight":2}
 
+def get_AOI_to_describe(tooltip_info):
+    """
+    very hacky but could not find any normal way to get info from tooltip
+    """
+    betuwe_description = """
+    The Betuwe is an area in the center of the Netherlands between two major Dutch rivers; the Meuse and the Rhine. 
+    It is a floodprone area with river deposited soils including heavy clay.
+    In agricultural terms it is a widely known fruit producing area and has many grassland areas used predominantly for dairy cows.
+    This AOI is selected to demonstrate regulation related to grassland management like ploughing and undersowing within the CAP.
+    """
+
+    nop_description = """The Noordoostpolder (NOP) is an area of reclaimed land from the in-land see 'Zuiderzee' (currently lake 'IJsselmeer') taken in use around 1942. 
+    The soil is very fertile and it is a major agricultural area for field produce including large fields of tulips, wheat, carrot, potatoes.
+    This AOI is selected to demonstrate regulation related to management like ploughing and undersowing within the CAP.
+    """
+
+    fw_description = """
+    The Friese Wouden is a part in eastern Friesland at the border with province Groningen with agriculture predominantly focused on grasslands and maize for (dairy) cattle.
+    Historically the area had many woodlands and wooded banks, tree lines are used for parcel delineation. 
+    Furthermore this areas holds also many natural ponds created by collapsing ice lumps (so-called Pingo ruines) during melting after the ice-age and also has many water draining ditches. 
+    This AOI is selected to demonstrate High Diversity Landscape Features within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
+    """
+    AOI = str(tooltip_info).split('AOI')[1]
+    if AOI == 'Betuwe':
+        return betuwe_description
+    elif AOI == 'Noord Oost Polder (NOP)':
+        return nop_description
+    elif AOI == 'Friese Wouden':
+        return fw_description
+    else: return None
+
 betuwe,nop,fw = load_AOIs_geojsons()
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(fw.total_bounds[[1, 3]]) / 2, sum(fw.total_bounds[[0, 2]]) / 2], zoom_start=8)
+m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=8)
 
 
 # Set the basemap URL
@@ -92,3 +124,7 @@ map = st_folium(
     width=900, height=600,
     key="folium_map"
 )
+# use on click to describe AOI
+
+if map.get("last_object_clicked_tooltip"):
+    st.write(get_AOI_to_describe(map["last_object_clicked_tooltip"]))
