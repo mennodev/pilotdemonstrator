@@ -122,7 +122,7 @@ raster_path = 'data/rasters/cloudliness_betuwe1.png'
 try:
     m1.add_raster(raster_path, layer_name='Cloudliness',colormap='viridis',)
 except ImportError as e:
-    st.write(e)
+    st.write(f"Something went wrong {e}")
 m1.to_streamlit(height=600)
 """
 map = st_folium(
