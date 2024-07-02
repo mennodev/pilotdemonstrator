@@ -115,7 +115,7 @@ folium.raster_layers.ImageOverlay(
 
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m1)
 # Add the Folium map to the Streamlit app using the st_folium library
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
