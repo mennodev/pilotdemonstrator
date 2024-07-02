@@ -84,7 +84,7 @@ def get_AOI_to_describe(tooltip_info):
         return nop_description
     elif AOI == 'Friese Wouden':
         return fw_description
-    else: return None
+    else: return AOI
 
 betuwe,nop,fw = load_AOIs_geojsons()
 
