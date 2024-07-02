@@ -4,4 +4,4 @@ showSidebarNavigation = false
 base = "light"
 primaryColor = "#cee8cb"
 secondaryBackgroundColor = "#cbcee8"
-font = "monospace"
+font = "sans serif"
