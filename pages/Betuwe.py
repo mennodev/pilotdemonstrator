@@ -12,19 +12,16 @@ Navbar()
 #st.set_page_config(page_title="Welcome",page_icon="🏡",)
 
 
-st.title("Pilot demonstrator focusing on grassland monitoring for the CAP")
+st.title("Pilot demonstrator AOI Betuwe")
 
-st.header("Welcome to the demonstrator part for AOI Betuwe.")
+st.header("Demonstrator focusing on grassland management in the CAP and relation to cadency")
 st.write(
-    """Below you find a series of data visualization developed in the pilot demonstrator. 
-    With the tabs in the sidebar you can go to the starting page or to other AOIs focusing on other elements of the CAP"""
+    """
+    Below you find different blocks of data visualization developed in the pilot demonstrator exploring different topics. 
+    """
 )
-st.write("""
-The Betuwe is an area in the center of the Netherlands between two major Dutch rivers; the Meuse and the Rhine. 
-It is a floodprone area with river deposited soils including heavy clay. 
-In agricultural terms it is a widely known fruit producing area and has many grassland areas used predominantly for dairy cows.
-""")
 
+st.subheader("Topic 1 : Optical data availability")
 
 
 # Helper functions
@@ -55,12 +52,7 @@ def get_gid_from_tooltip(tooltip_info):
     return gid
 # Show the page title and description.
 #st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
-st.title("📈 Analysis of cadency for grassland monitoring for the CAP")
-st.write(
-    """
-    This app visualizes data to illustrate the means to monitor grasslands in the CAP as a pilot demonstrator!
-    """
-)
+
 
 
 # Load the data from a CSV. We're caching this so it doesn't reload every time the app
