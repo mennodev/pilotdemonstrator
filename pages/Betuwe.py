@@ -6,7 +6,7 @@ from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
-import leafmap
+import leafmap.foliumap as leafmap
 
 # setup page config using modules
 Navbar()
