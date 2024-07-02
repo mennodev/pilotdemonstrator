@@ -8,13 +8,15 @@ from streamlit_folium import st_folium
 from modules.nav import Navbar
 # setup page config using modules
 Navbar()
+st.sidebar.success("Select a tab above to choose the AOI")
 
 st.title("Pilot demonstrator CAP showcase")
 
 st.header("Welcome to the webapp landing page showcasing Common Agricultural Policy (CAP) pilot demonstrator elements.")
 st.write(
     """
-    Click on the tabs in the sidebar to view different visualizations developed in the chosen AOIs
+    Click on the AOIs in the map to get a small description.
+    Use the sidebar to view different visualizations developed for the AOI
     """
 )
 
@@ -128,4 +130,5 @@ map = st_folium(
 
 if map.get("last_object_clicked_tooltip"):
     container = st.container(border=True)
+    containter.write(st.subheader("AOI description"))
     container.write(get_AOI_to_describe(map["last_object_clicked_tooltip"]))
