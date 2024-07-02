@@ -109,7 +109,7 @@ image_bounds = [[51.8516565150000019,5.2416696829999996], [51.9855054920000015,5
 folium.raster_layers.ImageOverlay(
     image='data/rasters/cloudliness_betuwe1.png',
     name="Cloudliness heatmap",
-    opacity=0.5,
+    opacity=1,
     bounds=image_bounds,
 ).add_to(m1)
 
