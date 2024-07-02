@@ -6,4 +6,4 @@ streamlit_folium
 leafmap
 xarray
 rasterio
-localtileserver==0.10.0
+localtileserver==0.7.3
