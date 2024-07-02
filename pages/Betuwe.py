@@ -102,9 +102,6 @@ style = {
     "fillOpacity": 0.1,
 }
 
-m.add_geojson(url, layer_name="Countries", style=style)
-m
-
 # Start of writing and plotting parts execute on screen
 
 st.subheader("Topic 1 : General optical data availability")
@@ -118,7 +115,7 @@ m1.add_basemap(
     attribution="Google",
 )
 betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
-m1.add_geojson(betuwe, layer_name="Countries", style=style)
+m1.add_geojson(betuwe, layer_name="Betuwe", style=style)
 raster_path = 'data/rasters/cloudliness_betuwe1.png'
 m1.add_raster(raster_path, layer_name='Cloudliness')
 m1.to_streamlit(height=600)
