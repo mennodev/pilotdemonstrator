@@ -21,9 +21,6 @@ st.write(
     """
 )
 
-st.subheader("Topic 1 : Optical data availability")
-
-
 # Helper functions
 
 # Translation dictionary
@@ -62,6 +59,10 @@ def load_data():
     df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
     return df
 
+def load_meteo_data():
+    df = pd.read_csv("data/dataframes/debilt_cloudliness_meteo.txt",delimiter=',')
+    return df
+
 def load_parquet():
     df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
     return df
@@ -82,22 +83,41 @@ def style_function(x):
     """
     return {"color":x['properties']['color'], "weight":2}
 
-gdf = load_geojson()
+def style_function_betuwe(x):
+    """
+    Use color column to assign color
+    """
+    return {"color":'darkgreen', 'fillOpacity': .2 , "weight":2}
+
+
+# Start of writing and plotting parts execute on screen
+
+st.subheader("Topic 1 : General optical data availability")
+st.write("Explore general cloudliness in the AOI")
+betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
+
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(gdf.total_bounds[[1, 3]]) / 2, sum(gdf.total_bounds[[0, 2]]) / 2], zoom_start=12)
+m1 = folium.Map(location=[sum(betuwe.total_bounds[[1, 3]]) / 2, sum(betuwe.total_bounds[[0, 2]]) / 2], zoom_start=11)
 # add geojson and add some styling
 folium.GeoJson(data=gdf,
-                        name = 'Grass fields',
-                        style_function=style_function,
-                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
-            ).add_to(m)
+                        name = 'Betuwe',
+                        style_function=style_function_betuwe,
+                        ).add_to(m1)
+# add raster to the map
+folium.raster_layers.ImageOverlay(
+    image='data/rasters/Betuwe_clouds_heatmap_2016-2024.tif',
+    name="Cloudliness heatmap",
+    opacity=1,
+    #bounds=image_bounds,
+).add_to(m1)
 
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 # Add the Folium map to the Streamlit app using the st_folium library
-
+st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
+st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
 # When the user interacts with the map
 map = st_folium(
     m,
