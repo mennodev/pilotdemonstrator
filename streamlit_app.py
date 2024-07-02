@@ -130,5 +130,5 @@ map = st_folium(
 
 if map.get("last_object_clicked_tooltip"):
     container = st.container(border=True)
-    containter.write(st.subheader("AOI description"))
+    container.write(st.subheader("AOI description"))
     container.write(get_AOI_to_describe(map["last_object_clicked_tooltip"]))
