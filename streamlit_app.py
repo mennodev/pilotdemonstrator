@@ -77,6 +77,7 @@ def get_AOI_to_describe(tooltip_info):
     Furthermore this areas holds also many natural ponds created by collapsing ice lumps (so-called Pingo ruines) during melting after the ice-age and also has many water draining ditches. 
     This AOI is selected to demonstrate High Diversity Landscape Features within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
     """
+    st.write(str(tooltip_info))
     AOI = str(tooltip_info).split('AOI')[1]
     if AOI is 'Betuwe':
         return betuwe_description
