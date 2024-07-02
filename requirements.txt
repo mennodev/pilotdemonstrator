@@ -4,3 +4,4 @@ pyarrow
 folium
 streamlit_folium
 leafmap
+xarray
