@@ -109,7 +109,8 @@ style = {
 st.subheader("Topic 1 : General optical data availability")
 st.write("Explore general cloudliness in the AOI")
 # initialize leafmap
-m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
+m1 = folium.Map()
+#m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
 # add different basemap layers
 #m1.add_tile_layer(
 #    url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
