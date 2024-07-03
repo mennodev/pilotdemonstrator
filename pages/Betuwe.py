@@ -112,7 +112,7 @@ style = {
 #load data
 df_clouds = load_cloudliness_data()
 
-st.subheader("Topic 1 : General optical data availability")
+st.subheader("Topic 1 : General succesfullnes of optical data reads")
 st.write("""Most limiting factor for continuous and calibrated remote sensing with optical data is disturbance and occlusion due to atmospheric changes like clouds and cirrus. 
             To get an insight the general cloudliness in the AOI is explored.
             """)
@@ -145,7 +145,7 @@ In order to check the spatial distribution in the AOI the following method is ap
 Use the cloud identification per pixel per read in the years ranging from 2016 to 2024 and calculate the percentage of unclouded pixels"""
 )
 
-m1 = folium.Map(layer_control=True)
+m1 = folium.Map()
 betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
@@ -162,7 +162,7 @@ folium.raster_layers.ImageOverlay(
 ).add_to(m1)
 m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
 # add layer control
-folium.LayerControl().add_to(m1)
+folium.LayerControl(collapsed=False).add_to(m1)
 map = st_folium(
     m1,
     width=900, height=500,
@@ -178,7 +178,8 @@ date_range_slider_meteo = st.slider(
     value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
     max_value=datetime(2024, 6, 2),
     )
-st.write(f"Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**")
+st.write(f"""Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
+0 indicate unclouded coditions to  9 indicating total cloudcover""")
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 total_reads_meteo = len(df_selection_meteo.index)
 df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <= 1)]
@@ -195,37 +196,13 @@ st.altair_chart(chart_meteo, use_container_width=True)
 st.write(f"""Found **{total_reads_meteo}** total meteo reads!
     With **{unclouded_reads_meteo}** unclouded results meaning that overall about **{percentage_meteo} %** skies are unclouded!            
         """)
-"""
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.write(f"""
+                High occurence and variability of clouds in the AOI leading to drastic reduction of succesfull reads with optical imagery.
+                Introducing higher cadence mitigates many issues of unsuccesfull reads, but some extended intervals (multiple weeks) with cloud occurence remain in the AOI
+                """)
 
-
-st.slider(
-    "Which day to plot?",
-    value=datetime(2022, 1, 2),
-    min_value=datetime(2022, 1, 1),
-    max_value=datetime(2022, 4, 1),
-    step=timedelta(days=1),
-    format="DD/MM/YY",
-    #on_change=handle_date_change,
-    #key=value,
-    )
-
-# initialize leafmap
-m1 = folium.Map()
-betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
-#m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
-#raster_path = 'data/rasters/2022-12-23_clipped.tif'
-image_cloudliness = 'data/rasters/cloudliness_betuwe_colored.png'
-#image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
-image_bounds_parcels = [[51.9240070190000012,5.3419835630000003],[51.9703482809999997,5.4335150150000002]]
-image_bounds_betuwe = [[51.8516565146628992,5.2416696828374079],[51.9855054919967117,5.8974398402446582]]
-
-folium.raster_layers.ImageOverlay(
-    image=image_cloudliness,
-    name="image overlay",
-    opacity=1,
-    bounds=image_bounds,
-).add_to(m1)
-m1.fit_bounds(image_bounds, padding=(0, 0))
 #try:
 #    m1.add_raster(raster_path, indexes=[4,3,2],layer_name='Planet')
 #except ImportError as e:
@@ -239,10 +216,23 @@ map = st_folium(
 )
 
 # Add the Folium map to the Streamlit app using the st_folium library
-st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
-st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
+url_cbs = 'https://www.cbs.nl/nl-nl/cijfers/detail/7140gras'
+st.subheader("Topic 2 : Grassland management in the Betuwe")
+st.write(f"""Grass is a major **fodder** crop in the Netherlands and is utilized via **grazing** by livestock and **mowing**. 
+            The [central bureau for statistics (CBS)]({url_cbs}) published data on grasslandmowing presented in the table below.
+            Using this data we can estimate that traditionally on average a grass field is mowed between 2.1 to 2.85 times.
+            However some fields will not be mowed at all due to grazing, so the numbers of 'cuts' per season will be much higher for other grassland parcels.
+            The first cut of the season is much dependant on weather conditions. The temperature sum (TSum) is a good proxy to determine grassland readiness.
+            In the fall and winter, after Octobre traditionally no mowing is performed as well due to the risk of frost damage.
+            Below we will further explore the grasslands, the management and CAP related regulation in the AOI 'Betuwe'.
+            """)
+cbs_df = pd.read_csv("data/dataframes/Grassland_statistics.csv",delimiter=';')
+st.table(cbs_df)
+
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
+
+
 
 geojson = load_geojson()
 
@@ -281,4 +271,3 @@ if gid_to_plot is not None:
                 ).properties(height=320)
     st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
-"""
