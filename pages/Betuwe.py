@@ -185,7 +185,7 @@ df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <=
 unclouded_reads_meteo = len(df_unclouded_meteo)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 # Display line chart
-chart_meteo = alt.Chart(df_selection).mark_line().encode(
+chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
                 x=alt.X('datetime:T', title='DateTime'),
                 y=alt.Y('cloudscale:Q', title='Cloudlines (0-9)'),
                 #color='genre:N'
