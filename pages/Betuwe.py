@@ -117,8 +117,7 @@ date_range_slider = st.slider(
     value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
     max_value=datetime(2024, 5, 31),
     )
-st.write(f"Plotting cloudliness for selecte date range {date_range_slider[0]:%B %d, %Y} and {date_range_slider[1]:%B %d, %Y}}"
-
+st.write(f"Plotting cloudliness for selecte date range {date_range_slider[0]:%B %d, %Y} and {date_range_slider[1]:%B %d, %Y}")
 """
 st.slider(
     "Which day to plot?",
