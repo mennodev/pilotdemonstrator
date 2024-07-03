@@ -120,7 +120,7 @@ m1 = folium.Map()
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
-url_image = 'data/rasters/image.png'
+url_image = 'data/rasters/cloudliness_betuwe1.png'
 image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
 folium.raster_layers.ImageOverlay(
     image=url_image,
@@ -128,7 +128,7 @@ folium.raster_layers.ImageOverlay(
     opacity=1,
     bounds=image_bounds,
 ).add_to(m1)
-
+m1.fit_bounds(image_bounds, padding=(0, 0))
 #try:
 #    m1.add_raster(raster_path, indexes=[4,3,2],layer_name='Planet')
 #except ImportError as e:
