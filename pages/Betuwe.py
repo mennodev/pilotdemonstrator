@@ -114,7 +114,9 @@ st.write("""Most limiting factor for continuous and calibrated remote sensing wi
 # initialize slider
 date_range_slider = st.slider(
     "Select a daterange to plot the Sentinel-2 cloudliness",
-    datetime(2016, 1, 1),datetime(2024, 5, 31), (datetime(2021, 1, 1),datetime(2024, 1, 1))
+    min_value=datetime(2016, 1, 1),
+    value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
+    max_value=datetime(2024, 5, 31),
     )
 st.write("Plotting cloudliness for date range :", date_range_slider)
 """
