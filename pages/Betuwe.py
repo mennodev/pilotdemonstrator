@@ -182,12 +182,12 @@ st.write(f"Plotting cloudliness according to meteo for selecte date range **{dat
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 total_reads_meteo = len(df_selection_meteo.index)
 df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <= 1)]
-unclouded_reads_meteo = len(df_unclouded_meteo)
+unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 # Display line chart
 chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
                 x=alt.X('datetime:T', title='DateTime'),
-                y=alt.Y('cloudscale:Q', title='Cloudlines (0-9)'),
+                y=alt.Y('cloudscale', title='Cloudlines (0-9)'),
                 #color='genre:N'
                 ).properties(height=320)
 
