@@ -68,7 +68,7 @@ def load_cloudliness_data():
     return df
 
 def load_meteo_data():
-    df = pd.read_csv("data/dataframes/debilt_cloudliness_meteo.txt",delimiter=',')
+    df = pd.read_csv("data/dataframes/debilt_cloudliness_meteo.txt",delimiter=',',parse_dates=['datetime'])
     return df
 
 def load_parquet():
@@ -138,10 +138,14 @@ chart = alt.Chart(df_selection).mark_line().encode(
 
 st.altair_chart(chart, use_container_width=True)
 st.write(f"""Found **{total_reads}** total Sentinel-2 reads!
-    With **{unclouded_reads}** unclouded results yielding about *{percentage} %** usable imagery!            
+    With **{unclouded_reads}** unclouded results yielding about **{percentage} %** usable imagery!            
         """)
-st.write(f"Check whether the cloudliness is spatially distributed within the AOI")
-m1 = folium.Map()
+st.write(f"""Check whether the cloudliness is spatially distributed within the AOI.
+In order to check the spatial distribution in the AOI the following method is applied.
+Use the cloud identification per pixel per read in the years ranging from 2016 to 2024 and calculate the percentage of unclouded pixels"""
+)
+
+m1 = folium.Map(layer_control=True)
 betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
@@ -157,12 +161,39 @@ folium.raster_layers.ImageOverlay(
     bounds=image_bounds_betuwe,
 ).add_to(m1)
 m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
+# add layer control
+folium.LayerControl().add_to(m1)
 map = st_folium(
     m1,
     width=900, height=500,
     key="folium_map"
 )
-# get metrics
+st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
+st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({https://www.knmi.nl/home})")
+df_debilt = load_meteo_data()
+date_range_slider_meteo = st.slider(
+    "Select a daterange to plot the Sentinel-2 cloudliness",
+    min_value=datetime(2016, 1, 1),
+    value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
+    max_value=datetime(2024, 6, 2),
+    )
+st.write(f"Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**")
+df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
+total_reads_meteo = len(df_selection_meteo.index)
+df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <= 1)]
+unclouded_reads_meteo = len(df_unclouded_meteo)
+percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
+# Display line chart
+chart_meteo = alt.Chart(df_selection).mark_line().encode(
+                x=alt.X('datetime:T', title='DateTime'),
+                y=alt.Y('cloudscale:Q', title='Cloudlines (0-9)'),
+                #color='genre:N'
+                ).properties(height=320)
+
+st.altair_chart(chart_meteo, use_container_width=True)
+st.write(f"""Found **{total_reads_meteo}** total meteo reads!
+    With **{unclouded_reads_meteo}** unclouded results meaning that overall about **{percentage_meteo} %** skies are unclouded!            
+        """)
 """
 
 
