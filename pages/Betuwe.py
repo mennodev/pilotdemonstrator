@@ -63,6 +63,10 @@ def load_data():
     df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
     return df
 
+def load_cloudliness_data():
+    df = pd.read_csv("data/dataframes/cloudliness_betuwe.csv",parse_dates=['datetime'])
+    return df
+
 def load_meteo_data():
     df = pd.read_csv("data/dataframes/debilt_cloudliness_meteo.txt",delimiter=',')
     return df
@@ -105,6 +109,8 @@ style = {
 }
 
 # Start of writing and plotting parts execute on screen
+#load data
+df_clouds = load_cloudliness_data()
 
 st.subheader("Topic 1 : General optical data availability")
 st.write("""Most limiting factor for continuous and calibrated remote sensing with optical data is disturbance and occlusion due to atmospheric changes like clouds and cirrus. 
@@ -117,8 +123,22 @@ date_range_slider = st.slider(
     value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
     max_value=datetime(2024, 5, 31),
     )
-st.write(f"Plotting cloudliness for selecte date range {date_range_slider[0]:%B %d, %Y} and {date_range_slider[1]:%B %d, %Y}")
+st.write(f"Plotting cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
+df_selection = df_clouds.loc[[df_clouds['datetime'] >= date_range_slider[0]] & [df_clouds['datetime'] <= date_range_slider[1]]]
+st.write(df_selection.head())
 """
+    # subselect data
+    df_selection = df.loc[df['gid'] == gid_to_plot]
+    #st.dataframe(data=df_selection.head(20))
+    # Display line chart
+    chart = alt.Chart(df_selection).mark_line().encode(
+                x=alt.X('date:T', title='Date'),
+                y=alt.Y('NDVI:Q', title='NDVI'),
+                #color='genre:N'
+                ).properties(height=320)
+    st.write('Chart of succesfull NDVI reads by Sentinel-2')
+    st.altair_chart(chart, use_container_width=True)
+
 st.slider(
     "Which day to plot?",
     value=datetime(2022, 1, 2),
