@@ -154,7 +154,7 @@ folium.raster_layers.ImageOverlay(
     image=image_cloudliness,
     name="image overlay",
     opacity=1,
-    bounds=image_bounds,
+    bounds=image_bounds_betuwe,
 ).add_to(m1)
 m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
 map = st_folium(
