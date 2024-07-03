@@ -162,11 +162,13 @@ folium.raster_layers.ImageOverlay(
 ).add_to(m1)
 m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
 # add layer control
-folium.LayerControl(collapsed=False).add_to(m1)
+#folium.LayerControl(collapsed=False).add_to(m1)
+control = folium.LayerControl(collapsed=False)
 map = st_folium(
     m1,
     width=900, height=500,
-    key="folium_map"
+    key="folium_map",
+    layer_control=control
 )
 url_knmi = 'https://www.knmi.nl/home'
 st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
