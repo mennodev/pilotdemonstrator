@@ -124,7 +124,9 @@ date_range_slider = st.slider(
     max_value=datetime(2024, 5, 31),
     )
 st.write(f"Plotting cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
-df_selection = df_clouds.loc[[df_clouds['datetime'] >= date_range_slider[0]] & [df_clouds['datetime'] <= date_range_slider[1]]]
+df_selection = df_clouds.loc[(df_clouds['datetime'] >= date_range_slider[0]) & (df_clouds['datetime'] <= date_range_slider[1])]
+
+
 st.write(df_selection.head())
 """
     # subselect data
