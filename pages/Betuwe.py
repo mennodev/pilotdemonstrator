@@ -226,12 +226,13 @@ st.write(f"""Grass is a major **fodder** crop in the Netherlands and is utilized
             In the fall and winter, after Octobre traditionally no mowing is performed as well due to the risk of frost damage.
             Below we will further explore the grasslands, the management and CAP related regulation in the AOI 'Betuwe'.
             """)
-cbs_df = pd.read_csv("data/dataframes/Grassland_statistics.csv",delimiter=';')
+cbs_df = pd.read_csv("data/dataframes/Grassland_statistics.csv",delimiter=';',dtype=str)
 st.table(cbs_df)
 
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
-
+st.write(f"""LPIS data for the AOI reveals the following
+""")
 
 
 geojson = load_geojson()
