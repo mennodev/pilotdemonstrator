@@ -168,8 +168,9 @@ map = st_folium(
     width=900, height=500,
     key="folium_map"
 )
+url_knmi = 'https://www.knmi.nl/home'
 st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
-st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({https://www.knmi.nl/home})")
+st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
 df_debilt = load_meteo_data()
 date_range_slider_meteo = st.slider(
     "Select a daterange to plot the Sentinel-2 cloudliness",
