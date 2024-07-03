@@ -123,23 +123,27 @@ date_range_slider = st.slider(
     value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
     max_value=datetime(2024, 5, 31),
     )
-st.write(f"Plotting cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
+st.write(f"Plotting AOI cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
 df_selection = df_clouds.loc[(df_clouds['datetime'] >= date_range_slider[0]) & (df_clouds['datetime'] <= date_range_slider[1])]
-
-
-st.write(df_selection.head())
-"""
-    # subselect data
-    df_selection = df.loc[df['gid'] == gid_to_plot]
-    #st.dataframe(data=df_selection.head(20))
-    # Display line chart
-    chart = alt.Chart(df_selection).mark_line().encode(
-                x=alt.X('date:T', title='Date'),
-                y=alt.Y('NDVI:Q', title='NDVI'),
+total_reads = len(df_selection.index)
+df_unclouded = df_selection.loc[(df_selection['cloudliness'] <= 0.1)]
+unclouded_reads = len(df_unclouded)
+percentage = round((unclouded_reads/total_reads)*100,2)
+# Display line chart
+chart = alt.Chart(df_selection).mark_line().encode(
+                x=alt.X('datetime:T', title='Date'),
+                y=alt.Y('cloudliness:Q', title='Cloudliness'),
                 #color='genre:N'
                 ).properties(height=320)
-    st.write('Chart of succesfull NDVI reads by Sentinel-2')
-    st.altair_chart(chart, use_container_width=True)
+
+st.altair_chart(chart, use_container_width=True)
+st.write(f"""Found {total_reads} total Sentinel-2 reads!
+    With {unclouded_reads} unclouded results yielding about {percentage} % usable images!            
+        """)
+
+# get metrics
+"""
+
 
 st.slider(
     "Which day to plot?",
