@@ -121,7 +121,8 @@ m1 = folium.Map()
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
 url_image = 'data/rasters/cloudliness_betuwe1.png'
-image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
+#image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
+image_bounds = [[5.2416696829999996,51.8516565150000019],[5.8974398399999997,51.9855054920000015]]
 folium.raster_layers.ImageOverlay(
     image=url_image,
     name="image overlay",
