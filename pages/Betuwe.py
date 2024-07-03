@@ -126,7 +126,7 @@ date_range_slider = st.slider(
 st.write(f"Plotting AOI cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
 df_selection = df_clouds.loc[(df_clouds['datetime'] >= date_range_slider[0]) & (df_clouds['datetime'] <= date_range_slider[1])]
 total_reads = len(df_selection.index)
-df_unclouded = df_selection.loc[(df_selection['cloudliness'] <= 0.1)]
+df_unclouded = df_selection.loc[(df_selection['cloudliness'] <= 0.2)]
 unclouded_reads = len(df_unclouded)
 percentage = round((unclouded_reads/total_reads)*100,2)
 # Display line chart
@@ -137,10 +137,31 @@ chart = alt.Chart(df_selection).mark_line().encode(
                 ).properties(height=320)
 
 st.altair_chart(chart, use_container_width=True)
-st.write(f"""Found {total_reads} total Sentinel-2 reads!
-    With {unclouded_reads} unclouded results yielding about {percentage} % usable images!            
+st.write(f"""Found **{total_reads}** total Sentinel-2 reads!
+    With **{unclouded_reads}** unclouded results yielding about *{percentage} %** usable imagery!            
         """)
-
+st.write(f"Check whether the cloudliness is spatially distributed within the AOI")
+m1 = folium.Map()
+betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
+#m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
+#raster_path = 'data/rasters/2022-12-23_clipped.tif'
+image_cloudliness = 'data/rasters/cloudliness_betuwe_colored.png'
+#image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
+image_bounds_parcels = [[51.9240070190000012,5.3419835630000003],[51.9703482809999997,5.4335150150000002]]
+image_bounds_betuwe = [[51.8516565146628992,5.2416696828374079],[51.9855054919967117,5.8974398402446582]]
+# 
+folium.raster_layers.ImageOverlay(
+    image=image_cloudliness,
+    name="image overlay",
+    opacity=1,
+    bounds=image_bounds,
+).add_to(m1)
+m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
+map = st_folium(
+    m1,
+    width=900, height=500,
+    key="folium_map"
+)
 # get metrics
 """
 
