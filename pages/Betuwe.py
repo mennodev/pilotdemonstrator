@@ -118,19 +118,28 @@ m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
 #)
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
-raster_path = 'data/rasters/betuwe_clouds_heatmap_2016_2024.tif'
-try:
-    m1.add_raster(raster_path, indexes=[1],vmin=35, vmax=43,layer_name='Cloudliness')
-except ImportError as e:
-    st.write(f"Something went wrong {e}")
-m1.to_streamlit(height=600)
-"""
+#raster_path = 'data/rasters/2022-12-23_clipped.tif'
+url_image = 'data/rasters/image.png'
+image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
+folium.raster_layers.ImageOverlay(
+    image=url_image,
+    name="image overlay",
+    opacity=1,
+    bounds=image_bounds,
+).add_to(m1)
+
+#try:
+#    m1.add_raster(raster_path, indexes=[4,3,2],layer_name='Planet')
+#except ImportError as e:
+#    st.write(f"Something went wrong {e}")
+#m1.to_streamlit(height=600)
+
 map = st_folium(
     m1,
     width=900, height=600,
     key="folium_map"
 )
-"""
+
 # Add the Folium map to the Streamlit app using the st_folium library
 st.subheader("Topic 2 : Sentinel-2 availability for Grassland management markers")
 st.write("Explore availability of Sentinel-2 for subset grassland parcels in the AOI")
