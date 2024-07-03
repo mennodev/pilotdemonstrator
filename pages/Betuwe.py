@@ -7,6 +7,7 @@ import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
 import leafmap.foliumap as leafmap
+import datetime as datetime
 
 
 
@@ -107,25 +108,39 @@ style = {
 # Start of writing and plotting parts execute on screen
 
 st.subheader("Topic 1 : General optical data availability")
-st.write("Explore general cloudliness in the AOI")
+st.write("""Most limiting factor for continuous and calibrated remote sensing with optical data is disturbance and occlusion due to atmospheric changes like clouds and cirrus. 
+            To get an insight the general cloudliness in the AOI is explored.
+            """)
+# initialize slider
+date_range_slider = st.slider(
+    "Select a daterange to plot the Sentinel-2 cloudliness",
+    datetime(2016, 1, 1),datetime(2024, 5, 31), (datetime(2021, 1, 1),datetime(2024, 1, 1)))
+st.write("Plotting cloudliness for date range :", date_range_slider)
+st.write(f"start {date_range_slider[0]}")
+"""
+st.slider(
+    "Which day to plot?",
+    value=datetime(2022, 1, 2),
+    min_value=datetime(2022, 1, 1),
+    max_value=datetime(2022, 4, 1),
+    step=timedelta(days=1),
+    format="DD/MM/YY",
+    #on_change=handle_date_change,
+    #key=value,
+    )
+
 # initialize leafmap
 m1 = folium.Map()
-#m1 = leafmap.Map(center=[51.92512,5.58834],zoom=11, layers_control=True)
-# add different basemap layers
-#m1.add_tile_layer(
-#    url="https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-#    name="Google Satellite",
-#    attribution="Google",
-#)
-#betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
+betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
-url_image = 'data/rasters/2022-02-06.png'
+image_cloudliness = 'data/rasters/cloudliness_betuwe_colored.png'
 #image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
-image_bounds = [[51.9240070190000012,5.3419835630000003],[51.9703482809999997,5.4335150150000002]]
+image_bounds_parcels = [[51.9240070190000012,5.3419835630000003],[51.9703482809999997,5.4335150150000002]]
+image_bounds_betuwe = [[51.8516565146628992,5.2416696828374079],[51.9855054919967117,5.8974398402446582]]
 
 folium.raster_layers.ImageOverlay(
-    image=url_image,
+    image=image_cloudliness,
     name="image overlay",
     opacity=1,
     bounds=image_bounds,
@@ -139,7 +154,7 @@ m1.fit_bounds(image_bounds, padding=(0, 0))
 
 map = st_folium(
     m1,
-    width=900, height=600,
+    width=900, height=500,
     key="folium_map"
 )
 
@@ -186,3 +201,4 @@ if gid_to_plot is not None:
                 ).properties(height=320)
     st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
+"""
