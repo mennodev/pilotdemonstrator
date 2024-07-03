@@ -7,8 +7,7 @@ import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
 import leafmap.foliumap as leafmap
-import datetime as datetime
-
+from datetime import datetime
 
 
 # setup page config using modules
