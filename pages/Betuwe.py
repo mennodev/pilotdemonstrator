@@ -120,7 +120,7 @@ m1 = folium.Map()
 #betuwe = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
 #m1.add_geojson('data/vectors/AOI_Betuwe.geojson', layer_name="Betuwe", style=style)
 #raster_path = 'data/rasters/2022-12-23_clipped.tif'
-url_image = 'data/rasters/cloudliness_betuwe1.jpeg'
+url_image = 'data/rasters/cloudliness_betuwe_colored.png'
 #image_bounds = [[-20.664910, -46.538223], [-20.660001, -46.532977]]
 image_bounds = [[51.8516565150000019,5.2416696829999996],[51.9855054920000015,5.8974398399999997]]
 folium.raster_layers.ImageOverlay(
