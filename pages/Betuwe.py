@@ -435,9 +435,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Value (dB) / Radar Vegetation Index'),
+            y=alt.Y('Value:Q', title='Value (dB)'),
             color=alt.Color('orbit:N', title='Orbit Number'),
-            strokeDash='Polarization/Index',  # Different lines for VV and VH
+            strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
 
         st.write('Chart of Sentinel-1 reads seperated per orbit')
