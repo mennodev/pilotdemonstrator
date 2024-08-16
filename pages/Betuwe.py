@@ -67,7 +67,7 @@ def get_fid_from_tooltip(tooltip_info):
     very hacky but could not find any normal way to get only gid from tooltip
     """
     splitter = str(tooltip_info).split('fid')
-    fid = int(splitter[1].split("management")[0])
+    fid = int(splitter[1].split("mowed")[0])
     return fid
 # Show the page title and description.
 #st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
@@ -398,12 +398,12 @@ map_tf = st_folium(
 with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     df_tf = load_parquet_tf()
 
-    gid_to_plot_tf = 657116
+    fid_to_plot_tf = 121915
     if map_tf.get("last_object_clicked_tooltip"):
-        gid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
-    if gid_to_plot_tf is not None:
+        fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    if fid_to_plot_tf is not None:
         # subselect data
-        df_selection_tf = df_tf.loc[df_tf['fid'] == gid_to_plot_tf]
+        df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
         #st.dataframe(data=df_selection.head(20))
         # Display line chart
         chart_tf = alt.Chart(df_selection_tf).mark_line(point={
