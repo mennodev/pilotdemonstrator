@@ -41,6 +41,16 @@ color_dict = {
     'Agrarisch natuurmengsel': 'yellow',
     'Grasland, tijdelijk': 'orange'
 }
+
+# Color dictionary
+color_dict_testfields = {
+    4: 'darkgreen',
+    3: 'green',
+    2: 'yellow',
+    1: 'orange',
+    0: 'red'
+}
+
 def get_pos(lat, lng):
     return lat, lng
 
@@ -51,6 +61,14 @@ def get_gid_from_tooltip(tooltip_info):
     splitter = str(tooltip_info).split('gid')
     gid = int(splitter[1].split("management")[0])
     return gid
+
+def get_fid_from_tooltip(tooltip_info):
+    """
+    very hacky but could not find any normal way to get only gid from tooltip
+    """
+    splitter = str(tooltip_info).split('fid')
+    fid = int(splitter[1].split("management")[0])
+    return fid
 # Show the page title and description.
 #st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
 
@@ -83,6 +101,15 @@ def load_GRD_parquet():
     df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
     return df
 
+def load_parquet_tf():
+    df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2022_pq.parquet", engine='pyarrow')
+    return df
+
+def load_GRD_parquet_tf():
+    df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2022_pq.parquet", engine='pyarrow')
+    return df
+
+
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
@@ -92,6 +119,18 @@ def load_geojson():
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
     return gdf
+
+def load_geojson_testfields():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/Fields_AOI_Betuwe_WGS84_grassland_maurik_brp_gid.geojson")
+    # translate to English
+    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
+    gdf['color'] = gdf['mowed'].map(color_dict_testfields)
+    # Convert the GeoDataFrame to a DataFrame
+    #df = pd.DataFrame(gdf)
+    return gdf
+
+Fields_AOI_Betuwe_WGS84_grassland_maurik_brp_gid
 
 def style_function(x):
     """
@@ -328,8 +367,84 @@ container.markdown(
     - Comparing the data between orbits is not directly straightforward
     - The data is not robust enough to be used to capture clear mowing events
     
-    **OVERALL CONCLUSION**
+    **OVERALL FIRST CONCLUSION**
 
     - **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae due to cloudy periods.**
     - **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust monitoring of grassland management like mowing.**
+    - **In-situ data is needed to conclude which characteristics mowing events have in the reads and whether calculations exists to make Sentinel-1 reads more robust.** 
     """)
+
+# When the user interacts with the map
+# Create a map with the GeoJSON data using folium
+st.write(f"""For some fields in the AOI some in-situ data on mowing and grazing exists for the year 2022. This is used to elaborate on the Sentinel-1 and Sentinel-2 reads.
+""")
+
+geojson_testfields = load_geojson_testfields()
+
+m_tf = folium.Map(location=[sum(geojson_testfields.total_bounds[[1, 3]]) / 2, sum(geojson_testfields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add geojson and add some styling
+folium.GeoJson(data=geojson_testfields,
+                        name = 'Betuwe',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['fid','mowed','grazed','gid'])
+                        ).add_to(m_tf)
+
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_tf)
+map_tf = st_folium(
+    m_tf,
+    width=900, height=600,
+    key="folium_map"
+)
+
+with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
+    df_tf = load_parquet_tf()
+
+    gid_to_plot_tf = 657116
+    if map_tf.get("last_object_clicked_tooltip"):
+        gid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    if gid_to_plot_tf is not None:
+        # subselect data
+        df_selection_tf = df_tf.loc[df_tf['fid'] == gid_to_plot_tf]
+        #st.dataframe(data=df_selection.head(20))
+        # Display line chart
+        chart_tf = alt.Chart(df_selection_tf).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('NDVI:Q', title='NDVI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write('Chart of succesfull NDVI reads by Sentinel-2')
+        st.altair_chart(chart, use_container_width=True)
+
+with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
+    df_GRD_tf = load_GRD_parquet_tf()
+
+    if map_tf.get("last_object_clicked_tooltip"):
+        gid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    if gid_to_plot_tf is not None:
+        # subselect data
+        df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == gid_to_plot_tf]
+        
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH','RVI'], var_name='Polarization', value_name='Value')
+        #st.dataframe(data=df_melted.head(10))
+        # Create the Altair chart
+        chart_grd_tf = alt.Chart(df_melted_tf).mark_line(point={
+            "filled": False,
+            "fill": "white"
+        }).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('Value:Q', title='Value (dB)'),
+            color=alt.Color('orbit:N', title='Orbit Number'),
+            strokeDash='Polarization',  # Different lines for VV and VH
+        ).properties(height=320)
+
+        st.write('Chart of Sentinel-1 reads seperated per orbit')
+        st.altair_chart(chart_grd_tf, use_container_width=True)
+
+
+
+
+
