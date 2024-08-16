@@ -299,7 +299,7 @@ if gid_to_plot is not None:
     
     # Melt the DataFrame to have a long format suitable for Altair
     df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
-    st.dataframe(data=df_melted.head(10))
+    #st.dataframe(data=df_melted.head(10))
     # Create the Altair chart
     chart_grd = alt.Chart(df_melted).mark_line(point={
         "filled": False,
