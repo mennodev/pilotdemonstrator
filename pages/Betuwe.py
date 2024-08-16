@@ -331,7 +331,9 @@ container.markdown(
     **OVERALL CONCLUSION**
 
     **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae.**
-    
+    **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust monitoring of grassland management like mowing.**
+
+
 
 
     """
