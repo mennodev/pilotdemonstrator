@@ -130,7 +130,6 @@ def load_geojson_testfields():
     #df = pd.DataFrame(gdf)
     return gdf
 
-Fields_AOI_Betuwe_WGS84_grassland_maurik_brp_gid
 
 def style_function(x):
     """
