@@ -79,6 +79,10 @@ def load_parquet():
     df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
     return df
 
+def load_GRD_parquet():
+    df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    return df
+
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
@@ -283,3 +287,28 @@ if gid_to_plot is not None:
                 ).properties(height=320)
     st.write('Chart of succesfull NDVI reads by Sentinel-2')
     st.altair_chart(chart, use_container_width=True)
+
+
+df_GRD = load_GRD_parquet()
+
+if map.get("last_object_clicked_tooltip"):
+    gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+if gid_to_plot is not None:
+    # subselect data
+    df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
+
+    # Melt the DataFrame to have a long format suitable for Altair
+    df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
+    # Create the Altair chart
+    chart_grd = alt.Chart(df_melted).mark_line(point={
+        "filled": False,
+        "fill": "white"
+    }).encode(
+        x=alt.X('date:T', title='Date'),
+        y=alt.Y('Value:Q', title='Value (dB)'),
+        color=alt.Color('orbit:N', title='Orbit Number'),
+        strokeDash='Polarization',  # Different lines for VV and VH
+    ).properties(height=320)
+
+    st.write('Chart of Sentinel-1 reads seperated per orbit')
+    st.altair_chart(chart_grd, use_container_width=True)
