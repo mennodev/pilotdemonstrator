@@ -421,10 +421,10 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD_tf = load_GRD_parquet_tf()
 
     if map_tf.get("last_object_clicked_tooltip"):
-        gid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
-    if gid_to_plot_tf is not None:
+        fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    if fid_to_plot_tf is not None:
         # subselect data
-        df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == gid_to_plot_tf]
+        df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
         
         # Melt the DataFrame to have a long format suitable for Altair
         df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH','RVI'], var_name='Polarization', value_name='Value')
@@ -435,9 +435,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Value (dB)'),
+            y=alt.Y('Value:Q', title='Value (dB) / Radar Vegetation Index'),
             color=alt.Color('orbit:N', title='Orbit Number'),
-            strokeDash='Polarization',  # Different lines for VV and VH
+            strokeDash='Polarization/Index',  # Different lines for VV and VH
         ).properties(height=320)
 
         st.write('Chart of Sentinel-1 reads seperated per orbit')
