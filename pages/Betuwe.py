@@ -68,7 +68,6 @@ def get_fid_from_tooltip(tooltip_info):
     """
     splitter = str(tooltip_info).split('fid')
     fid = int(splitter[1].split("mowed")[0])
-    print (fid)
     return fid
 # Show the page title and description.
 #st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
@@ -402,6 +401,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     fid_to_plot_tf = 121915
     if map_tf.get("last_object_clicked_tooltip"):
         fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    st.write(fid_to_plot_tf)
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
@@ -428,7 +428,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
         st.dataframe(data=df_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH','RVI'], var_name='Polarization', value_name='Value')
+        df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
         chart_grd_tf = alt.Chart(df_melted_tf).mark_line(point={
