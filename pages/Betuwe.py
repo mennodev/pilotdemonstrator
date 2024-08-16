@@ -243,8 +243,8 @@ st.table(cbs_df)
 
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
-st.write(f"""LPIS data for the AOI reveals the following
-""")
+st.write(f"""LPIS data for the AOI reveals that 53.6 percent of the area is under grassland and 42.4 is under cropland. The remaining part is under management like fallow land, wooded patches or landscape elements.
+            To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads to explore capabilities of monitoring grasslands within the CAP using EO""")
 
 
 geojson = load_geojson()
@@ -266,7 +266,7 @@ map = st_folium(
     width=900, height=600,
     key="folium_map"
 )
-with st.expander("See linked Sentinel-2 plot"):
+with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     df = load_parquet()
 
     gid_to_plot = 71757
@@ -288,7 +288,7 @@ with st.expander("See linked Sentinel-2 plot"):
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
         st.altair_chart(chart, use_container_width=True)
 
-with st.expander("See linked Sentinel-1 plot"):
+with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD = load_GRD_parquet()
 
     if map.get("last_object_clicked_tooltip"):
