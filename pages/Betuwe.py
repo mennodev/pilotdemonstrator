@@ -177,34 +177,8 @@ map = st_folium(
 url_knmi = 'https://www.knmi.nl/home'
 st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
 st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
+
 df_debilt = load_meteo_data()
-date_range_slider_meteo = st.slider(
-    "Select a daterange to plot the Sentinel-2 cloudliness",
-    min_value=datetime(2016, 1, 1),
-    value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
-    max_value=datetime(2024, 6, 2),
-    )
-st.write(f"""Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
-0 indicate unclouded coditions to  9 indicating total cloudcover""")
-df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
-total_reads_meteo = len(df_selection_meteo.index)
-df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <= 1)]
-unclouded_reads_meteo = len(df_unclouded_meteo.index)
-percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
-# Display line chart
-chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
-                x=alt.X('datetime:T', title='DateTime'),
-                y=alt.Y('cloudscale', title='Cloudlines (0-9)'),
-                #color='genre:N'
-                ).properties(height=320)
-
-st.altair_chart(chart_meteo, use_container_width=True)
-st.write(f"""Found **{total_reads_meteo}** total meteo reads!
-    With **{unclouded_reads_meteo}** unclouded results meaning that overall about **{percentage_meteo} %** skies are unclouded!            
-        """)
-
-st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
-df_debilt = load_meteo_data ()
 date_range_slider_meteo = st.slider(
     "Select a daterange to plot the Sentinel-2 cloudliness",
     min_value=datetime(2016, 1, 1),
