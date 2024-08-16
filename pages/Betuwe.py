@@ -244,8 +244,8 @@ st.table(cbs_df)
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
 st.write(f"""LPIS data for the AOI reveals that 53.6 percent of the area is under grassland and 42.4 is under cropland. The remaining part is under management like fallow land, wooded patches or landscape elements.
-            To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads to explore capabilities of monitoring grasslands within the CAP using EO""")
-
+            To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads to explore capabilities of monitoring grasslands within the CAP using EO.
+            The grasslands can be subdivided in permanent grasslands, temporary grasslands and grasslands consisting sown with a mix of seeds for agricultural purposes and nature conservation purposes.""")
 
 geojson = load_geojson()
 
@@ -313,3 +313,30 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
 
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd, use_container_width=True)
+
+container = st.container(border=True)
+container.write(f"**Conclusions**")
+container.markdown(
+    """
+    Although Sentinel-2 has a cadency of 5 days within the AOI there are many gaps during the season with following implications:
+    - For some fields (e.g. gid 657116) mowing events can be captured shown by a significant drop in NDVI
+    - No data is available in the crucial date range from end june to end of august when often one of the mowing event takes place.
+    - Data is more sparse in the winter and fall. First mowing in April/May is often not captured.
+
+    Sentinel-1 has multiple orbits in the AOI and reads are independent from cloud conditions. 
+    - Within the AOI the cadency is 3 to 4 days
+    - Comparing the data between orbits is not directly straightforward
+    - The data is not robust enough to be used to capture clear mowing events
+    
+    **OVERALL CONCLUSION**
+
+    **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae.**
+    
+
+
+    """
+    )
+container.write(f"""
+                Sentinel-2 High occurence and variability of clouds in the AOI leading to drastic reduction of succesfull reads with optical imagery.
+                Introducing higher cadence mitigates many issues of unsuccesfull reads, but some extended intervals (multiple weeks) with cloud occurence remain in the AOI
+                """)
