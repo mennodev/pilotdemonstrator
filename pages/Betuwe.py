@@ -266,50 +266,50 @@ map = st_folium(
     width=900, height=600,
     key="folium_map"
 )
+with st.expander("See linked Sentinel-2 plot"):
+    df = load_parquet()
 
-df = load_parquet()
-
-gid_to_plot = 71757
-if map.get("last_object_clicked_tooltip"):
-    gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-if gid_to_plot is not None:
-    # subselect data
-    df_selection = df.loc[df['gid'] == gid_to_plot]
-    #st.dataframe(data=df_selection.head(20))
-    # Display line chart
-    chart = alt.Chart(df_selection).mark_line(point={
-      "filled": False,
-      "fill": "white"
-    }).encode(
-                x=alt.X('date:T', title='Date'),
-                y=alt.Y('NDVI:Q', title='NDVI'),
-                #color='genre:N'
-                ).properties(height=320)
-    st.write('Chart of succesfull NDVI reads by Sentinel-2')
-    st.altair_chart(chart, use_container_width=True)
-
-
-df_GRD = load_GRD_parquet()
-
-if map.get("last_object_clicked_tooltip"):
-    gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-if gid_to_plot is not None:
-    # subselect data
-    df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
-    
-    # Melt the DataFrame to have a long format suitable for Altair
-    df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
-    #st.dataframe(data=df_melted.head(10))
-    # Create the Altair chart
-    chart_grd = alt.Chart(df_melted).mark_line(point={
+    gid_to_plot = 71757
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection = df.loc[df['gid'] == gid_to_plot]
+        #st.dataframe(data=df_selection.head(20))
+        # Display line chart
+        chart = alt.Chart(df_selection).mark_line(point={
         "filled": False,
         "fill": "white"
-    }).encode(
-        x=alt.X('date:T', title='Date'),
-        y=alt.Y('Value:Q', title='Value (dB)'),
-        color=alt.Color('orbit:N', title='Orbit Number'),
-        strokeDash='Polarization',  # Different lines for VV and VH
-    ).properties(height=320)
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('NDVI:Q', title='NDVI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write('Chart of succesfull NDVI reads by Sentinel-2')
+        st.altair_chart(chart, use_container_width=True)
 
-    st.write('Chart of Sentinel-1 reads seperated per orbit')
-    st.altair_chart(chart_grd, use_container_width=True)
+with st.expander("See linked Sentinel-1 plot"):
+    df_GRD = load_GRD_parquet()
+
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
+        
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
+        #st.dataframe(data=df_melted.head(10))
+        # Create the Altair chart
+        chart_grd = alt.Chart(df_melted).mark_line(point={
+            "filled": False,
+            "fill": "white"
+        }).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('Value:Q', title='Value (dB)'),
+            color=alt.Color('orbit:N', title='Orbit Number'),
+            strokeDash='Polarization',  # Different lines for VV and VH
+        ).properties(height=320)
+
+        st.write('Chart of Sentinel-1 reads seperated per orbit')
+        st.altair_chart(chart_grd, use_container_width=True)
