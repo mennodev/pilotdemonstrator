@@ -330,15 +330,6 @@ container.markdown(
     
     **OVERALL CONCLUSION**
 
-    **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae.**
-    **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust monitoring of grassland management like mowing.**
-
-
-
-
-    """
-    )
-container.write(f"""
-                Sentinel-2 High occurence and variability of clouds in the AOI leading to drastic reduction of succesfull reads with optical imagery.
-                Introducing higher cadence mitigates many issues of unsuccesfull reads, but some extended intervals (multiple weeks) with cloud occurence remain in the AOI
-                """)
+    - **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae due to cloudy periods.**
+    - **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust monitoring of grassland management like mowing.**
+    """)
