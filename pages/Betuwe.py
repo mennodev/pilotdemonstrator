@@ -296,7 +296,7 @@ if map.get("last_object_clicked_tooltip"):
 if gid_to_plot is not None:
     # subselect data
     df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
-
+    st.dataframe(data=df_selection_GRD.head(10))
     # Melt the DataFrame to have a long format suitable for Altair
     df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
     # Create the Altair chart
