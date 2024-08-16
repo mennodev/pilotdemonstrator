@@ -68,6 +68,7 @@ def get_fid_from_tooltip(tooltip_info):
     """
     splitter = str(tooltip_info).split('fid')
     fid = int(splitter[1].split("mowed")[0])
+    print (fid)
     return fid
 # Show the page title and description.
 #st.set_page_config(page_title="Betuwe grasslands analysis", page_icon="📈")
