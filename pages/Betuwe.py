@@ -273,7 +273,10 @@ if gid_to_plot is not None:
     df_selection = df.loc[df['gid'] == gid_to_plot]
     #st.dataframe(data=df_selection.head(20))
     # Display line chart
-    chart = alt.Chart(df_selection).mark_line(point=True).encode(
+    chart = alt.Chart(df_selection).mark_line(point={
+      "filled": False,
+      "fill": "white"
+    }).encode(
                 x=alt.X('date:T', title='Date'),
                 y=alt.Y('NDVI:Q', title='NDVI'),
                 #color='genre:N'
