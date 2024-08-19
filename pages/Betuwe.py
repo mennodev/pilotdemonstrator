@@ -401,7 +401,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     fid_to_plot_tf = 121915
     if map_tf.get("last_object_clicked_tooltip"):
         fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
-    st_write(fid_to_plot_tf)
+    st.write(fid_to_plot_tf)
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_tf = df_tf.loc[df_tf['fid'] == str(fid_to_plot_tf)]
