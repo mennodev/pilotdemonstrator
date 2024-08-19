@@ -422,10 +422,10 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         event_data = []
         # Add mowing dates to the event data
         if mowing_dates_to_plot:
-            event_data.extend([{'Event Date': date, 'Event': 'Mowing'} for date in mowing_dates_to_plot])
+            event_data.extend([{'Event Date': date, 'Event': 'Mowing', 'Color':'darkgreen'} for date in mowing_dates_to_plot])
         # Add grazing dates to the event data
         if grazing_dates:
-            event_data.extend([{'Event Date': date, 'Event': 'Grazing'} for date in grazing_dates_to_plot])
+            event_data.extend([{'Event Date': date, 'Event': 'Grazing', 'Color':'lightgreen'} for date in grazing_dates_to_plot])
         # Convert to a DataFrame
         event_df = pd.DataFrame(event_data)
         
@@ -443,7 +443,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
                 x='Event Date:T',
-                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type').legend(orient="left"),
+                color=alt.Color('Color', scale=None, title='Event Type').legend(orient="left"),
                 #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
@@ -486,8 +486,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
                 'Event Date': grazing_dates_to_plot
-            })).mark_rule(color='lightgreen').encode(
-                x='Event Date:T'
+            })).mark_rule().encode(
+                x='Event Date:T',
+                color='lightgreen',
             ).legend(orient="left")
             chart_grd_tf += rules_grazing
         
