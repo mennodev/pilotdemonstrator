@@ -416,7 +416,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     #color='genre:N'
                     ).properties(height=320)
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(chart_tf, use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD_tf = load_GRD_parquet_tf()
@@ -424,7 +424,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
     if fid_to_plot_tf is not None:
         # subselect data
-        df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == str(fid_to_plot_tf)]
+        df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
         st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
         df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
