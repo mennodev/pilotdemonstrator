@@ -568,6 +568,8 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **The RVI graph does not add any discrimination power for grassland monitoring.** 
-    -**The mowing events are not reflected in the graphs and no robust explantion is given by RVI or VV/VH for grassland monitorin**
+    **The plot of the RVI (and the VV/VH below) does not show clear dips, peaks or other features around mowing events. Therefore it can be condluded that:** 
+    - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
+    - **The indices do not add any discrimination power for grassland monitoring.**
     """)
+
