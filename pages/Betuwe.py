@@ -424,20 +424,21 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
         # add mowing and grazing dates if list is not empty
         if len(mowing_dates_to_plot) != 0:
+            st.write(mowing_dates_to_plot)
             rules_mowing = alt.Chart(pd.DataFrame({
-                'mowing': mowing_dates_to_plot
+                'mowing dates': mowing_dates_to_plot
             })).mark_rule(color='darkgreen', strokeDash=[5, 2]).encode(
-                x='date:T'
+                x='mowing dates:T'
             )
             chart_tf += rules_mowing
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
-                'grazing': grazing_dates_to_plot
+                'grazing dates': grazing_dates_to_plot
             })).mark_rule(color='lightgreen', strokeDash=[5, 2]).encode(
-                x='date:T'
+                x='grazing dates:T'
             )
             chart_tf += rules_grazing
-        
+
         st.altair_chart(chart_tf, use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
