@@ -489,7 +489,8 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             })).mark_rule().encode(
                 x='Event Date:T',
                 color='lightgreen',
-            ).legend(orient="left")
+            )
+            #.legend(orient="left")
             chart_grd_tf += rules_grazing
         
         st.write('Chart of Sentinel-1 reads seperated per orbit')
