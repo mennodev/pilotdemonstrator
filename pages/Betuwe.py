@@ -570,4 +570,4 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
         upper = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='RVI', scale = alt.Scale(domain=[min_RVI,max_RVI])))
         lower = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='VV/VH', scale = alt.Scale(domain=[min_VVVH,max_VVVH])))
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
-        st.altair_chart(alt.vconcat(upper,lower).interactive(), use_container_width=True)
+        st.altair_chart(alt.hconcat(upper,lower).interactive(), use_container_width=True)
