@@ -430,7 +430,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                 x='date:T'
             )
             chart_tf = chart_tf + rules_mowing
-        if len(grazing_dates_to_plot_date_to_plot) != 0:
+        if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
                 'grazing': grazing_dates_to_plot
             })).mark_rule(color='lightgreen', strokeDash=[5, 2]).encode(
