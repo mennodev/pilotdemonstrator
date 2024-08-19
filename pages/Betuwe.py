@@ -539,10 +539,10 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
         }).encode(
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q',
-            scale = alt.Scale(domain=[min_RVI,max_RVI]), 
+            scale = alt.Scale(domain=[min_RVI,max_RVI])), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
-            strokeDash='Indices',)
+            strokeDash='Indices',
         ).properties(height=320).interactive()
         #
         # Check if list_1_dates is not empty and create vertical line rules
