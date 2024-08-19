@@ -476,14 +476,14 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         
         # add mowing and grazing dates if df is not empty
         if not event_df.empty:
-            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
+            rules_mowing_grazing_grd = alt.Chart(event_df).mark_rule().encode(
                 x='date:T',
                 color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
                 strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
             # update final chart
-            chart_grd_tf += rules_mowing_grazing
+            chart_grd_tf += rules_mowing_grazing_grd
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf, use_container_width=True)
 
