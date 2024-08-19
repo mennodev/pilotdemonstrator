@@ -443,7 +443,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
                 x='Event Date:T',
-                color=alt.Color('Color', scale=None, title='Event Type').legend(orient="left"),
+                color=alt.Color('Color', scale=None, title='Event').legend(orient="left"),
                 #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
@@ -480,7 +480,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
                 'Event Date': mowing_dates_to_plot
             })).mark_rule(color='darkgreen').encode(
                 x='Event Date:T'
-            ).legend(orient="left")
+            )
             chart_grd_tf += rules_mowing
 
         if len(grazing_dates_to_plot) != 0:
