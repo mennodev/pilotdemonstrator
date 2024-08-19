@@ -520,6 +520,7 @@ with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
             y=alt.Y('Value:Q', title='Indices (RVI & VV/VH)'), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
+            strokeDash='Indices',
         ).properties(height=320)
         #
         # Check if list_1_dates is not empty and create vertical line rules
