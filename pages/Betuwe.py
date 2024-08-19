@@ -51,6 +51,11 @@ color_dict_testfields = {
     0: 'red'
 }
 
+# Define colors for the events
+event_colors = {
+    'Mowing': 'darkgreen',
+    'Grazing': 'green'
+}
 def parse_dates(date_str):
     if pd.notnull(date_str) and date_str.startswith('20'):
         return [datetime.strptime(date, '%Y%m%d') for date in date_str.split('_')]
@@ -387,6 +392,7 @@ geojson_testfields = load_geojson_testfields()
 # pre parse the mowing and grazing dates if available
 mowing_dates = geojson_testfields.set_index('fid')['field_3'].apply(parse_dates).to_dict()
 grazing_dates = geojson_testfields.set_index('fid')['field_5'].apply(parse_dates).to_dict()
+
 m_tf = folium.Map(location=[sum(geojson_testfields.total_bounds[[1, 3]]) / 2, sum(geojson_testfields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
 folium.GeoJson(data=geojson_testfields,
@@ -412,6 +418,17 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
         mowing_dates_to_plot = mowing_dates[fid_to_plot_tf]
         grazing_dates_to_plot = grazing_dates[fid_to_plot_tf]
+        # combine the two lists into dataframe and add event type
+        event_data = []
+        # Add mowing dates to the event data
+        if mowing_dates_to_plot:
+            event_data.extend([{'date': date, 'event': 'Mowing'} for date in mowing_dates_to_plot])
+        # Add grazing dates to the event data
+        if grazing_dates:
+            event_data.extend([{'date': date, 'event': 'Grazing'} for date in mowing_dates_to_plot])
+        # Convert to a DataFrame
+        event_df = pd.DataFrame(event_data)
+        
         # Display line chart
         chart_tf = alt.Chart(df_selection_tf).mark_line(point={
         "filled": False,
@@ -422,23 +439,18 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     #color='genre:N'
                     ).properties(height=320)
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
-        # add mowing and grazing dates if list is not empty
-        if len(mowing_dates_to_plot) != 0:
-            st.write(mowing_dates_to_plot)
-            rules_mowing = alt.Chart(pd.DataFrame({
-                'mowing dates': mowing_dates_to_plot
-            })).mark_rule(color='darkgreen', strokeDash=[5, 2]).encode(
-                x='mowing dates:T'
+        # add mowing and grazing dates if df is not empty
+        if not event_df.empty:
+            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
+                x='date:T',
+                color=alt.Color('event:N', title='Event Type'),  # Color by event type and make green and darkgreen
+                color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+                strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                size=alt.value(2),  # Set line width
             )
-            chart_tf += rules_mowing
-        if len(grazing_dates_to_plot) != 0:
-            rules_grazing = alt.Chart(pd.DataFrame({
-                'grazing dates': grazing_dates_to_plot
-            })).mark_rule(color='lightgreen', strokeDash=[5, 2]).encode(
-                x='grazing dates:T'
-            )
-            chart_tf += rules_grazing
-
+            # update final chart
+            chart_tf += rules_mowing_grazing
+        # plot chart
         st.altair_chart(chart_tf, use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
@@ -448,7 +460,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
-        st.dataframe(data=df_selection_GRD_tf.head(20))
+        #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
         df_melted_tf = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
         #st.dataframe(data=df_melted.head(10))
@@ -463,15 +475,17 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         
-        chart_mowing_tf = alt.Chart(df_melted_tf).mark_line(point={
-            "filled": False,
-            "fill": "white"
-        }).encode(
-            x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Value (dB)'),
-            color=alt.Color('orbit:N', title='Orbit Number'),
-            strokeDash='Polarization',  # Different lines for VV and VH
-        ).properties(height=320)
+        # add mowing and grazing dates if df is not empty
+        if not event_df.empty:
+            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
+                x='date:T',
+                color=alt.Color('event:N', title='Event Type'),  # Color by event type and make green and darkgreen
+                color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+                strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                size=alt.value(2),  # Set line width
+            )
+            # update final chart
+            chart_grd_tf += rules_grazing
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf, use_container_width=True)
 
