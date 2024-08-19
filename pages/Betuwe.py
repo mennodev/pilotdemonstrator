@@ -54,7 +54,7 @@ color_dict_testfields = {
 # Define colors for the events
 event_colors = {
     'Mowing': 'darkgreen',
-    'Grazing': 'green'
+    'Grazing': 'lightgreen'
 }
 def parse_dates(date_str):
     if pd.notnull(date_str) and date_str.startswith('20'):
@@ -483,7 +483,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
                 size=alt.value(2),  # Set line width
             )
             # update final chart
-            chart_grd_tf += rules_grazing
+            chart_grd_tf += rules_mowing_grazing
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf, use_container_width=True)
 
