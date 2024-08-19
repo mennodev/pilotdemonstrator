@@ -192,7 +192,7 @@ chart = alt.Chart(df_selection).mark_line().encode(
                 #color='genre:N'
                 ).properties(height=320)
 
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(chart.interactive(), use_container_width=True)
 st.write(f"""Found **{total_reads}** total Sentinel-2 reads!
     With **{unclouded_reads}** unclouded results yielding about **{percentage} %** usable imagery!            
         """)
@@ -251,7 +251,7 @@ chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
                 #color='genre:N'
                 ).properties(height=320)
 
-st.altair_chart(chart_meteo, use_container_width=True)
+st.altair_chart(chart_meteo.interactive(), use_container_width=True)
 st.write(f"""Found **{total_reads_meteo}** total meteo reads!
     With **{unclouded_reads_meteo}** unclouded results meaning that overall about **{percentage_meteo} %** skies are unclouded!            
         """)
@@ -334,7 +334,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     #color='genre:N'
                     ).properties(height=320)
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
-        st.altair_chart(chart, use_container_width=True)
+        st.altair_chart(char.interactive(), use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD = load_GRD_parquet()
@@ -360,7 +360,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         ).properties(height=320)
 
         st.write('Chart of Sentinel-1 reads seperated per orbit')
-        st.altair_chart(chart_grd, use_container_width=True)
+        st.altair_chart(chart_grd.interactive(), use_container_width=True)
 
 container = st.container(border=True)
 container.write(f"**Conclusions**")
@@ -450,7 +450,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
             # update final chart
             chart_tf += rules_mowing_grazing
         # plot chart
-        st.altair_chart(chart_tf, use_container_width=True)
+        st.altair_chart(chart_tf.interactive(), use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD_tf = load_GRD_parquet_tf()
@@ -496,7 +496,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             chart_grd_tf += rules_grazing
         
         st.write('Chart of Sentinel-1 reads seperated per orbit')
-        st.altair_chart(chart_grd_tf, use_container_width=True)
+        st.altair_chart(chart_grd_tf.interactive(), use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
     if map_tf.get("last_object_clicked_tooltip"):
