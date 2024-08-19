@@ -443,7 +443,6 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
                 x='date:T',
-                color=alt.Color('event:N', title='Event Type'),  # Color by event type and make green and darkgreen
                 color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
                 strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
@@ -479,7 +478,6 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
                 x='date:T',
-                color=alt.Color('event:N', title='Event Type'),  # Color by event type and make green and darkgreen
                 color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
                 strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
