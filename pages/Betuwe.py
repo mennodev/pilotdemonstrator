@@ -387,9 +387,6 @@ geojson_testfields = load_geojson_testfields()
 # pre parse the mowing and grazing dates if available
 mowing_dates = geojson_testfields.set_index('fid')['field_3'].apply(parse_dates).to_dict()
 grazing_dates = geojson_testfields.set_index('fid')['field_5'].apply(parse_dates).to_dict()
-
-st.write(mowing_dates)
-
 m_tf = folium.Map(location=[sum(geojson_testfields.total_bounds[[1, 3]]) / 2, sum(geojson_testfields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
 folium.GeoJson(data=geojson_testfields,
@@ -410,14 +407,11 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     fid_to_plot_tf = 121915
     if map_tf.get("last_object_clicked_tooltip"):
         fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
-    st.write(fid_to_plot_tf)
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
-        mowing_date_to_plot = mowing_dates[fid_to_plot_tf]
+        mowing_dates_to_plot = mowing_dates[fid_to_plot_tf]
         grazing_dates_to_plot = grazing_dates[fid_to_plot_tf]
-        st.write(grazing_dates_to_plot)
-        st.write(mowing_date_to_plot)
         # Display line chart
         chart_tf = alt.Chart(df_selection_tf).mark_line(point={
         "filled": False,
@@ -428,6 +422,22 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     #color='genre:N'
                     ).properties(height=320)
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
+        # add mowing and grazing dates if list is not empty
+        if len(mowing_dates_to_plot) != 0:
+            rules_mowing = alt.Chart(pd.DataFrame({
+                'mowing': mowing_dates_to_plot
+            })).mark_rule(color='darkgreen', strokeDash=[5, 2]).encode(
+                x='date:T'
+            )
+            chart_tf = chart_tf + rules_mowing
+        if len(grazing_dates_to_plot_date_to_plot) != 0:
+            rules_grazing = alt.Chart(pd.DataFrame({
+                'grazing': grazing_dates_to_plot
+            })).mark_rule(color='lightgreen', strokeDash=[5, 2]).encode(
+                x='date:T'
+            )
+            chart_tf = chart_tf + rules_grazing
+        
         st.altair_chart(chart_tf, use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
@@ -451,7 +461,16 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             color=alt.Color('orbit:N', title='Orbit Number'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
-
+        
+        chart_mowing_tf = alt.Chart(df_melted_tf).mark_line(point={
+            "filled": False,
+            "fill": "white"
+        }).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('Value:Q', title='Value (dB)'),
+            color=alt.Color('orbit:N', title='Orbit Number'),
+            strokeDash='Polarization',  # Different lines for VV and VH
+        ).properties(height=320)
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf, use_container_width=True)
 
