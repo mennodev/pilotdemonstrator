@@ -540,7 +540,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q'), 
+            #y=alt.Y('Value:Q'), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
             strokeDash='Indices',
