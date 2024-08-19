@@ -502,13 +502,22 @@ container = st.container(border=True)
 container.write(f"**Conclusions**")
 container.markdown(
     """
-    **The graph showing the Sentinel-2 reads and Sentinel-1 in combination with the in-situ data on mowing and grazing shows us the following.
-    - Many mowing events are reflected by a drop in NDVI
-    - Grazing hardly impacts the NDVI and cannot be monitored by NDVI reads
-    - Not all drops in NDVI in the graphs are related to mowing, but sometimes related to natural processes like drought (see especially period from to  ).
-    - The sigma0 Sentinel-1 VV and VH plots are not suitable at all to indicate mowing events. The question is whether the radar data can be manipulated to generate robust indices.**
+    **The graph showing the Sentinel-2 reads and Sentinel-1 in combination with the in-situ data on mowing and grazing shows us the following.**
+    - **Many mowing events are reflected by a drop in NDVI**
+    - **Grazing hardly impacts the NDVI and cannot be monitored by NDVI reads**
+    - **Not all drops in NDVI in the graphs are related to mowing, but sometimes related to natural processes like drought (see especially period from August 10th to September 1st)**.
+    - **The sigma0 Sentinel-1 VV and VH plots are not suitable at all to indicate mowing events. The question is whether the radar data can be manipulated to generate robust indices.**
     """)
+url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
+st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
+st.write(f"Check whether the reads are in line with meteorological reads by the ")
 
+st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
+See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). The below plot shows these with two indices in a vertically linked plot.
+""")
+st.latex(r'''
+    R V I = \frac{4 \cdot V H}{V H + V V})
+    ''')
 
 with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
     if map_tf.get("last_object_clicked_tooltip"):
@@ -516,20 +525,22 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
+        df_selection_GRD_tf['VV/VH'] = df_selection_GRD_tf['VV']/df_selection_GRD_tf['VH']
         min_RVI = df_selection_GRD_tf['RVI'].values.min()
         max_RVI = df_selection_GRD_tf['RVI'].values.max()
-        df_selection_GRD_tf['VV/VH'] = df_selection_GRD_tf['VV']/df_selection_GRD_tf['VH']
+        min_VVVH = df_selection_GRD_tf['VV/VH'].values.min()
+        max_VVVH= df_selection_GRD_tf['VV/VH'].values.max()
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
         df_melted_tf_rvi = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['RVI','VV/VH'], var_name='Indices', value_name='Value')
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
-        chart_grd_tf_rvi = alt.Chart(df_melted_tf_rvi).mark_line(point={
+        base_chart_grd_tf_rvi = alt.Chart(df_melted_tf_rvi).mark_line(point={
             "filled": False,
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Indices (RVI & VV/VH)'), 
+            y=alt.Y('Value:Q'), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
             strokeDash='Indices',
@@ -544,7 +555,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
                 #,
                 
             )
-            chart_grd_tf_rvi += rules_mowing
+            base_chart_grd_tf_rvi += rules_mowing
 
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
@@ -554,11 +565,9 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
                 #,
                
             )
-            chart_grd_tf_rvi += rules_grazing
-        
+            base_chart_grd_tf_rvi += rules_grazing
+        # split in upper and lower to scale to proper ranges for RVI and 
+        upper = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q'),title='RVI', scale = alt.Scale(domain=[min_RVI,max_RVI]))
+        lower = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q'),title='VV/VH', scale = alt.Scale(domain=[min_VVVH,max_VVVH]))
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
-        st.altair_chart(chart_grd_tf_rvi.interactive(), use_container_width=True)
-
-
-
-
+        st.altair_chart(alt.vconcat(upper,lower).interactive(), use_container_width=True)
