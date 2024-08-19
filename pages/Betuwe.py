@@ -516,7 +516,7 @@ st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see form
 See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). The below plot shows these with two indices in a vertically linked plot.
 """)
 st.latex(r'''
-    R V I = \frac{4 \cdot V H}{V H + V V})
+    R V I = \frac{4 \cdot V H}{V H + V V}
     ''')
 
 with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
@@ -567,7 +567,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             )
             base_chart_grd_tf_rvi += rules_grazing
         # split in upper and lower to scale to proper ranges for RVI and 
-        upper = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q'),title='RVI', scale = alt.Scale(domain=[min_RVI,max_RVI]))
-        lower = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q'),title='VV/VH', scale = alt.Scale(domain=[min_VVVH,max_VVVH]))
+        upper = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='RVI', scale = alt.Scale(domain=[min_RVI,max_RVI])))
+        lower = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='VV/VH', scale = alt.Scale(domain=[min_VVVH,max_VVVH])))
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
         st.altair_chart(alt.vconcat(upper,lower).interactive(), use_container_width=True)
