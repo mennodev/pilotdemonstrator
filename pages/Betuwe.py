@@ -422,10 +422,10 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         event_data = []
         # Add mowing dates to the event data
         if mowing_dates_to_plot:
-            event_data.extend([{'date': date, 'event': 'Mowing'} for date in mowing_dates_to_plot])
+            event_data.extend([{'event date': date, 'event': 'Mowing'} for date in mowing_dates_to_plot])
         # Add grazing dates to the event data
         if grazing_dates:
-            event_data.extend([{'date': date, 'event': 'Grazing'} for date in mowing_dates_to_plot])
+            event_data.extend([{'event date': date, 'event': 'Grazing'} for date in grazing_dates_to_plot])
         # Convert to a DataFrame
         event_df = pd.DataFrame(event_data)
         
@@ -442,9 +442,9 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         # add mowing and grazing dates if df is not empty
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
-                x='date:T',
+                x='event date:T',
                 color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
-                strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
             # update final chart
@@ -477,9 +477,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         # add mowing and grazing dates if df is not empty
         if not event_df.empty:
             rules_mowing_grazing_grd = alt.Chart(event_df).mark_rule().encode(
-                x='date:T',
+                x='event date:T',
                 color=alt.Color('event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
-                strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
             # update final chart
