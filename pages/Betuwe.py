@@ -509,9 +509,6 @@ container.markdown(
     - **The sigma0 Sentinel-1 VV and VH plots are not suitable at all to indicate mowing events. The question is whether the radar data can be manipulated to generate robust indices.**
     """)
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
-st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
-st.write(f"Check whether the reads are in line with meteorological reads by the ")
-
 st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
 See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). The below plot shows the plot of RVI.
 """)
@@ -567,3 +564,9 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             base_chart_grd_tf_rvi += rules_grazing
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
         st.altair_chart(base_chart_grd_tf_rvi.interactive(), use_container_width=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **The RVI graph does not add any discrimination power for grassland monitoring.** 
+    -**The mowing events are not reflected in the graphs and no robust explantion is given by RVI or VV/VH for grassland monitorin**
+    """)
