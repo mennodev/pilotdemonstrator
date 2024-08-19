@@ -473,17 +473,24 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             color=alt.Color('orbit:N', title='Orbit Number'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
-        
-        # add mowing and grazing dates if df is not empty
-        if not event_df.empty:
-            rules_mowing_grazing_grd = alt.Chart(event_df).mark_rule().encode(
-                x='Event Date:T',
-                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
-                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
-                size=alt.value(2),  # Set line width
+        #
+        # Check if list_1_dates is not empty and create vertical line rules
+        if len(mowing_dates_to_plot) != 0:
+            rules_mowing = alt.Chart(pd.DataFrame({
+                'Event Date': mowing_dates_to_plot
+            })).mark_rule(color='darkgreen').encode(
+                x='Event Date:T'
             )
-            # update final chart
-            chart_grd_tf += rules_mowing_grazing_grd
+            chart_grd_tf += rules_mowing
+
+        if len(grazing_dates_to_plot) != 0:
+            rules_grazing = alt.Chart(pd.DataFrame({
+                'Event Date': grazing_dates_to_plot
+            })).mark_rule(color='lightgreen').encode(
+                x='Event Date:T'
+            )
+            chart_grd_tf += rules_grazing
+        
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf, use_container_width=True)
 
