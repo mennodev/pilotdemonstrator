@@ -52,7 +52,7 @@ color_dict_testfields = {
 }
 
 def parse_dates(date_str):
-    if pd.notnull(date_str):
+    if pd.notnull(date_str) and date_str.startswith('20'):
         return [datetime.strptime(date, '%Y%m%d') for date in date_str.split('_')]
     return []
 
