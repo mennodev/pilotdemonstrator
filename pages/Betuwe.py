@@ -429,14 +429,14 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
             })).mark_rule(color='darkgreen', strokeDash=[5, 2]).encode(
                 x='date:T'
             )
-            chart_tf = chart_tf + rules_mowing
+            chart_tf += rules_mowing
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
                 'grazing': grazing_dates_to_plot
             })).mark_rule(color='lightgreen', strokeDash=[5, 2]).encode(
                 x='date:T'
             )
-            chart_tf = chart_tf + rules_grazing
+            chart_tf += rules_grazing
         
         st.altair_chart(chart_tf, use_container_width=True)
 
