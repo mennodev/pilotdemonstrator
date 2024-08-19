@@ -478,9 +478,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         if len(mowing_dates_to_plot) != 0:
             rules_mowing = alt.Chart(pd.DataFrame({
                 'Event Date': mowing_dates_to_plot
-            })).mark_rule().encode(
+            })).mark_rule(color='darkgreen').encode(
                 x=alt.X('Event Date:T',title='Mowing'),
-                color='darkgreen',
+                #,
                 
             )
             chart_grd_tf += rules_mowing
@@ -488,9 +488,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
                 'Event Date': grazing_dates_to_plot
-            })).mark_rule().encode(
+            })).mark_rule(color='lightgreen').encode(
                 x=alt.X('Event Date:T',title='Grazing'),
-                color='lightgreen',
+                #,
                
             )
             chart_grd_tf += rules_grazing
