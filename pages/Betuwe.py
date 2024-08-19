@@ -334,7 +334,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     #color='genre:N'
                     ).properties(height=320)
         st.write('Chart of succesfull NDVI reads by Sentinel-2')
-        st.altair_chart(char.interactive(), use_container_width=True)
+        st.altair_chart(chart.interactive(), use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
     df_GRD = load_GRD_parquet()
@@ -498,7 +498,19 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         st.write('Chart of Sentinel-1 reads seperated per orbit')
         st.altair_chart(chart_grd_tf.interactive(), use_container_width=True)
 
-with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
+container = st.container(border=True)
+container.write(f"**Conclusions**")
+container.markdown(
+    """
+    **The graph showing the Sentinel-2 reads and Sentinel-1 in combination with the in-situ data on mowing and grazing shows us the following.
+    - Many mowing events are reflected by a drop in NDVI
+    - Grazing hardly impacts the NDVI and cannot be monitored by NDVI reads
+    - Not all drops in NDVI in the graphs are related to mowing, but sometimes related to natural processes like drought (see especially period from to  ).
+    - The sigma0 Sentinel-1 VV and VH plots are not suitable at all to indicate mowing events. The question is whether the radar data can be manipulated to generate robust indices.**
+    """)
+
+
+with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
     if map_tf.get("last_object_clicked_tooltip"):
         fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
     if fid_to_plot_tf is not None:
