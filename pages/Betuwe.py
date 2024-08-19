@@ -406,8 +406,8 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
         df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
         gdf_selection_tf = geojson_testfields.loc[df_tf['fid'] == fid_to_plot_tf]
         # parse mowing and growing dates
-        mowing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_3'].values.split('_')]
-        grazing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_5'].values.split('_')]
+        mowing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_3'].values[0].split('_')]
+        grazing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_5'].values[0].split('_')]
         st.write(mowing_dates)
         st.write(grazing_dates)
         # Display line chart
