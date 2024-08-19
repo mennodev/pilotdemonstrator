@@ -545,7 +545,7 @@ with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
             chart_grd_tf_rvi += rules_grazing
         
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
-        st.altair_chart(chart_grd_tf_rvi, use_container_width=True)
+        st.altair_chart(chart_grd_tf_rvi.interactive(), use_container_width=True)
 
 
 
