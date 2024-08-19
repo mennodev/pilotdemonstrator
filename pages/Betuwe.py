@@ -51,6 +51,11 @@ color_dict_testfields = {
     0: 'red'
 }
 
+def parse_dates(date_str):
+    if pd.notnull(date_str):
+        return [datetime.strptime(date, '%Y%m%d') for date in date_str.split('_')]
+    return []
+
 def get_pos(lat, lng):
     return lat, lng
 
@@ -379,6 +384,11 @@ st.write(f"""For some fields in the AOI some in-situ data on mowing and grazing 
 """)
 
 geojson_testfields = load_geojson_testfields()
+# pre parse the mowing and grazing dates if available
+mowing_dates = geojson_testfields.set_index('fid')['field_3'].apply(parse_dates).to_dict()
+grazing_dates = geojson_testfields.set_index('fid')['field_5'].apply(parse_dates).to_dict()
+
+st.write(mowing_dates)
 
 m_tf = folium.Map(location=[sum(geojson_testfields.total_bounds[[1, 3]]) / 2, sum(geojson_testfields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
@@ -404,13 +414,10 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_tf = df_tf.loc[df_tf['fid'] == fid_to_plot_tf]
-        gdf_selection_tf = geojson_testfields.loc[df_tf['fid'] == fid_to_plot_tf]
-        #st.dataframe(data=gdf_selection_tf.head(10))
-        # parse mowing and growing dates
-        mowing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_3'][0].split('_')]
-        grazing_dates = [datetime.strptime(date, '%Y%m%d') for date in gdf_selection_tf['field_5'][0].split('_')]
-        st.write(mowing_dates)
-        st.write(grazing_dates)
+        mowing_date_to_plot = mowing_dates[fid_to_plot_tf]
+        grazing_dates_to_plot = grazing_dates[fid_to_plot_tf]
+        st.write(grazing_dates_to_plot)
+        st.write(mowing_date_to_plot)
         # Display line chart
         chart_tf = alt.Chart(df_selection_tf).mark_line(point={
         "filled": False,
