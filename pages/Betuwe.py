@@ -544,7 +544,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
             strokeDash='Indices',
-        ).properties(height=320)
+        ).properties(height=320).interactive()
         #
         # Check if list_1_dates is not empty and create vertical line rules
         if len(mowing_dates_to_plot) != 0:
@@ -570,4 +570,4 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
         upper = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='RVI', scale = alt.Scale(domain=[min_RVI,max_RVI])))
         lower = base_chart_grd_tf_rvi.encode(y=alt.Y('Value:Q',title='VV/VH', scale = alt.Scale(domain=[min_VVVH,max_VVVH])))
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
-        st.altair_chart(alt.vconcat(upper,lower).interactive(), use_container_width=True)
+        st.altair_chart(alt.vconcat(upper,lower), use_container_width=True)
