@@ -564,6 +564,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             base_chart_grd_tf_rvi += rules_grazing
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
         st.altair_chart(base_chart_grd_tf_rvi.interactive(), use_container_width=True)
+container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
