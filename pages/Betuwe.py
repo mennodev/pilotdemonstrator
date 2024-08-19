@@ -477,9 +477,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         # Check if list_1_dates is not empty and create vertical line rules
         if len(mowing_dates_to_plot) != 0:
             rules_mowing = alt.Chart(pd.DataFrame({
-                'Event Date': mowing_dates_to_plot
+                'Mowing': mowing_dates_to_plot
             })).mark_rule(color='darkgreen').encode(
-                x=alt.X('Event Date:T',title='Mowing'),
+                x=alt.X('Mowing:T'),
                 #,
                 
             )
@@ -487,9 +487,9 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
 
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
-                'Event Date': grazing_dates_to_plot
+                'Grazing': grazing_dates_to_plot
             })).mark_rule(color='lightgreen').encode(
-                x=alt.X('Event Date:T',title='Grazing'),
+                x=alt.X('Grazing:T'),
                 #,
                
             )
