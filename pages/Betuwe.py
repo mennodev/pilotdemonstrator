@@ -506,9 +506,10 @@ with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
         df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
         min_RVI = df_selection_GRD_tf['RVI'].values.min()
         max_RVI = df_selection_GRD_tf['RVI'].values.max()
+        df_selection_GRD_tf['VV/VH'] = df_selection_GRD_tf['VV']/df_selection_GRD_tf['VH']
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted_tf_rvi = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['RVI'], var_name='Polarization', value_name='Value')
+        df_melted_tf_rvi = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['RVI','VV/VH'], var_name='Indices', value_name='Value')
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
         chart_grd_tf_rvi = alt.Chart(df_melted_tf_rvi).mark_line(point={
@@ -516,9 +517,9 @@ with st.expander("Toggle linked Sentinel-1 RVI plot",expanded=True):
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Radar Vegetation Index (RVI)', scale=alt.Scale(domain=[min_RVI, max_RVI])), 
+            y=alt.Y('Value:Q', title='Indices (RVI & VV/VH)'), 
+            #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('orbit:N', title='Orbit Number'),
-            strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
         # Check if list_1_dates is not empty and create vertical line rules
