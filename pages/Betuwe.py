@@ -35,9 +35,9 @@ translation_dict = {
     'Grasland, tijdelijk': 'Grassland, temporary',
     'Groene braak, spontane opkomst': 'Fallow (green manuring), unmanaged',
     "Peren. Aangeplant voorafgaande aan lopende seizoen.": 'Pear trees',
-    "Appels. Aangeplant voorafgaande aan lopende seizoen.": 'Appel trees',
-    "Appels. Aangeplant lopende seizoen.":'Appel trees, newly planted',
-    "Peren. Aangeplant lopende seizoen.":'Appel trees, newly planted',
+    "Appels. Aangeplant voorafgaande aan lopende seizoen.": 'Apple trees',
+    "Appels. Aangeplant lopende seizoen.":'Apple trees, newly planted',
+    "Peren. Aangeplant lopende seizoen.":'Pear trees, newly planted',
     "Engels raaigras, groenbemesting, vanggewas":'Perrenial ryegrass (green manuring)',
     "Tagetes patula (Afrikaantje)": "Tagetes patula (marigold)",
     "Italiaans raaigras, groenbemesting, vanggewas": 'Italian ryegrass (green manuring)',
@@ -724,12 +724,12 @@ st.write(f"""
 bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotocir/wmts/v1_0?&request=GetCapabilities&service=wmts',
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?&request=GetCapabilities&service=wmts',
                 layers = '2023_ortho25',
                 transparent = False, 
                 control = True,
                 fmt="image/jpeg",
-                name = 'Aerial Image 2023 HR',
+                name = 'Luchtfoto Actueel Ortho 25cm RGB',
                 attr = 'PDOK',
                 overlay = True,
                 show = True,
