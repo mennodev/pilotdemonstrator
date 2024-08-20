@@ -724,7 +724,7 @@ st.write(f"""
 bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url='https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?',
+folium.raster_layers.WmsTileLayer(url='https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?&request=GetCapabilities&service=wmts',
                 layers = '2023_orthoHR',
                 transparent = False, 
                 control = True,
