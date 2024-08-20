@@ -724,7 +724,7 @@ st.write(f"""
 bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url ='https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?',
+folium.raster_layers.WmsTileLayer(url='https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?',
                 layers = '2023_orthoHR',
                 transparent = False, 
                 control = True,
@@ -737,10 +737,13 @@ folium.raster_layers.WmsTileLayer(url ='https://service.pdok.nl/hwh/luchtfotorgb
                 version = '1.0.0',
                 ).add_to(m_bs)
 # add geojson and add some styling
+"""
 folium.GeoJson(data=bufferstrip_fields,
                         name = 'Betuwe LPIS declarations',
-                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
-                        ).add_to(m_bs)
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
+                                                ).add_to(m_bs)
+"""
 folium.LayerControl().add_to(m_bs)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
