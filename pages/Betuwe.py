@@ -626,7 +626,7 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
         st.write(dates)
         # Extract the columns that contain the dates and NDVI values
-        ndvi_values = df_selection_pf[date_columns].values.tolist()
+        ndvi_values = df_selection_pf[date_columns].values
         st.write(ndvi_values)
         # create df for plotting
         df_ndvi_pf = pd.DataFrame({'NDVI': ndvi_values,'date':dates})
