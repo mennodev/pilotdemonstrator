@@ -624,15 +624,18 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         date_columns = df_selection_pf.columns[8:-2]  # Assuming the first six columns are not dates
         # Convert the date columns to datetime objects
         dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
+        st.write(dates)
         # Extract the columns that contain the dates and NDVI values
         ndvi_values = df_selection_pf[date_columns].values
         df_ndvi_pf = pd.DataFrame(list(zip(ndvi_values,dates)), columns=['NDVI','date'])
         st.dataframe(df_ndvi_pf)
-        # plot in a graph
+        # plot in a graph if available
         if gid_to_plot_pf in mowing_dates_pf.keys():
             mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
+        else: mowing_dates_to_plot is False
         if gid_to_plot_pf in grazing_dates_pf.keys():
             grazing_dates_to_plot = grazing_dates_pf[gid_to_plot_pf]
+        else: grazing_dates_to_plot is False
         # combine the two lists into dataframe and add event type
         event_data = []
         # Add mowing dates to the event data
