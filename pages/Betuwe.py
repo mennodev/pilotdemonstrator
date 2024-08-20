@@ -141,7 +141,7 @@ def load_geojson_testfields():
     return gdf
 
 def load_planet_fusion_csv():
-    df = pd.read_csv("data/vectors/PlanetFusionNDVI.csv")
+    df = pd.read_csv("data/dataframes/PlanetFusionNDVI.csv")
     # parse geometries for geopandas using shapely wkt
     df['geometry'] = df['geometry'].apply(wkt.loads)
     # make gdf with geopandas
