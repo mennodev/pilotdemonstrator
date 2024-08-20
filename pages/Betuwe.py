@@ -32,14 +32,31 @@ translation_dict = {
     'Grasland, blijvend': 'Grassland, permanent',
     'Grasland, natuurlijk. Met landbouwactiviteiten.': 'Natural grassland with agricultural activities',
     'Agrarisch natuurmengsel': 'Mixed nature and agricultural seeds',
-    'Grasland, tijdelijk': 'Grassland, temporary'
+    'Grasland, tijdelijk': 'Grassland, temporary',
+    'Groene braak, spontane opkomst': 'Fallow (green manuring), unmanaged',
+    "Peren. Aangeplant voorafgaande aan lopende seizoen.": 'Pear trees',
+    "Appels. Aangeplant voorafgaande aan lopende seizoen.": 'Appel trees',
+    "Appels. Aangeplant lopende seizoen.":'Appel trees, newly planted',
+    "Peren. Aangeplant lopende seizoen.":'Appel trees, newly planted',
+    "Engels raaigras, groenbemesting, vanggewas":'Perrenial ryegrass (green manuring)',
+    "Tagetes patula (Afrikaantje)": "Tagetes patula (marigold)",
+    "Italiaans raaigras, groenbemesting, vanggewas": 'Italian ryegrass (green manuring)',
+
 }
 # Color dictionary
 color_dict = {
     'Grasland, blijvend': 'green',
     'Grasland, natuurlijk. Met landbouwactiviteiten.': 'darkgreen',
     'Agrarisch natuurmengsel': 'yellow',
-    'Grasland, tijdelijk': 'orange'
+    'Grasland, tijdelijk': 'orange',
+    'Groene braak, spontane opkomst': 'lightgreen',
+    "Peren. Aangeplant voorafgaande aan lopende seizoen.": 'khaki',
+    "Appels. Aangeplant voorafgaande aan lopende seizoen.": 'red',
+    "Appels. Aangeplant lopende seizoen.":'red',
+    "Peren. Aangeplant lopende seizoen.":'khaki',
+    "Engels raaigras, groenbemesting, vanggewas":'lightgreen',
+    "Tagetes patula (Afrikaantje)": 'lightgreen',
+    "Italiaans raaigras, groenbemesting, vanggewas": 'lightgreen',
 }
 
 # Color dictionary
@@ -139,6 +156,17 @@ def load_geojson_testfields():
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
     return gdf
+
+def load_geojson_bufferstrips():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/Fields_AOI_Betuwe_WGS84_bufferstrips_fruit_brp_gid.geojson")
+    # translate to English
+    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
+    gdf['color'] = gdf['gws_gewas'].map(color_dict)
+    # Convert the GeoDataFrame to a DataFrame
+    #df = pd.DataFrame(gdf)
+    return gdf
+
 
 def load_planet_fusion_csv():
     df = pd.read_csv("data/dataframes/PlanetFusionNDVI.csv")
@@ -673,10 +701,11 @@ container.write(f"**Conclusion**")
 container.markdown(
     """
     **The above plot clearly shows the added value of this methodology**
-    - **Using daily revisit cadency and incorporating other imagery add additional reads compared to reads by e.g. Sentinel-2**
+    - **Using daily revisit cadency and incorporating imagery from free-of-charge sensor adds additional reads compared to using only Sentinel-2**
     - **Machine learning can be leveraged to interpolate the timeseries**
     - **Allows for smooth timeseries and clearer determination of dips indicating mowing events**
     """)
+
 st.subheader("Topic 3 : Bufferstrips in AOI the Betuwe")
 st.write(f"""
 **Buffer strips** are designated non-productive areas surrounding the main crop on the edges of the parcels with different management and/or landcover. 
@@ -689,5 +718,41 @@ The **obligatory** buffer strips within the **CAP** are related to **water prote
 The buffer distances are 5, 3 or 1 meter wide. Crops associated with high agro-chemical use or side-way spraying like fruit trees have a large buffer strip of 5 meter. This is especially relevant for this AOI since a lot of fruit is produced in this region.""")
 st.write(f"""
  Buffer strips can also be installed to full fill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
- Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO""")
+ Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO.
+ It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO""")
 
+bufferstrip_fields = load_geojson_bufferstrips()
+m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url ='https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?',
+                layers = '2023_orthoHR',
+                transparent = False, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image 2023 HR',
+                attr = 'PDOK',
+                overlay = True,
+                show = True,
+                CRS = 'EPSG:3857',
+                version = '1.0.0',
+                ).add_to(m_bs)
+# add geojson and add some styling
+folium.GeoJson(data=bufferstrip_fields,
+                        name = 'Betuwe LPIS declarations',
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_bs)
+folium.LayerControl().add_to(m_bs)
+
+
+
+
+#folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
+map_pf = st_folium(
+    m_pf,
+    width=900, height=600,
+    key="folium_map"
+)
+
+
+
+map_geo
