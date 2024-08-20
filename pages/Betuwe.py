@@ -725,29 +725,28 @@ bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-                layers = '2023_ortho25',
+                layers = '2023_orthoHR',
                 transparent = True, 
                 control = True,
                 fmt="image/jpeg",
-                name = 'Luchtfoto Actueel Ortho 25cm RGB',
-                attr = 'PDOK',
-                overlay = True,
-                show = True,
-                #CRS = 'EPSG:4326',
-                ).add_to(m_bs)
-# add geojson and add some styling
-folium.raster_layers.WmsTileLayer(url=r'https://image.discomap.eea.europa.eu/arcgis/services/GioLandPublic/HRL_Grassland_2018/ImageServer/WMSServer',
-                layers = 'HRL_Grassland_2018',
-                transparent = True, 
-                control = True,
-                fmt="image/jpeg",
-                name = 'HRL_Grassland_2018',
-                attr = 'CLMS',
+                name = 'Aerial Image Winter 8cm RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
                 #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
+                layers = '2023_ortho25',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image Summer 25cm RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs)
 
 
 folium.GeoJson(data=bufferstrip_fields,
@@ -759,7 +758,7 @@ control = folium.LayerControl(collapsed=False)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
     m_bs,
-    width=900, height=600,
+    width=900, height=500,
     key="folium_map",
     layer_control=control
 )
