@@ -593,7 +593,7 @@ pf_fields = load_planet_fusion_csv()
 
 m_pf = folium.Map(location=[sum(pf_fields.total_bounds[[1, 3]]) / 2, sum(pf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
-folium.GeoJson(data=geojson_testfields,
+folium.GeoJson(data=pf_fields,
                         name = 'Betuwe',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
