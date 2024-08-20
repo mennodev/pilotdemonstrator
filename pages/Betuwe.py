@@ -380,7 +380,7 @@ container.markdown(
     """
     Although Sentinel-2 has a cadency of 5 days within the AOI there are many gaps during the season with following implications:
     - For some fields (e.g. gid 657116) mowing events can be captured shown by a significant drop in NDVI
-    - No data is available in the crucial date range from end june to end of august when often one of the mowing event takes place.
+    - No data is available in the date range from end june to end of august when often one of the mowing event takes place.
     - Data is more sparse in the winter and fall. First mowing in April/May is often not captured.
 
     Sentinel-1 has multiple orbits in the AOI and reads are independent from cloud conditions. 
@@ -589,10 +589,10 @@ st.write(f"""In the previous section one of the conclusions was that Sentinel-2 
 A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
 Such constellations have (sub)daily revisit times increasing the chance of succesfull reads. The succesfullness of this approach is explored in the topic on cloudliness using meteo reads.
 An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper]({url_planet_fusion_white_paper}).
-Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI""")
+Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI. Fields with additional blue shading of the polygons are fields with in-situ mowing and grazing data""")
 
 pf_fields = load_planet_fusion_csv()
-st.write(pf_fields.columns)
+
 m_pf = folium.Map(location=[sum(pf_fields.total_bounds[[1, 3]]) / 2, sum(pf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
 folium.GeoJson(data=geojson_testfields,
@@ -604,7 +604,6 @@ folium.GeoJson(data=pf_fields,
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m_pf)
-
 
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_pf = st_folium(
@@ -622,7 +621,6 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
     if map_pf.get("last_object_clicked_tooltip"):
         gid_to_plot_pf = get_gid_from_tooltip(map_pf["last_object_clicked_tooltip"])
     if gid_to_plot_pf is not None:
-        st.write(gid_to_plot_pf)
         # subselect data
         df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
         # subselect only the date columns holding the ndvi reads
@@ -630,17 +628,6 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         ndvi_reads = df_selection_pf[date_columns]
         # melt the dataframe
         df_ndvi_pf = ndvi_reads.reset_index().melt(id_vars='index', var_name='Date', value_name='NDVI')
-        # Extract the columns that contain the dates and NDVI values
-        
-        # Convert the date columns to datetime objects
-        #dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
-        #st.write(dates)
-        # Extract the columns that contain the dates and NDVI values
-        
-        #st.write(ndvi_values)
-        # create df for plotting
-        #df_ndvi_pf = pd.DataFrame({'NDVI': ndvi_values,'date':dates})
-        st.dataframe(df_ndvi_pf)
         # plot in a graph if available
         if gid_to_plot_pf in mowing_dates_pf.keys():
             mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
@@ -681,3 +668,26 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
             chart_pf += rules_mowing_grazing
         # plot chart
         st.altair_chart(chart_pf.interactive(), use_container_width=True)
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **The above plot clearly shows the added value of this methodology**
+    - **Using daily revisit cadency and incorporating other imagery add additional reads compared to reads by e.g. Sentinel-2**
+    - **Machine learning can be leveraged to interpolate the timeseries**
+    - **Allows for smooth timeseries and clearer determination of dips indicating mowing events**
+    """)
+st.subheader("Topic 3 : Bufferstrips in AOI the Betuwe")
+st.write(f"""
+**Buffer strips** are designated non-productive areas surrounding the main crop on the edges of the parcels with different management and/or landcover. 
+On buffer strips typically no use of agro-chemicals and manure application is allowed. Beside the management also the landcover can be distinct; this can be cover crops like grass, herb-rich mixtures or flower borders. 
+The rationale to have buffer strips are various from protection to bio-diversity enhancement. Protection often entails strips between the crops and waterways to prevent leaching of agro-chemicals and excess nutrients from manure or other fertilizer application. 
+Bio-diversity enhancement entails e.g. the diversification of landcover, leaving land fallow, creating foraging strips for birds and sanctuaries for insects.
+""")
+st.write(f"""
+The **obligatory** buffer strips within the **CAP** are related to **water protection** and **manure placement directives**. Depending on the waterbody type (related to width, depth, water throughput and its vulnerability) and crop type a certain distance should be respected excluding the sloping part. 
+The buffer distances are 5, 3 or 1 meter wide. Crops associated with high agro-chemical use or side-way spraying like fruit trees have a large buffer strip of 5 meter. This is especially relevant for this AOI since a lot of fruit is produced in this region.""")
+st.write(f"""
+ Buffer strips can also be installed to full fill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
+ Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO""")
+
