@@ -724,8 +724,8 @@ st.write(f"""
 bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
-folium.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotocir/wmts/v1_0?&request=GetCapabilities&service=wmts',
-                layers = 'Luchtfoto 2022 Ortho 25cm Infrarood',
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotocir/wmts/v1_0?&request=GetCapabilities&service=wmts',
+                layers = '2023_ortho25',
                 transparent = False, 
                 control = True,
                 fmt="image/jpeg",
@@ -734,7 +734,6 @@ folium.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotocir/wmts/v1_0?&re
                 overlay = True,
                 show = True,
                 CRS = 'EPSG:4326',
-                
                 ).add_to(m_bs)
 # add geojson and add some styling
 
@@ -743,10 +742,11 @@ folium.GeoJson(data=bufferstrip_fields,
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
                                                 ).add_to(m_bs)
-folium.LayerControl().add_to(m_bs)
+control = folium.LayerControl(collapsed=False)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
     m_bs,
     width=900, height=600,
-    key="folium_map"
+    key="folium_map",
+    layer_control=control
 )
