@@ -639,10 +639,10 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         # plot in a graph if available
         if gid_to_plot_pf in mowing_dates_pf.keys():
             mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
-        else: mowing_dates_to_plot = False
+        else: mowing_dates_to_plot = []
         if gid_to_plot_pf in grazing_dates_pf.keys():
             grazing_dates_to_plot = grazing_dates_pf[gid_to_plot_pf]
-        else: grazing_dates_to_plot = False
+        else: grazing_dates_to_plot = []
         # combine the two lists into dataframe and add event type
         event_data = []
         # Add mowing dates to the event data
