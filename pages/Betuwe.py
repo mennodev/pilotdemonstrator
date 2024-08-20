@@ -727,22 +727,23 @@ m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, su
 folium.WmsTileLayer(url='https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?request=GetCapabilities&service=wmsLink',
                 layers = '2023_ortho25',
                 transparent = False, 
-                control = True,
+                #control = True,
                 fmt="image/jpeg",
                 name = 'Aerial Image 2023 HR',
                 attr = 'PDOK',
-                overlay = True,
+                #overlay = True,
                 show = True,
                 CRS = 'EPSG:4326',
                 
                 ).add_to(m_bs)
 # add geojson and add some styling
-
+"""
 folium.GeoJson(data=bufferstrip_fields,
                         name = 'Betuwe LPIS declarations',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
                                                 ).add_to(m_bs)
+"""
 folium.LayerControl().add_to(m_bs)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
@@ -765,8 +766,4 @@ folium.WmsTileLayer(
 ).add_to(m)
 
 folium.LayerControl().add_to(m)
-map_test = st_folium(
-    m,
-    width=900, height=600,
-    key="folium_map"
-)
+m
