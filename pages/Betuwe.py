@@ -141,7 +141,7 @@ def load_geojson_testfields():
     return gdf
 
 def load_planet_fusion_csv():
-    gdf = gpd.read_file("data/vectors/PlanetFusionNDVI.csv",)
+    gdf = gpd.read_file("data/vectors/PlanetFusionNDVI.csv")
         # translate to English
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
     gdf['color'] = gdf['gws_gewas'].map(color_dict)
