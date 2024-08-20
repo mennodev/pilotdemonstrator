@@ -613,10 +613,11 @@ mowing_dates_pf = geojson_testfields.set_index('gid')['field_3'].apply(parse_dat
 grazing_dates_pf = geojson_testfields.set_index('gid')['field_5'].apply(parse_dates).to_dict()
 
 with st.expander("Toggle linked interpolated fusion product plot",expanded=True):
-    gid_to_plot_pf = 71757
+    gid_to_plot_pf = 657116
     if map_pf.get("last_object_clicked_tooltip"):
         gid_to_plot_pf = get_gid_from_tooltip(map_pf["last_object_clicked_tooltip"])
     if gid_to_plot_pf is not None:
+        st.write(gid_to_plot_pf)
         # subselect data
         df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
         # Extract the columns that contain the dates and NDVI values
