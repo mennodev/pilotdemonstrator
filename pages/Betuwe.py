@@ -8,7 +8,7 @@ from streamlit_folium import st_folium
 from modules.nav import Navbar
 import leafmap.foliumap as leafmap
 from datetime import datetime
-
+from shapely import wkt
 
 # setup page config using modules
 Navbar()
@@ -141,11 +141,15 @@ def load_geojson_testfields():
     return gdf
 
 def load_planet_fusion_csv():
-    gdf = gpd.read_file("data/vectors/PlanetFusionNDVI.csv")
-        # translate to English
+    df = pd.read_csv("data/vectors/PlanetFusionNDVI.csv")
+    # parse geometries for geopandas using shapely wkt
+    df['geometry'] = df['geometry'].apply(wkt.loads)
+    # make gdf with geopandas
+    gdf = gpd.GeoDataFrame(df, geometry='geometry')
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
     gdf['color'] = gdf['gws_gewas'].map(color_dict)
     return gdf
+
 
 def style_function(x):
     """
@@ -582,7 +586,7 @@ url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
 A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
 Such constellations have (sub)daily revisit times increasing the chance of succesfull reads. The succesfullness of this approach is explored in the topic on cloudliness using meteo reads.
-An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper].({url_planet_fusion_white_paper}).
+An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper]({url_planet_fusion_white_paper}).
 Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI""")
 
 pf_fields = load_planet_fusion_csv()
