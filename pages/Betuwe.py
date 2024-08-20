@@ -726,14 +726,14 @@ m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, su
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0?&request=GetCapabilities&service=wmts',
                 layers = '2023_ortho25',
-                transparent = False, 
+                transparent = True, 
                 control = True,
                 fmt="image/jpeg",
                 name = 'Luchtfoto Actueel Ortho 25cm RGB',
                 attr = 'PDOK',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:4326',
+                #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 # add geojson and add some styling
 
