@@ -595,11 +595,16 @@ pf_fields = load_planet_fusion_csv()
 st.write(pf_fields.columns)
 m_pf = folium.Map(location=[sum(pf_fields.total_bounds[[1, 3]]) / 2, sum(pf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
+folium.GeoJson(data=geojson_testfields,
+                        name = 'In-situ fields',
+                        tooltip = folium.GeoJsonTooltip(fields=['mowed','grazed'])
+                        ).add_to(m_pf)
 folium.GeoJson(data=pf_fields,
                         name = 'Betuwe',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m_pf)
+
 
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_pf = st_folium(
