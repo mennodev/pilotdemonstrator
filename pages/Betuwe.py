@@ -616,9 +616,9 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         # subselect data
         df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
         # Extract the columns that contain the dates and NDVI values
-        date_columns = df_selection_pf.columns[7:]  # Assuming the first six columns are not dates
+        date_columns = df_selection_pf.columns[8:]  # Assuming the first six columns are not dates
         # Convert the date columns to datetime objects
-        dates = pd.to_datetime(date_columns, format='%d/%m/%Y')
+        dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
         # Extract the columns that contain the dates and NDVI values
         ndvi_values = df_selection_pf[date_columns].values
         st.write(ndvi_values)
