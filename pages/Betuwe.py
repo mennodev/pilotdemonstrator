@@ -736,6 +736,19 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 # add geojson and add some styling
+folium.raster_layers.WmsTileLayer(url=r'https://image.discomap.eea.europa.eu/arcgis/services/GioLandPublic/HRL_Grassland_2018/ImageServer/WMSServer',
+                layers = 'HRL_Grassland_2018',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'HRL_Grassland_2018',
+                attr = 'CLMS',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs)
+
+
 
 folium.GeoJson(data=bufferstrip_fields,
                         name = 'Betuwe LPIS declarations',
