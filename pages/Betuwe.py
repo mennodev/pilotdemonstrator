@@ -592,7 +592,7 @@ An additional approach is to use daily revisit images, combine these with free i
 Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI""")
 
 pf_fields = load_planet_fusion_csv()
-
+st.write(pf_fields.columns)
 m_pf = folium.Map(location=[sum(pf_fields.total_bounds[[1, 3]]) / 2, sum(pf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
 folium.GeoJson(data=pf_fields,
@@ -616,7 +616,7 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         # subselect data
         df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
         # Extract the columns that contain the dates and NDVI values
-        date_columns = df_selection_pf.columns[8:]  # Assuming the first six columns are not dates
+        date_columns = df_selection_pf.columns[8:-1]  # Assuming the first six columns are not dates
         # Convert the date columns to datetime objects
         dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
         # Extract the columns that contain the dates and NDVI values
