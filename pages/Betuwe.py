@@ -608,6 +608,10 @@ map_pf = st_folium(
     key="folium_map"
 )
 
+# pre parse the mowing and grazing dates if available
+mowing_dates_pf = geojson_testfields.set_index('gid')['field_3'].apply(parse_dates).to_dict()
+grazing_dates_pf = geojson_testfields.set_index('gid')['field_5'].apply(parse_dates).to_dict()
+
 with st.expander("Toggle linked interpolated fusion product plot",expanded=True):
     gid_to_plot_pf = 71757
     if map_pf.get("last_object_clicked_tooltip"):
@@ -621,4 +625,40 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
         # Extract the columns that contain the dates and NDVI values
         ndvi_values = df_selection_pf[date_columns].values
-        st.write(ndvi_values)
+        df_ndvi_pf = pd.DataFrame(list(zip(ndvi_values,dates)), columns=['NDVI','date'])
+        # plot in a graph
+        mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
+        grazing_dates_to_plot = grazing_dates_pf[gid_to_plot_pf]
+        # combine the two lists into dataframe and add event type
+        event_data = []
+        # Add mowing dates to the event data
+        if mowing_dates_to_plot:
+            event_data.extend([{'Event Date': date, 'Event': 'Mowing'} for date in mowing_dates_to_plot])
+        # Add grazing dates to the event data
+        if grazing_dates:
+            event_data.extend([{'Event Date': date, 'Event': 'Grazing'} for date in grazing_dates_to_plot])
+        # Convert to a DataFrame
+        event_df = pd.DataFrame(event_data)
+        
+        # Display line chart
+        chart_pf = alt.Chart(df_ndvi_pf).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('NDVI:Q', title='NDVI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write('Chart of NDVI from interpolated fusion product')
+        # add mowing and grazing dates if df is not empty
+        if not event_df.empty:
+            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
+                x='Event Date:T',
+                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                size=alt.value(2),  # Set line width
+            )
+            # update final chart
+            chart_pf += rules_mowing_grazing
+        # plot chart
+        st.altair_chart(chart_pf.interactive(), use_container_width=True)
