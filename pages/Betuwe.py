@@ -620,16 +620,21 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         st.write(gid_to_plot_pf)
         # subselect data
         df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
+        # subselect only the date columns holding the ndvi reads
+        date_columns = df_selection_pf.columns[8:-2]  #First columns are not dates and last two also not
+        ndvi_reads = df_selection_pf[date_columns]
+        # melt the dataframe
+        df_ndvi_pf = ndvi_reads.reset_index().melt(id_vars='index', var_name='Date', value_name='NDVI')
         # Extract the columns that contain the dates and NDVI values
-        date_columns = df_selection_pf.columns[8:-2]  # Assuming the first six columns are not dates
+        
         # Convert the date columns to datetime objects
-        dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
-        st.write(dates)
+        #dates = pd.to_datetime(date_columns, format='%Y-%m-%d')
+        #st.write(dates)
         # Extract the columns that contain the dates and NDVI values
-        ndvi_values = df_selection_pf[date_columns].values
-        st.write(ndvi_values)
+        
+        #st.write(ndvi_values)
         # create df for plotting
-        df_ndvi_pf = pd.DataFrame({'NDVI': ndvi_values,'date':dates})
+        #df_ndvi_pf = pd.DataFrame({'NDVI': ndvi_values,'date':dates})
         st.dataframe(df_ndvi_pf)
         # plot in a graph if available
         if gid_to_plot_pf in mowing_dates_pf.keys():
@@ -654,7 +659,7 @@ with st.expander("Toggle linked interpolated fusion product plot",expanded=True)
         "filled": False,
         "fill": "white"
         }).encode(
-                    x=alt.X('date:T', title='Date'),
+                    x=alt.X('Date:T', title='Date'),
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
