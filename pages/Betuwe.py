@@ -771,7 +771,7 @@ control = folium.LayerControl(collapsed=False)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
     m_bs,
-    width=1200, height=500,
+    width=800, height=500,
     key="folium_map",
     layer_control=control
 )
