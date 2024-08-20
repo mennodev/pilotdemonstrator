@@ -140,6 +140,12 @@ def load_geojson_testfields():
     #df = pd.DataFrame(gdf)
     return gdf
 
+def load_planet_fusion_csv():
+    gdf = gpd.read_file("data/vectors/PlanetFusionNDVI.csv",)
+        # translate to English
+    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
+    gdf['color'] = gdf['gws_gewas'].map(color_dict)
+    return gdf
 
 def style_function(x):
     """
@@ -293,7 +299,7 @@ st.table(cbs_df)
 # Create a map with the GeoJSON data using folium
 st.write(f"""LPIS data for the AOI reveals that 53.6 percent of the area is under grassland and 42.4 is under cropland. The remaining part is under management like fallow land, wooded patches or landscape elements.
             To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads to explore capabilities of monitoring grasslands within the CAP using EO.
-            The grasslands can be subdivided in permanent grasslands, temporary grasslands and grasslands consisting sown with a mix of seeds for agricultural purposes and nature conservation purposes.""")
+            The grasslands can be subdivided in permanent grasslands, temporary grasslands and grasslands sown with a mix of seeds for agricultural purposes and nature conservation purposes.""")
 
 geojson = load_geojson()
 
@@ -572,4 +578,41 @@ container.markdown(
     - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
     - **The indices do not add any discrimination power for grassland monitoring.**
     """)
+url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
+st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
+A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
+Such constellations have (sub)daily revisit times increasing the chance of succesfull reads. The succesfullness of this approach is explored in the topic on cloudliness using meteo reads.
+An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper].({url_planet_fusion_white_paper}).
+Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI""")
 
+pf_fields = load_planet_fusion_csv()
+
+m_pf = folium.Map(location=[sum(pf_fields.total_bounds[[1, 3]]) / 2, sum(pf_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add geojson and add some styling
+folium.GeoJson(data=geojson_testfields,
+                        name = 'Betuwe',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_pf)
+
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
+map_pf = st_folium(
+    m_pf,
+    width=900, height=600,
+    key="folium_map"
+)
+
+with st.expander("Toggle linked interpolated fusion product plot",expanded=True):
+    gid_to_plot_pf = 71757
+    if map_pf.get("last_object_clicked_tooltip"):
+        gid_to_plot_pf = get_gid_from_tooltip(map_pf["last_object_clicked_tooltip"])
+    if gid_to_plot_pf is not None:
+        # subselect data
+        df_selection_pf = pf_fields.loc[pf_fields['gid'] == gid_to_plot_pf]
+        # Extract the columns that contain the dates and NDVI values
+        date_columns = df_selection_pf.columns[7:]  # Assuming the first six columns are not dates
+        # Convert the date columns to datetime objects
+        dates = pd.to_datetime(date_columns, format='%d/%m/%Y')
+        # Extract the columns that contain the dates and NDVI values
+        ndvi_values = df_selection_pf[date_columns].values
+        st.write(ndvi_values)
