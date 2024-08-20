@@ -145,7 +145,9 @@ def load_planet_fusion_csv():
     # parse geometries for geopandas using shapely wkt
     df['geometry'] = df['geometry'].apply(wkt.loads)
     # make gdf with geopandas
-    gdf = gpd.GeoDataFrame(df, geometry='geometry')
+    gdf = gpd.GeoDataFrame(df, geometry='geometry', crs="EPSG:32631")
+    # Transform the GeoDataFrame to WGS84 (EPSG:4326)
+    gdf = gdf.to_crs(epsg=4326)
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
     gdf['color'] = gdf['gws_gewas'].map(color_dict)
     return gdf
