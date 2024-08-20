@@ -704,6 +704,7 @@ container.markdown(
     - **Using daily revisit cadency and incorporating imagery from free-of-charge sensor adds additional reads compared to using only Sentinel-2**
     - **Machine learning can be leveraged to interpolate the timeseries**
     - **Allows for smooth timeseries and clearer determination of dips indicating mowing events**
+    - **Not all dips are explained by mowing events. Natural drying of grass is also reason for NDVI dips.**
     """)
 
 st.subheader("Topic 3 : Bufferstrips in AOI the Betuwe")
@@ -719,7 +720,7 @@ The buffer distances are 5, 3 or 1 meter wide. Crops associated with high agro-c
 st.write(f"""
  Buffer strips can also be installed to full fill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
  Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO.
- It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO""")
+ It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO. Besides spaceborn source also aerial imagery is a good source of high resolution data""")
 
 bufferstrip_fields = load_geojson_bufferstrips()
 m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
@@ -762,3 +763,4 @@ map_bs = st_folium(
     key="folium_map",
     layer_control=control
 )
+
