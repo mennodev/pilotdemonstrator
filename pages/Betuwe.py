@@ -750,3 +750,23 @@ map_bs = st_folium(
     width=900, height=600,
     key="folium_map"
 )
+
+m = folium.Map(location=[41, -70], zoom_start=5, tiles="cartodb positron")
+
+folium.WmsTileLayer(
+    url="https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+    name="test",
+    fmt="image/png",
+    layers="nexrad-n0r-900913",
+    attr=u"Weather data © 2012 IEM Nexrad",
+    transparent=True,
+    overlay=True,
+    control=True,
+).add_to(m)
+
+folium.LayerControl().add_to(m)
+map_test = st_folium(
+    m,
+    width=900, height=600,
+    key="folium_map"
+)
