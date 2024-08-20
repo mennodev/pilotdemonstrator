@@ -738,18 +738,6 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 ).add_to(m_bs)
 
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-                layers = '2022_orthoHR',
-                transparent = True, 
-                control = True,
-                fmt="image/jpeg",
-                name = 'Aerial Image Winter 2024 8cm RGB',
-                attr = 'PDOK / opendata.beeldmaterial.nl',
-                overlay = True,
-                show = True,
-                #CRS = 'EPSG:4326',
-                ).add_to(m_bs)
-
-folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
                 layers = '2023_ortho25',
                 transparent = True, 
                 control = True,
