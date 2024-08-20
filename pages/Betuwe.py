@@ -742,17 +742,9 @@ folium.GeoJson(data=bufferstrip_fields,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m_bs)
 folium.LayerControl().add_to(m_bs)
-
-
-
-
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
-map_pf = st_folium(
-    m_pf,
+map_bs = st_folium(
+    m_bs,
     width=900, height=600,
     key="folium_map"
 )
-
-
-
-map_geo
