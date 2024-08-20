@@ -718,7 +718,7 @@ st.write(f"""
 The **obligatory** buffer strips within the **CAP** are related to **water protection** and **manure placement directives**. Depending on the waterbody type (related to width, depth, water throughput and its vulnerability) and crop type a certain distance should be respected excluding the sloping part. 
 The buffer distances are 5, 3 or 1 meter wide. Crops associated with high agro-chemical use or side-way spraying like fruit trees have a large buffer strip of 5 meter. This is especially relevant for this AOI since a lot of fruit is produced in this region.""")
 st.write(f"""
- Buffer strips can also be installed to full fill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
+ Buffer strips can also be created to fullfill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
  Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO.
  It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO. Besides spaceborn source also aerial imagery is a good source of high resolution data""")
 
@@ -730,7 +730,19 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 transparent = True, 
                 control = True,
                 fmt="image/jpeg",
-                name = 'Aerial Image Winter 8cm RGB',
+                name = 'Aerial Image Winter 2023 8cm RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs)
+
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
+                layers = '2024_orthoHR',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image Winter 2024 8cm RGB',
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
@@ -742,7 +754,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 transparent = True, 
                 control = True,
                 fmt="image/jpeg",
-                name = 'Aerial Image Summer 25cm RGB',
+                name = 'Aerial Image Summer 2023 25cm RGB',
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
@@ -759,7 +771,7 @@ control = folium.LayerControl(collapsed=False)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
     m_bs,
-    width=900, height=500,
+    width=1200, height=500,
     key="folium_map",
     layer_control=control
 )
