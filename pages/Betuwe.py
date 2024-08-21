@@ -792,6 +792,7 @@ container.markdown("""
     - At least up to June there is no vegetation present
     - On the last image there is no distinction visible between the main crop and the bufferstrip
     """)
+container = st.container(border=True)
 container.write(f"**General conclusion on bufferstrips**")
 container.markdown(
     """
