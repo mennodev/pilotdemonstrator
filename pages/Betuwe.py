@@ -741,7 +741,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:28992',
+                #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
@@ -753,7 +753,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:4326',
+                #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 
 folium.GeoJson(data=bufferstrip_fields,
@@ -784,7 +784,8 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
                 transparent = True, 
                 control = True,
-                fmt="image/png",
+                fmt='image/png',
+                version='1.0.0',
                 name = 'PNEO_202300430',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
