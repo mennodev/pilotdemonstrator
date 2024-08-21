@@ -790,7 +790,7 @@ container.write(f"**Conclusion on field investigation**")
 container.markdown("""
     The images clearly indicate that this bufferstrip is most likely not managed as declared (fallow land)
     - At least up to June there is no vegetation present
-    - On the last image there is no distinction visible between the main crop and the bufferstrip
+    - On the last image (Sept 8th) there is no distinction visible between the main crop and the bufferstrip
     """)
 container = st.container(border=True)
 container.write(f"**General conclusion on bufferstrips**")
