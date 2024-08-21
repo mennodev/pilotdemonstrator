@@ -193,6 +193,11 @@ def style_function_betuwe(x):
     """
     return {"color":'darkgreen', 'fillOpacity': .1 , "weight":2}
 
+def style_function_bufferstrips(x):
+    """
+    Use color column to assign color
+    """
+    return {"color":x['properties']['color'], "weight":2, "opacity":0.0}
 
 style = {
     "stroke": True,
@@ -723,7 +728,9 @@ st.write(f"""
  It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO. Besides spaceborn source also aerial imagery is a good source of high resolution data""")
 
 bufferstrip_fields = load_geojson_bufferstrips()
-m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+#m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=12)
+m_bs = folium.Map(location=[sum(bufferstrip_fields.total_bounds[[1, 3]]) / 2, sum(bufferstrip_fields.total_bounds[[0, 2]]) / 2], zoom_start=16)
+
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
                 layers = '2023_orthoHR',
@@ -749,10 +756,9 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 #CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 
-
 folium.GeoJson(data=bufferstrip_fields,
                         name = 'Betuwe LPIS declarations',
-                        style_function=style_function,
+                        style_function=style_function_bufferstrips,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
                                                 ).add_to(m_bs)
 control = folium.LayerControl(collapsed=False)
