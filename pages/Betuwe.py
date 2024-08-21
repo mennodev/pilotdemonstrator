@@ -788,17 +788,17 @@ st.image(["data/images/ProbWrongDecl_NEO2_IRG.png","data/images/ProbWrongDecl_NE
 container = st.container(border=True)
 container.write(f"**Conclusion on field investigation**")
 container.markdown("""
-    **The images clearly indicate that this bufferstrip is most likely not managed as declared (fallow land)
-    - **At least up to June there is no vegetation present**
-    - **On the last image there is no distinction visible between the main crop and the bufferstrip**
+    The images clearly indicate that this bufferstrip is most likely not managed as declared (fallow land)
+    - At least up to June there is no vegetation present
+    - On the last image there is no distinction visible between the main crop and the bufferstrip
     """)
-container.write(f"**Conclusion on bufferstrips**")
+container.write(f"**General conclusion on bufferstrips**")
 container.markdown(
     """
     **For monitoring the bufferstrip we can conclude the following things**
-    - **Since many bufferstrip need to be present whole year round or a significant time of the year cadency is not of utmost importance
-    - **Sub-meter resolution is of utmost importance due to buffer strips being narrow**
-    - **A (gauranteed cloud-free) aerial image in at least each growing season with super high resolution (8cm-25cm) brings much added value for the CAP in terms of monitoring parcel delineations**
+    - **Since many bufferstrip need to be present whole year round or a significant time of the year cadency is not of utmost importance**
+    - **Sub-meter resolution of EO imagery is of utmost importance due to buffer strips being narrow**
+    - **A (gauranteed cloud-free) aerial image in each growing season with super high resolution (8cm-25cm) brings much added value for the CAP in terms of monitoring parcel delineations**
     - **VHR like Pleiades NEO and SuperView NEO are valuable for in-season checking and have added value by also capturing the Near-Infrared values of crops**
     """)
 
