@@ -770,8 +770,8 @@ map_bs = st_folium(
     layer_control=control
 )
 st.write("Browsing through the map and checking both the winter as summer images often is sufficient to check the declaration of bufferstrips and the area between waterbodies and fruit plantations.Below two cases are presented as examples.")
-st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], use_column_width=True, caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
-st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],use_column_width=True, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
+st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], width=[350,350], caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
+st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=[350,350], caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write(f"""In order to investigate the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
@@ -784,7 +784,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
                 transparent = True, 
                 control = True,
-                fmt="image/jpeg",
+                fmt="image/png",
                 name = 'PNEO_202300430',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
@@ -796,7 +796,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 layers = '20230514_110017_PNEO-03_1_1_30cm_RD_8bit_NRG_Echteld',
                 transparent = True, 
                 control = True,
-                fmt="image/jpeg",
+                fmt="image/png",
                 name = 'PNEO_20230514',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
@@ -808,19 +808,19 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 layers = '20230603_104601_PNEO-03_1_1_30cm_RD_8bit_NRG_Geldermalsen',
                 transparent = True, 
                 control = True,
-                fmt="image/jpeg",
+                fmt="image/png",
                 name = 'PNEO_20230603',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:3857',
+                CRS = 'image/png',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/SuperView-NEO-2023-9-IRG/service',
                 layers = '20230908_111624_SVNEO-02_30cm_RD_8bit_NRG_Echteld',
                 transparent = True, 
                 control = True,
-                fmt="image/jpeg",
+                fmt="image/png",
                 name = 'SVNEO_20230908',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
