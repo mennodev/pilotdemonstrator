@@ -741,7 +741,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:4326',
+                CRS = 'EPSG:28992',
                 ).add_to(m_bs)
 
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
@@ -753,7 +753,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:4326',
+                CRS = 'EPSG:4326',
                 ).add_to(m_bs)
 
 folium.GeoJson(data=bufferstrip_fields,
