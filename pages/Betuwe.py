@@ -114,6 +114,8 @@ def load_cloudliness_data():
 
 def load_meteo_data():
     df = pd.read_csv("data/dataframes/debilt_cloudliness_meteo.txt",delimiter=',',parse_dates=['datetime'])
+    # add hourly info
+    df['hour'] = df['datetime'].dt.hour
     return df
 
 def load_meteo_data_daytime():
@@ -290,7 +292,7 @@ df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <=
 unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 # Display line chart
-chart_meteo = alt.Chart(df_selection_meteo).mark_bar().encode(
+chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
                 x=alt.X('datetime:T', title='DateTime'),
                 y=alt.Y('cloudscale', title='Cloudlines (0-9)'),
                 #color='genre:N'
