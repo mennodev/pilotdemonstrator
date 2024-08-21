@@ -778,12 +778,12 @@ st.write(f"""In order to investigate the field which is probably wrongly declare
 For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below as static images as proofs that the decleration is not correct.
 """)
 st.image(["data/images/ProbWrongDecl_NEO4.png","data/images/ProbWrongDecl_NEO3.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
-st.image(["data/images/ProbWrongDecl_NEO2","data/images/ProbWrongDecl_NEO1.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
+st.image(["data/images/ProbWrongDecl_NEO2.png","data/images/ProbWrongDecl_NEO1.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
 st.write(f"""In order to make even more clear whether vegetation is present the Infra-red channel of the VHR can be leveraged""")
 
 st.image(["data/images/ProbWrongDecl_NEO4_IRG.png","data/images/ProbWrongDecl_NEO3_IRG.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
-st.image(["data/images/ProbWrongDecl_NEO2_IRG","data/images/ProbWrongDecl_NEO1_IRG.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
+st.image(["data/images/ProbWrongDecl_NEO2_IRG.png","data/images/ProbWrongDecl_NEO1_IRG.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
 container = st.container(border=True)
 container.write(f"**Conclusion on field investigation**")
