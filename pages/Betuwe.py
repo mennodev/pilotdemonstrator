@@ -775,72 +775,30 @@ st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],w
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write(f"""In order to investigate the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
-For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below for further investigation
+For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below as static images as proofs that the decleration is not correct.
 """)
+st.image(["data/images/ProbWrongDecl_NEO4.png","data/images/ProbWrongDecl_NEO3.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
+st.image(["data/images/ProbWrongDecl_NEO2","data/images/ProbWrongDecl_NEO1.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
-m_bs_neo = folium.Map(location=[51.904819,5.422433], zoom_start=16)
-# add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service',
-                layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
-                transparent = True, 
-                control = True,
-                fmt='image/png',
-                version='1.0.0',
-                name = 'PNEO_202300430',
-                attr = 'sattelietdataportaal / NSO',
-                overlay = True,
-                show = True,
-                CRS = 'EPSG:3857',
-                ).add_to(m_bs_neo)
-"""
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-5-IRG/service',
-                layers = '20230514_110017_PNEO-03_1_1_30cm_RD_8bit_NRG_Echteld',
-                transparent = True, 
-                control = True,
-                fmt="image/png",
-                name = 'PNEO_20230514',
-                attr = 'sattelietdataportaal / NSO',
-                overlay = True,
-                show = True,
-                #CRS = 'EPSG:3857',
-                ).add_to(m_bs_neo)
+st.write(f"""In order to make even more clear whether vegetation is present the Infra-red channel of the VHR can be leveraged""")
 
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-6-IRG/service',
-                layers = '20230603_104601_PNEO-03_1_1_30cm_RD_8bit_NRG_Geldermalsen',
-                transparent = True, 
-                control = True,
-                fmt="image/png",
-                name = 'PNEO_20230603',
-                attr = 'sattelietdataportaal / NSO',
-                overlay = True,
-                show = True,
-                
-                ).add_to(m_bs_neo)
+st.image(["data/images/ProbWrongDecl_NEO4_IRG.png","data/images/ProbWrongDecl_NEO3_IRG.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
+st.image(["data/images/ProbWrongDecl_NEO2_IRG","data/images/ProbWrongDecl_NEO1_IRG.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/SuperView-NEO-2023-9-IRG/service',
-                layers = '20230908_111624_SVNEO-02_30cm_RD_8bit_NRG_Echteld',
-                transparent = True, 
-                control = True,
-                fmt="image/png",
-                name = 'SVNEO_20230908',
-                attr = 'sattelietdataportaal / NSO',
-                overlay = True,
-                show = True,
-                #CRS = 'EPSG:4326',
-                ).add_to(m_bs_neo)
-#
-"""
-folium.GeoJson(data=bufferstrip_fields,
-                        name = 'Betuwe LPIS declarations',
-                        style_function=style_function_bufferstrips,
-                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
-                                                ).add_to(m_bs_neo)
-control = folium.LayerControl(collapsed=False)
-#folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
-m_bs_neo = st_folium(
-    m_bs_neo,
-    width=800, height=500,
-    key="folium_map",
-    layer_control=control
-)
+container = st.container(border=True)
+container.write(f"**Conclusion on field investigation**")
+container.markdown("""
+    **The images clearly indicate that this bufferstrip is most likely not managed as declared (fallow land)
+    - **At least up to June there is no vegetation present**
+    - **On the last image there is no distinction visible between the main crop and the bufferstrip**
+    """)
+container.write(f"**Conclusion on bufferstrips**")
+container.markdown(
+    """
+    **For monitoring the bufferstrip we can conclude the following things**
+    - **Since many bufferstrip need to be present whole year round or a significant time of the year cadency is not of utmost importance
+    - **Sub-meter resolution is of utmost importance due to buffer strips being narrow**
+    - **A (gauranteed cloud-free) aerial image in at least each growing season with super high resolution (8cm-25cm) brings much added value for the CAP in terms of monitoring parcel delineations**
+    - **VHR like Pleiades NEO and SuperView NEO are valuable for in-season checking and have added value by also capturing the Near-Infrared values of crops**
+    """)
 
