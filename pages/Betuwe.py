@@ -813,7 +813,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                CRS = 'image/png',
+                
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/SuperView-NEO-2023-9-IRG/service',
