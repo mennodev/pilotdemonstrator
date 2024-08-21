@@ -1,12 +1,12 @@
-Country;Years;Total area grassland (x1000 ha);Total area mowed grassland (x1000 ha);Percentage used for silage;Percentage used for hay;Summerstable fodder;Other
-the Netherlands;2000;905;1.943;88;5;6;1
-the Netherlands;2005;980;1.965;86;6;6;2
-the Netherlands;2010;951;2.423;90;3;4;3
-the Netherlands;2011;939;2.617;88;3;6;3
-the Netherlands;2017;928;2.645;89;3;4;4
-the Netherlands;2018;987;2.499;87;5;4;4
-the Netherlands;2019;983;;;;;
-the Netherlands;2020;978;;;;;
-the Netherlands;2021;984;;;;;
-the Netherlands;2022;970;;;;;
-the Netherlands;2023;958;;;;;
+Years;Total area grassland (x1000 ha);Total area mowed grassland (x1000 ha);Percentage used for silage;Percentage used for hay;Summerstable fodder;Other
+2000;905;1.943;88;5;6;1
+2005;980;1.965;86;6;6;2
+2010;951;2.423;90;3;4;3
+2011;939;2.617;88;3;6;3
+2017;928;2.645;89;3;4;4
+2018;987;2.499;87;5;4;4
+2019;983;;;;;
+2020;978;;;;;
+2021;984;;;;;
+2022;970;;;;;
+2023;958;;;;;

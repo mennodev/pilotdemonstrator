@@ -271,15 +271,15 @@ map = st_folium(
     key="folium_map",
     layer_control=control
 )
+st.write(f"The cloud free pixel values are represented ranging from darkorange (35% cloud free) to green (40% cloud free). So the cloudliness variability in the AOI is very low, but there is some spatial distribution.")
 url_knmi = 'https://www.knmi.nl/home'
-st.write(f"The cloud free pixel range between 35-40 so very low variability in the AOI, but there is some spatial distribution")
 st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
 
 df_debilt = load_meteo_data()
 date_range_slider_meteo = st.slider(
     "Select a daterange to plot the Sentinel-2 cloudliness",
     min_value=datetime(2016, 1, 1),
-    value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
+    value= [datetime(2022, 1, 1),datetime(2023, 1, 1)],
     max_value=datetime(2024, 6, 2),
     )
 st.write(f"""Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
@@ -290,7 +290,7 @@ df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <=
 unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 # Display line chart
-chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
+chart_meteo = alt.Chart(df_selection_meteo).mark_bar().encode(
                 x=alt.X('datetime:T', title='DateTime'),
                 y=alt.Y('cloudscale', title='Cloudlines (0-9)'),
                 #color='genre:N'
@@ -411,7 +411,7 @@ container = st.container(border=True)
 container.write(f"**Conclusions**")
 container.markdown(
     """
-    Although Sentinel-2 has a cadency of 5 days within the AOI there are many gaps during the season with following implications:
+    Although Sentinel-2 has a cadency of about 3 days due to overlapping tracks over the AOI there are many gaps during the season with following implications:
     - For some fields (e.g. gid 657116) mowing events can be captured shown by a significant drop in NDVI
     - No data is available in the date range from end june to end of august when often one of the mowing event takes place.
     - Data is more sparse in the winter and fall. First mowing in April/May is often not captured.
