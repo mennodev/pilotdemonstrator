@@ -789,7 +789,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:3857',
+                #CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-5-IRG/service',
@@ -801,7 +801,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                CRS = 'EPSG:3857',
+                #CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-6-IRG/service',
