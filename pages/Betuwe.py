@@ -780,7 +780,7 @@ For the AOI Betuwe in 2023 43 images are available. Please note that the footpri
 
 m_bs_neo = folium.Map(location=[51.904819,5.422433], zoom_start=16)
 # add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service',
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service?REQUEST=GETCAPABILITIES&SERVICE=WMTS',
                 layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
                 transparent = True, 
                 control = True,
@@ -789,7 +789,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:4326',
+                CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-5-IRG/service',
@@ -801,7 +801,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:4326',
+                CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-6-IRG/service',
@@ -809,11 +809,11 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 transparent = True, 
                 control = True,
                 fmt="image/jpeg",
-                name = 'SVNEO_20230908',
+                name = 'PNEO_20230603',
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:4326',
+                CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
 
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/SuperView-NEO-2023-9-IRG/service',
