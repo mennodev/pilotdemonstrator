@@ -771,6 +771,75 @@ map_bs = st_folium(
 )
 st.write("Browsing through the map and checking both the winter as summer images often is sufficient to check the declaration of bufferstrips and the area between waterbodies and fruit plantations.Below two cases are presented as examples.")
 st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], use_column_width=True, caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
-st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],use_column_width=True, caption=["Winter image showing incorrect delineation of bufferstrip and no vegetation","Winter image showing incorrect delineation of bufferstrip and no vegetation"])
-st.write("In order to check")
+st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],use_column_width=True, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
+url_nso = "https://www.spaceoffice.nl/en/"
+url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
+st.write(f"""In order to investigate the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
+For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below for further investigation
+""")
+
+m_bs_neo = folium.Map(location=[51.904819,5.422433], zoom_start=16)
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service',
+                layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'PNEO_202300430',
+                attr = 'sattelietdataportaal / NSO',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs_neo)
+
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-5-IRG/service',
+                layers = '20230514_110017_PNEO-03_1_1_30cm_RD_8bit_NRG_Echteld',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'PNEO_20230514',
+                attr = 'sattelietdataportaal / NSO',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs_neo)
+
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-6-IRG/service',
+                layers = '20230603_104601_PNEO-03_1_1_30cm_RD_8bit_NRG_Geldermalsen',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'SVNEO_20230908',
+                attr = 'sattelietdataportaal / NSO',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs_neo)
+
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/SuperView-NEO-2023-9-IRG/service',
+                layers = '20230908_111624_SVNEO-02_30cm_RD_8bit_NRG_Echteld',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'SVNEO_20230908',
+                attr = 'sattelietdataportaal / NSO',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_bs_neo)
+#
+
+folium.GeoJson(data=bufferstrip_fields,
+                        name = 'Betuwe LPIS declarations',
+                        style_function=style_function_bufferstrips,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode']),
+                                                ).add_to(m_bs_neo)
+control = folium.LayerControl(collapsed=False)
+#folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
+m_bs_neo = st_folium(
+    m_bs_neo,
+    width=800, height=500,
+    key="folium_map",
+    layer_control=control
+)
 
