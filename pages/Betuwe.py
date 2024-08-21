@@ -780,7 +780,7 @@ For the AOI Betuwe in 2023 43 images are available. Please note that the footpri
 
 m_bs_neo = folium.Map(location=[51.904819,5.422433], zoom_start=16)
 # add ortho aerial imagery
-folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service?REQUEST=GETCAPABILITIES&SERVICE=WMTS',
+folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-4-IRG/service',
                 layers = '20230430_104208_PNEO-04_1_1_30cm_RD_8bit_NRG_WijkBijDuurstede',
                 transparent = True, 
                 control = True,
@@ -789,9 +789,9 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 attr = 'sattelietdataportaal / NSO',
                 overlay = True,
                 show = True,
-                #CRS = 'EPSG:3857',
+                CRS = 'EPSG:3857',
                 ).add_to(m_bs_neo)
-
+"""
 folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmts/Pleiades-NEO-2023-5-IRG/service',
                 layers = '20230514_110017_PNEO-03_1_1_30cm_RD_8bit_NRG_Echteld',
                 transparent = True, 
@@ -828,7 +828,7 @@ folium.raster_layers.WmsTileLayer(url=r'https://wmts.satellietdataportaal.nl/wmt
                 #CRS = 'EPSG:4326',
                 ).add_to(m_bs_neo)
 #
-
+"""
 folium.GeoJson(data=bufferstrip_fields,
                         name = 'Betuwe LPIS declarations',
                         style_function=style_function_bufferstrips,
