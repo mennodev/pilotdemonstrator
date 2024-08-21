@@ -770,8 +770,8 @@ map_bs = st_folium(
     layer_control=control
 )
 st.write("Browsing through the map and checking both the winter as summer images often is sufficient to check the declaration of bufferstrips and the area between waterbodies and fruit plantations.Below two cases are presented as examples.")
-st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], width=[350,350], caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
-st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=[350,350], caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
+st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], width=350, caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
+st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=350, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write(f"""In order to investigate the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
