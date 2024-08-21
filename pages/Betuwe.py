@@ -197,7 +197,7 @@ def style_function_bufferstrips(x):
     """
     Use color column to assign color
     """
-    return {"color":x['properties']['color'], "weight":2, "opacity":0.0}
+    return {"color":x['properties']['color'], "weight":2, "fillOpacity": :0.0}
 
 style = {
     "stroke": True,
