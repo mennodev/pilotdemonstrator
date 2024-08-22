@@ -223,7 +223,7 @@ st.write("""Most limiting factor for continuous and calibrated remote sensing wi
 date_range_slider = st.slider(
     "Select a daterange to plot the Sentinel-2 cloudliness",
     min_value=datetime(2016, 1, 1),
-    value= [datetime(2021, 1, 1),datetime(2024, 1, 1)],
+    value= [datetime(2022, 3, 1),datetime(2022, 9, 1)],
     max_value=datetime(2024, 5, 31),
     )
 st.write(f"Plotting AOI cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
@@ -279,27 +279,47 @@ st.write(f"Check whether the reads are in line with meteorological reads by the 
 
 df_debilt = load_meteo_data()
 date_range_slider_meteo = st.slider(
-    "Select a daterange to plot the Sentinel-2 cloudliness",
+    "Select a daterange to plot the meteorological cloudliness",
     min_value=datetime(2016, 1, 1),
     value= [datetime(2022, 1, 1),datetime(2023, 1, 1)],
     max_value=datetime(2024, 6, 2),
     )
-st.write(f"""Plotting cloudliness according to meteo for selecte date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
-0 indicate unclouded coditions to  9 indicating total cloudcover""")
+date_range_slider_hours = st.slider(
+    "Select an hour range to plot the meteorological cloudliness",
+    min_value=1,
+    value= [10,15],
+    max_value=24,
+    )
+st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[0]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
+0 indicate unclouded coditions to 9 indicating total cloudcover""")
+
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
-total_reads_meteo = len(df_selection_meteo.index)
-df_unclouded_meteo = df_selection_meteo.loc[(df_selection_meteo['cloudscale'] <= 1)]
+# Filter for the hours between 10 and 15
+df_filtered = df_selection_meteo[(df_selection_meteo['hour'] >= 10) & 
+                                 (df_selection_meteo['hour'] <= 15)]
+
+# Group by date and calculate the mean for each day
+df_grouped = df_filtered.groupby(df_filtered['datetime'].dt.date)['cloudscale'].mean().reset_index()
+# Rename columns for clarity
+df_grouped.columns = ['date', 'mean_cloudscale']
+
+# Convert date back to datetime format for plotting
+df_grouped['date'] = pd.to_datetime(df_grouped['date'])
+
+# Display the bar chart
+chart_meteo = alt.Chart(df_grouped).mark_bar().encode(
+    x=alt.X('date:T', title='Date'),
+    y=alt.Y('mean_cloudscale', title=f'Mean cloudliness (0-9) from ({date_range_slider_hours[0]}:00-{date_range_slider_hours[1]}:00)'),
+).properties(height=320)
+
+total_reads_meteo = len(df_grouped.index)
+df_unclouded_meteo = df_grouped.loc[(df_grouped['cloudscale'] <= 1)]
 unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
-# Display line chart
-chart_meteo = alt.Chart(df_selection_meteo).mark_line().encode(
-                x=alt.X('datetime:T', title='DateTime'),
-                y=alt.Y('cloudscale', title='Cloudlines (0-9)'),
-                #color='genre:N'
-                ).properties(height=320)
 
 st.altair_chart(chart_meteo.interactive(), use_container_width=True)
-st.write(f"""Found **{total_reads_meteo}** total meteo reads!
+
+st.write(f"""Found **{total_reads_meteo}** total days with meteo reads!
     With **{unclouded_reads_meteo}** unclouded results meaning that overall about **{percentage_meteo} %** skies are unclouded!            
         """)
 
