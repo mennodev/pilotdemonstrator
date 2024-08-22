@@ -290,18 +290,18 @@ date_range_slider_hours = st.slider(
     value= [10,15],
     max_value=24,
     )
-st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[0]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
+st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[1]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
 0 indicate unclouded coditions to 9 indicating total cloudcover""")
 
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 # Filter for the hours between 10 and 15
-df_filtered = df_selection_meteo[(df_selection_meteo['hour'] >= 10) & 
-                                 (df_selection_meteo['hour'] <= 15)]
+df_filtered = df_selection_meteo[(df_selection_meteo['hour'] >= {date_range_slider_hours[0]}) & 
+                                 (df_selection_meteo['hour'] <= {date_range_slider_hours[1]})]
 
 # Group by date and calculate the mean for each day
-df_grouped = df_filtered.groupby(df_filtered['datetime'].dt.date)['cloudscale'].mean().reset_index()
+df_grouped = df_filtered.groupby(df_filtered['datetime'].dt.date)['cloudscale'].min().reset_index()
 # Rename columns for clarity
-df_grouped.columns = ['date', 'mean_cloudscale']
+df_grouped.columns = ['date', 'min_cloudscale']
 
 # Convert date back to datetime format for plotting
 df_grouped['date'] = pd.to_datetime(df_grouped['date'])
@@ -309,11 +309,11 @@ df_grouped['date'] = pd.to_datetime(df_grouped['date'])
 # Display the bar chart
 chart_meteo = alt.Chart(df_grouped).mark_bar().encode(
     x=alt.X('date:T', title='Date'),
-    y=alt.Y('mean_cloudscale', title=f'Mean cloudliness (0-9) from ({date_range_slider_hours[0]}:00-{date_range_slider_hours[1]}:00)'),
+    y=alt.Y('min_cloudscale', title=f'Min cloudliness (0-9)'),
 ).properties(height=320)
 
 total_reads_meteo = len(df_grouped.index)
-df_unclouded_meteo = df_grouped.loc[(df_grouped['mean_cloudscale'] <= 1)]
+df_unclouded_meteo = df_grouped.loc[(df_grouped['min_cloudscale'] <= 1)]
 unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 
