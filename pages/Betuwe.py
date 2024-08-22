@@ -652,9 +652,9 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **The plot of the RVI (and the VV/VH below) does not show clear dips, peaks or other features around mowing events. Therefore it can be condluded that:** 
+    **The plot of the RVI (and the VV/VH below) does not show clear dips, peaks or other features around mowing events. Therefore it can be concluded that:** 
     - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
-    - **The indices do not add any discrimination power for grassland monitoring.**
+    - **The indices do not add any discriminative power for grassland monitoring.**
     """)
 # part on COHERENCE
 
@@ -662,9 +662,9 @@ container.markdown(
 
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
-A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
+A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO are offering. 
 Such constellations have (sub)daily revisit times increasing the chance of succesful reads. The succesfulness of this approach is explored in the topic on cloudiness using meteo reads.
-An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper]({url_planet_fusion_white_paper}).
+An additional approach is to use daily revisit images, in combination with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper]({url_planet_fusion_white_paper}).
 Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI. Fields with additional blue shading of the polygons are fields with in-situ mowing and grazing data""")
 
 pf_fields = load_planet_fusion_csv()
@@ -751,11 +751,11 @@ container.markdown(
     **The above plot clearly shows the added value of this methodology**
     - **Using daily revisit cadency and incorporating imagery from free-of-charge sensor adds additional reads compared to using only Sentinel-2**
     - **Machine learning can be leveraged to interpolate the timeseries**
-    - **Allows for smooth timeseries and clearer determination of dips indicating mowing events**
-    - **Not all dips are explained by mowing events. Natural drying of grass is also reason for NDVI dips.**
+    - **It allows for smooth timeseries and clearer determination of dips indicating mowing events**
+    - **Not all dips are explained by mowing events. Natural drying of grass is also a reason for NDVI dips.**
     """)
 
-st.subheader("Topic 3 : Bufferstrips in AOI the Betuwe")
+st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
 st.write(f"""
 **Buffer strips** are designated non-productive areas surrounding the main crop on the edges of the parcels with different management and/or landcover. 
 On buffer strips typically no use of agro-chemicals and manure application is allowed. Beside the management also the landcover can be distinct; this can be cover crops like grass, herb-rich mixtures or flower borders. 
@@ -766,7 +766,7 @@ st.write(f"""
 The **obligatory** buffer strips within the **CAP** are related to **water protection** and **manure placement directives**. Depending on the waterbody type (related to width, depth, water throughput and its vulnerability) and crop type a certain distance should be respected excluding the sloping part. 
 The buffer distances are 5, 3 or 1 meter wide. Crops associated with high agro-chemical use or side-way spraying like fruit trees have a large buffer strip of 5 meter. This is especially relevant for this AOI since a lot of fruit is produced in this region.""")
 st.write(f"""
- Buffer strips can also be created to fullfill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
+ Buffer strips can also be created to fulfill the requirement of leaving 4% fallow of total parcels under control of the farmer. With buffer strips we can distinguish **managed** and **unmanaged** strips where in the managed strips a certain crop type or mixture is sown in deliberately while the unmanaged bufferstrips has spontaneous vegetation.
  Below we will explore some raster and LPIS data to check how bufferstrips can be monitored and how this relates to cadency of EO.
  It is good to note that because of the scale of the bufferstrips (1-5 meter) the EO data used will be Very High Resolution (VHR) imagery with a sub-meter resolution like Pleiades NEO and SuperView NEO. Besides spaceborn source also aerial imagery is a good source of high resolution data""")
 
@@ -817,8 +817,8 @@ st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], widt
 st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=350, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
-st.write(f"""In order to investigate the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
-For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below as static images as proofs that the decleration is not correct.
+st.write(f"""In order to investigate more in depth the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
+For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below as static images to support that the declaration is not correct.
 """)
 st.image(["data/images/ProbWrongDecl_NEO4.png","data/images/ProbWrongDecl_NEO3.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
 st.image(["data/images/ProbWrongDecl_NEO2.png","data/images/ProbWrongDecl_NEO1.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
@@ -839,10 +839,10 @@ container = st.container(border=True)
 container.write(f"**General conclusion on bufferstrips**")
 container.markdown(
     """
-    **For monitoring the bufferstrip we can conclude the following things**
-    - **Since many bufferstrip need to be present whole year round or a significant time of the year cadency is not of utmost importance**
-    - **Sub-meter resolution of EO imagery is of utmost importance due to buffer strips being narrow**
-    - **A (gauranteed cloud-free) aerial image in each growing season with super high resolution (8cm-25cm) brings much added value for the CAP in terms of monitoring parcel delineations**
-    - **VHR like Pleiades NEO and SuperView NEO are valuable for in-season checking and have added value by also capturing the Near-Infrared values of crops**
+    **For monitoring the bufferstrip we can conclude:**
+    - **Since many bufferstrip need to be present either the whole year round or a significant time of the year cadency is not of utmost importance**
+    - **Sub-meter resolution of EO imagery is of utmost importance, because buffer strips are narrow**
+    - **A (guaranteed cloud-free) aerial image in each growing season with super high resolution (8cm-25cm) brings much added value for the CAP, to enable inspection of parcel delineations**
+    - **VHR like Pleiades NEO and SuperView NEO are valuable for in-season checking and have added value by capturing the Near-Infrared values of crops**
     """)
 
