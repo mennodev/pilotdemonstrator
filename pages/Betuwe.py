@@ -73,6 +73,17 @@ event_colors = {
     'Mowing': 'darkgreen',
     'Grazing': 'lightgreen'
 }
+
+# Define the mapping from orbit numbers to the desired string values
+orbit_mapping = {
+    161: 'A161',
+    88: 'A088',
+    37: 'D037',
+    110: 'D110'
+}
+
+
+
 def parse_dates(date_str):
     if pd.notnull(date_str) and date_str.startswith('20'):
         return [datetime.strptime(date, '%Y%m%d') for date in date_str.split('_')]
@@ -128,6 +139,8 @@ def load_parquet():
 
 def load_GRD_parquet():
     df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    # Apply the mapping to the 'orbit' column to change from numbers to string with Ascending and Descending
+    df['orbit'] = df['orbit'].map(orbit_mapping)
     return df
 
 def load_parquet_tf():
@@ -136,6 +149,8 @@ def load_parquet_tf():
 
 def load_GRD_parquet_tf():
     df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2022_pq.parquet", engine='pyarrow')
+    # Apply the mapping to the 'orbit' column to change from numbers to string with Ascending and Descending
+    df['orbit'] = df['orbit'].map(orbit_mapping)
     return df
 
 
@@ -537,7 +552,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         }).encode(
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB)'),
-            color=alt.Color('orbit:N', title='Orbit Number'),
+            color=alt.Color('orbit:N', title='Relative Orbit Number'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
@@ -639,6 +654,10 @@ container.markdown(
     - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
     - **The indices do not add any discrimination power for grassland monitoring.**
     """)
+# part on COHERENCE
+
+
+
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
 A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
