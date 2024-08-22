@@ -230,18 +230,18 @@ style = {
 #load data
 df_clouds = load_cloudliness_data()
 
-st.subheader("Topic 1 : General succesfullnes of optical data reads")
+st.subheader("Topic 1 : General succesfulness of optical data reads")
 st.write("""Most limiting factor for continuous and calibrated remote sensing with optical data is disturbance and occlusion due to atmospheric changes like clouds and cirrus. 
-            To get an insight the general cloudliness in the AOI is explored.
+            To get an insight the general cloudiness in the AOI is explored.
             """)
 # initialize slider
 date_range_slider = st.slider(
-    "Select a daterange to plot the Sentinel-2 cloudliness",
+    "Select a daterange to plot the Sentinel-2 cloudiness",
     min_value=datetime(2016, 1, 1),
     value= [datetime(2022, 3, 1),datetime(2022, 9, 1)],
     max_value=datetime(2024, 5, 31),
     )
-st.write(f"Plotting AOI cloudliness for selecte date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
+st.write(f"Plotting AOI cloudiness for the selected date range **{date_range_slider[0]:%B %d, %Y}** and **{date_range_slider[1]:%B %d, %Y}**")
 df_selection = df_clouds.loc[(df_clouds['datetime'] >= date_range_slider[0]) & (df_clouds['datetime'] <= date_range_slider[1])]
 total_reads = len(df_selection.index)
 df_unclouded = df_selection.loc[(df_selection['cloudliness'] <= 0.2)]
@@ -250,7 +250,7 @@ percentage = round((unclouded_reads/total_reads)*100,2)
 # Display line chart
 chart = alt.Chart(df_selection).mark_bar().encode(
                 x=alt.X('datetime:T', title='Date'),
-                y=alt.Y('cloudliness:Q', title='Cloudliness'),
+                y=alt.Y('cloudliness:Q', title='Cloudiness'),
                 #color='genre:N'
                 ).properties(height=320)
 
@@ -258,7 +258,7 @@ st.altair_chart(chart.interactive(), use_container_width=True)
 st.write(f"""Found **{total_reads}** total Sentinel-2 reads!
     With **{unclouded_reads}** unclouded results yielding about **{percentage} %** usable imagery!            
         """)
-st.write(f"""Check whether the cloudliness is spatially distributed within the AOI.
+st.write(f"""Check whether the cloudiness is spatially distributed within the AOI.
 In order to check the spatial distribution in the AOI the following method is applied.
 Use the cloud identification per pixel per read in the years ranging from 2016 to 2024 and calculate the percentage of unclouded pixels"""
 )
@@ -288,25 +288,25 @@ map = st_folium(
     key="folium_map",
     layer_control=control
 )
-st.write(f"The cloud free pixel values are represented ranging from darkorange (35% cloud free) to green (40% cloud free). So the cloudliness variability in the AOI is very low, but there is some spatial distribution.")
+st.write(f"The cloud free pixel values are represented ranging from darkorange (35% cloud free) to green (40% cloud free). So it can be seen that the cloudiness variability in the AOI is very low, but there is some spatial distribution.")
 url_knmi = 'https://www.knmi.nl/home'
 st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
 
 df_debilt = load_meteo_data()
 date_range_slider_meteo = st.slider(
-    "Select a daterange to plot the meteorological cloudliness",
+    "Select a daterange to plot the meteorological cloudiness",
     min_value=datetime(2016, 1, 1),
     value= [datetime(2022, 1, 1),datetime(2023, 1, 1)],
     max_value=datetime(2024, 6, 2),
     )
 date_range_slider_hours = st.slider(
-    "Select an hour range to plot the meteorological cloudliness",
+    "Select an hour range to plot the meteorological cloudiness",
     min_value=1,
     value= [10,15],
     max_value=24,
     )
-st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[1]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.""")
-st.write(f"""0 indicating unclouded coditions to 9 indicating total cloudcover""")
+st.write(f"""Plotting cloudiness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[1]}** for the selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.""")
+st.write(f"""0 indicate unclouded conditions to 9 indicating total cloudcover""")
 
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 # Filter for the hours between 10 and 15
@@ -324,7 +324,7 @@ df_grouped['date'] = pd.to_datetime(df_grouped['date'])
 # Display the bar chart
 chart_meteo = alt.Chart(df_grouped).mark_bar().encode(
     x=alt.X('date:T', title='Date'),
-    y=alt.Y('min_cloudscale', title=f'Min cloudliness (0-9)'),
+    y=alt.Y('min_cloudscale', title=f'Min cloudiness (0-9)'),
 ).properties(height=320)
 
 total_reads_meteo = len(df_grouped.index)
@@ -341,8 +341,8 @@ st.write(f"""Found **{total_reads_meteo}** total days with meteo reads!
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.write(f"""
-                High occurence and variability of clouds in the AOI leading to drastic reduction of succesfull reads with optical imagery.
-                Introducing higher cadence mitigates many issues of unsuccesfull reads, but some extended intervals (multiple weeks) with cloud occurence remain in the AOI
+                High occurrence and variability of clouds in the AOI are drastically reducing succesful reads of optical imagery.
+                Introducing higher cadence mitigates many issues of unsuccesful reads, but some extended intervals (multiple weeks) with cloud occurence remain in the AOI
                 """)
 
 #try:
@@ -360,12 +360,12 @@ map = st_folium(
 # Add the Folium map to the Streamlit app using the st_folium library
 url_cbs = 'https://www.cbs.nl/nl-nl/cijfers/detail/7140gras'
 st.subheader("Topic 2 : Grassland management in the Betuwe")
-st.write(f"""Grass is a major **fodder** crop in the Netherlands and is utilized via **grazing** by livestock and **mowing**. 
-            The [central bureau for statistics (CBS)]({url_cbs}) published data on grasslandmowing presented in the table below.
-            Using this data we can estimate that traditionally on average a grass field is mowed between 2.1 to 2.85 times.
-            However some fields will not be mowed at all due to grazing, so the numbers of 'cuts' per season will be much higher for other grassland parcels.
+st.write(f"""Grass is a major **fodder** crop in the Netherlands and is utilized by livestock **grazing** or by **mowing**. 
+            The [Central Bureau for Statistics (CBS)]({url_cbs}) published data on grassland mowing (see table below).
+            Using this data we can estimate that traditionally on average a grass field is mowed between 2.1 to 2.85 times. However some fields will not be mowed at all due to grazing, so the numbers of 'cuts' per season will be much higher for other grassland parcels. 
+            Without grazing usually 4 cuts are executed in one year. This [study](https://edepot.wur.nl/20296) also found that the ammount of cuts is also related to soiltypes; peat and clay soils have less cuts on average compared to wet and dry sandy soils. 
             The first cut of the season is much dependant on weather conditions. The temperature sum (TSum) is a good proxy to determine grassland readiness.
-            In the fall and winter, after Octobre traditionally no mowing is performed as well due to the risk of frost damage.
+            In the fall and winter traditionally (after October) no mowing is performed as well due to the risk of frost damage. However this is shifting to later in the season due to the lack of frost periods induced by climate change.
             Below we will further explore the grasslands, the management and CAP related regulation in the AOI 'Betuwe'.
             """)
 cbs_df = pd.read_csv("data/dataframes/Grassland_statistics.csv",delimiter=';',dtype=str)
@@ -374,7 +374,7 @@ st.table(cbs_df)
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
 st.write(f"""LPIS data for the AOI reveals that 53.6 percent of the area is under grassland and 42.4 is under cropland. The remaining part is under management like fallow land, wooded patches or landscape elements.
-            To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads to explore capabilities of monitoring grasslands within the CAP using EO.
+            To investigate further the grasslands in the western part of the AOI is plotted and linked to satellite reads; as such capabilities of monitoring grasslands within the CAP using EO can be explored.
             The grasslands can be subdivided in permanent grasslands, temporary grasslands and grasslands sown with a mix of seeds for agricultural purposes and nature conservation purposes.""")
 
 geojson = load_geojson()
@@ -415,7 +415,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
-        st.write('Chart of succesfull NDVI reads by Sentinel-2')
+        st.write('Chart of succesful NDVI reads by Sentinel-2')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
 with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
@@ -441,7 +441,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
 
-        st.write('Chart of Sentinel-1 reads seperated per orbit')
+        st.write('Chart of Sentinel-1 reads separated per orbit')
         st.altair_chart(chart_grd.interactive(), use_container_width=True)
 
 container = st.container(border=True)
@@ -453,15 +453,16 @@ container.markdown(
     - No data is available in the date range from end june to end of august when often one of the mowing event takes place.
     - Data is more sparse in the winter and fall. First mowing in April/May is often not captured.
 
-    Sentinel-1 has multiple orbits in the AOI and reads are independent from cloud conditions. 
-    - Within the AOI the cadency is 3 to 4 days
-    - Comparing the data between orbits is not directly straightforward
-    - The data is not robust enough to be used to capture clear mowing events
+    Sentinel-1 has multiple orbits (two descending and two ascending orbits) in the AOI and reads are independent from cloud conditions 
+    - Within the AOI the cadency is fairly high with 3 to 4 days between revisits
+    - Comparing the data between the direction of the orbits is not directly straightforward
+    - The data is not directly indicating clear mowing events; probably due to grasslands often being smaller fields and the backscatter signal has noise/speckles
     
     **OVERALL FIRST CONCLUSION**
 
-    - **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesfull capture although this is not a panacae due to cloudy periods.**
-    - **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust monitoring of grassland management like mowing.**
+    - **SENTINEL-2 would benefit from an increased cadency to increase the chance of a succesful capture although this is not a panacae due to cloudy periods.**
+    - **Simple plotting of Sentinel-1 and Sentinel-2 timeseries will not yield in robust, fully automated monitoring of grassland management like mowing**
+    - **However such plots can help to monitor certain parts of the regulations or flag fields for further investigation**
     - **In-situ data is needed to conclude which characteristics mowing events have in the reads and whether calculations exists to make Sentinel-1 reads more robust.** 
     """)
 
@@ -520,7 +521,7 @@ with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
-        st.write('Chart of succesfull NDVI reads by Sentinel-2')
+        st.write('Chart of succesful NDVI reads by Sentinel-2')
         # add mowing and grazing dates if df is not empty
         if not event_df.empty:
             rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
@@ -587,8 +588,9 @@ container.markdown(
     **The graph showing the Sentinel-2 reads and Sentinel-1 in combination with the in-situ data on mowing and grazing shows us the following.**
     - **Many mowing events are reflected by a drop in NDVI**
     - **Grazing hardly impacts the NDVI and cannot be monitored by NDVI reads**
-    - **Not all drops in NDVI in the graphs are related to mowing, but sometimes related to natural processes like drought (see especially period from August 10th to September 1st)**.
-    - **The sigma0 Sentinel-1 VV and VH plots are not suitable at all to indicate mowing events. The question is whether the radar data can be manipulated to generate robust indices.**
+    - **Not all drops in NDVI in the graphs are related to mowing, but are rather related to natural processes like drought (see especially the period from August 10th to September 1st)**
+    - **The analysis ready sigma0 Sentinel-1 VV and VH plots do not seem suitable to indicate mowing events. Probably this is also related to the structure of the grass not changing that much after mowing** 
+    - **The question remains whether the radar data can be manipulated or using the complex values to generate robust indices.**
     """)
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
 st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
@@ -661,7 +663,7 @@ container.markdown(
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
 A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO. 
-Such constellations have (sub)daily revisit times increasing the chance of succesfull reads. The succesfullness of this approach is explored in the topic on cloudliness using meteo reads.
+Such constellations have (sub)daily revisit times increasing the chance of succesful reads. The succesfulness of this approach is explored in the topic on cloudiness using meteo reads.
 An additional approach is to use daily revisit images, combine these with free imagery from e.g. the Sentinel-2 and Landsat sensors and use Machine Learning to predict/interpolate pixels for clouded days to ensure a continuous daily monitoring. This approach is explained in [this white paper]({url_planet_fusion_white_paper}).
 Below a plot is given to explore the usefullness and accuracy of such approaches for grassland monitoring in the AOI. Fields with additional blue shading of the polygons are fields with in-situ mowing and grazing data""")
 
