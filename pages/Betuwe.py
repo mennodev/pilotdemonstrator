@@ -313,7 +313,7 @@ chart_meteo = alt.Chart(df_grouped).mark_bar().encode(
 ).properties(height=320)
 
 total_reads_meteo = len(df_grouped.index)
-df_unclouded_meteo = df_grouped.loc[(df_grouped['cloudscale'] <= 1)]
+df_unclouded_meteo = df_grouped.loc[(df_grouped['mean_cloudscale'] <= 1)]
 unclouded_reads_meteo = len(df_unclouded_meteo.index)
 percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 
