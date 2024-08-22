@@ -437,7 +437,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         }).encode(
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB)'),
-            color=alt.Color('orbit:N', title='Orbit Number'),
+            color=alt.Color('orbit:N', title='Relative Orbit'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
 
@@ -552,7 +552,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
         }).encode(
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB)'),
-            color=alt.Color('orbit:N', title='Relative Orbit Number'),
+            color=alt.Color('orbit:N', title='Relative Orbit'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
@@ -620,7 +620,7 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             y=alt.Y('Value:Q',
             scale = alt.Scale(domain=[min_RVI,max_RVI])), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            color=alt.Color('orbit:N', title='Orbit Number'),
+            color=alt.Color('orbit:N', title='Relative Orbit'),
             strokeDash='Indices',
         ).properties(height=320).interactive()
         #
