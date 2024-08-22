@@ -284,7 +284,7 @@ m1.fit_bounds(image_bounds_betuwe, padding=(0, 0))
 control = folium.LayerControl(collapsed=False)
 map = st_folium(
     m1,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map",
     layer_control=control
 )
@@ -353,7 +353,7 @@ container.write(f"""
 
 map = st_folium(
     m1,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map"
 )
 
@@ -393,7 +393,7 @@ osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map"
 )
 with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
@@ -487,7 +487,7 @@ folium.GeoJson(data=geojson_testfields,
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_tf)
 map_tf = st_folium(
     m_tf,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map"
 )
 
@@ -684,7 +684,7 @@ folium.GeoJson(data=pf_fields,
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_pf = st_folium(
     m_pf,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map"
 )
 
@@ -808,7 +808,7 @@ control = folium.LayerControl(collapsed=False)
 #folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_pf)
 map_bs = st_folium(
     m_bs,
-    width=725, height=300,
+    width=700, height=300,
     key="folium_map",
     layer_control=control
 )
