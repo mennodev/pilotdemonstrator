@@ -295,8 +295,8 @@ st.write(f"""Plotting cloudliness according to meteo between the hours **{date_r
 
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 # Filter for the hours between 10 and 15
-df_filtered = df_selection_meteo[(df_selection_meteo['hour'] >= {date_range_slider_hours[0]}) & 
-                                 (df_selection_meteo['hour'] <= {date_range_slider_hours[1]})]
+df_filtered = df_selection_meteo[(df_selection_meteo['hour'] >= date_range_slider_hours[0]) & 
+                                 (df_selection_meteo['hour'] <= date_range_slider_hours[1])]
 
 # Group by date and calculate the mean for each day
 df_grouped = df_filtered.groupby(df_filtered['datetime'].dt.date)['cloudscale'].min().reset_index()
