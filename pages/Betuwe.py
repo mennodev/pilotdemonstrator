@@ -320,7 +320,7 @@ percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 st.altair_chart(chart_meteo.interactive(), use_container_width=True)
 
 st.write(f"""Found **{total_reads_meteo}** total days with meteo reads!
-    With **{unclouded_reads_meteo}** unclouded hours within the hour range meaning that overall about **{percentage_meteo} %** skies are unclouded within selected timerange!            
+    With **{unclouded_reads_meteo}** unclouded hours within the hour range. This means that overall about **{percentage_meteo} %** have unclouded hours within selected timerange!            
         """)
 
 container = st.container(border=True)
