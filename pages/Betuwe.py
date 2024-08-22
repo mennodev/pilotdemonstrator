@@ -233,7 +233,7 @@ df_unclouded = df_selection.loc[(df_selection['cloudliness'] <= 0.2)]
 unclouded_reads = len(df_unclouded)
 percentage = round((unclouded_reads/total_reads)*100,2)
 # Display line chart
-chart = alt.Chart(df_selection).mark_line().encode(
+chart = alt.Chart(df_selection).mark_bar().encode(
                 x=alt.X('datetime:T', title='Date'),
                 y=alt.Y('cloudliness:Q', title='Cloudliness'),
                 #color='genre:N'
