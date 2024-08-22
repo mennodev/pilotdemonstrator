@@ -290,8 +290,8 @@ date_range_slider_hours = st.slider(
     value= [10,15],
     max_value=24,
     )
-st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[1]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.
-0 indicate unclouded coditions to 9 indicating total cloudcover""")
+st.write(f"""Plotting cloudliness according to meteo between the hours **{date_range_slider_hours[0]}** and **{date_range_slider_hours[1]}** for selected date range **{date_range_slider_meteo[0]:%B %d, %Y}** and **{date_range_slider_meteo[1]:%B %d, %Y}**.""")
+st.write(f"""0 indicating unclouded coditions to 9 indicating total cloudcover""")
 
 df_selection_meteo = df_debilt.loc[(df_debilt['datetime'] >= date_range_slider_meteo[0]) & (df_debilt['datetime'] <= date_range_slider_meteo[1])]
 # Filter for the hours between 10 and 15
@@ -320,7 +320,7 @@ percentage_meteo = round((unclouded_reads_meteo/total_reads_meteo)*100,2)
 st.altair_chart(chart_meteo.interactive(), use_container_width=True)
 
 st.write(f"""Found **{total_reads_meteo}** total days with meteo reads!
-    With **{unclouded_reads_meteo}** unclouded hours within the hour range meaning that overall about **{percentage_meteo} %** skies are unclouded within selecte timerange!            
+    With **{unclouded_reads_meteo}** unclouded hours within the hour range meaning that overall about **{percentage_meteo} %** skies are unclouded within selected timerange!            
         """)
 
 container = st.container(border=True)
