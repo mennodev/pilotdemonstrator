@@ -677,6 +677,8 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         # drop na if date cannot be parsed
         df_melted_tf_COH.dropna(subset=['date'], inplace=True)
         st.dataframe(df_melted_tf_COH)
+        # get columntypes for debugging
+        st.write(df_melted_tf_COH.dtypes)
         #st.write(df_melted_tf_COH['date'].values)
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
@@ -687,9 +689,9 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             y=alt.Y('COH12:Q'),
             #scale = alt.Scale(domain=[min_RVI,max_RVI])), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            #color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
-            #strokeDash='Polarization:N',
-            #detail='IW:N',
+            color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
+            strokeDash='Polarization:N',
+            detail='IW:N',
             tooltip=['gid','date', 'value', 'IW', 'Relative Orbit']
         ).properties(height=320).interactive()
         #
