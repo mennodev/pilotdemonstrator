@@ -676,6 +676,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
         # drop na if date cannot be parsed
         df_melted_tf_COH.dropna(subset=['date'], inplace=True)
+        df_melted_tf_COH = df_melted_tf_COH.convert_dtypes(infer_objects=True)
         st.dataframe(df_melted_tf_COH)
         # get columntypes for debugging
         st.write(df_melted_tf_COH.dtypes)
