@@ -602,7 +602,8 @@ container.markdown(
     """)
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
 st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
-See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). The below plot shows the plot of RVI.
+See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). Also the coherence between two reads can be a useful metric to flag changes. The higher the coherence the lower the changes measured. With events like mowing a dip in coherence is expected. 
+The plots below shows the plot of RVI and VV/VH ratio. The second plot shows the coherence of images with 12 days apart during a large part of the growing season. It is good to note that since 2021 one Sentinel-1 sensor is available and therefore the cadency of the coherence product is reduced from 6 to 12 days. Also coherence products are not readily available for these seasons on Dataspace providers, therefore the graph is showing self-processed coherence reads and is limited to a part of the season (march - july).
 """)
 st.latex(r'''
     RVI = \frac{4 \cdot V H}{V H + V V}
@@ -731,6 +732,11 @@ container.markdown(
     **The plot of the RVI (and the VV/VH below) does not show clear dips, peaks or other features around mowing events. Therefore it can be concluded that:** 
     - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
     - **The indices do not add any discriminative power for grassland monitoring.**
+    **The plot of the COH12 do show lower coherence around the mowing dates and an increasing coherence between mowing dates. Therefore it can be concluded that:** 
+    - **Coherence seems to be a usefull metric for event detection like mowing**
+    - **A increased cadency (e.g. 6 days) will likely show clearer dips**
+    - **Coherence reads are probably more robust with increased resolution or larger fields compared to the size of grassland fields in the AOI**
+    - **Coherence also drops to phenological changes during the season and field circumstances like moisture on the leaves** 
     """)
 
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
