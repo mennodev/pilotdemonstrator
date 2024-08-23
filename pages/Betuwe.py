@@ -153,6 +153,10 @@ def load_GRD_parquet_tf():
     df['orbit'] = df['orbit'].map(orbit_mapping)
     return df
 
+def load_coh_csv():
+    df = pd.read_parquet("data/dataframes/coh_grassland_parcels_maurik.csv")
+    return df
+
 
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
@@ -648,6 +652,66 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
             base_chart_grd_tf_rvi += rules_grazing
         st.write('Chart of Sentinel-1 RVI reads seperated per orbit')
         st.altair_chart(base_chart_grd_tf_rvi.interactive(), use_container_width=True)
+
+df_COH_tf = load_coh_csv()
+with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
+    if map_tf.get("last_object_clicked_tooltip"):
+        fid_to_plot_tf = get_fid_from_tooltip(map_tf["last_object_clicked_tooltip"])
+    if fid_to_plot_tf is not None:
+        # subselect data
+        df_selection_COH_tf = df_COH_tf.loc[df_COH_tf['fid'] == fid_to_plot_tf]
+        
+        #min_COH = df_selection_COH_tf['RVI'].values.min()
+        #max_COH = df_selection_COH_tf['RVI'].values.max()
+        #st.dataframe(data=df_selection_GRD_tf.head(20))
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted_tf_COH = df_selection_COH_tf.melt(id_vars=['fid','field_2','field_3','field_4','field_5','field_7','gid','landgebrui','gws_gewas','gewascode','area','mowed','grazed','geometry'],
+        var_name='coherence_identifier', value_name='COH12')
+        # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
+        df_melted_tf_COH[['Polarization', 'date_range', 'IW', 'Relative Orbit']] = df_melted_tf_COH['coherence_identifier'].str.extract(
+        r'(cohvv|cohvh)_(\d+T\d+_\d+T\d+)_IW(\d+)_(\w+)'
+        )
+        # parse to date
+        df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
+
+        #st.dataframe(data=df_melted.head(10))
+        # Create the Altair chart
+        base_chart_COH_tf = alt.Chart(df_melted_tf_COH).mark_line(point={
+            "filled": False,
+            "fill": "white"}).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('COH12:Q'),
+            #scale = alt.Scale(domain=[min_RVI,max_RVI])), 
+            #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
+            color=alt.Color('orbit:N', title='Relative Orbit'),
+            strokeDash='Polarization:N',
+            detail='IW:N',
+            tooltip=['gid','date', 'value', 'IW', 'orbit_number']
+        ).properties(height=320).interactive()
+        #
+        # Check if list_1_dates is not empty and create vertical line rules
+        if len(mowing_dates_to_plot) != 0:
+            rules_mowing = alt.Chart(pd.DataFrame({
+                'Mowing': mowing_dates_to_plot
+            })).mark_rule(color='darkgreen').encode(
+                x=alt.X('Mowing:T'),
+                #,
+                
+            )
+            base_chart_COH_tf += rules_mowing
+
+        if len(grazing_dates_to_plot) != 0:
+            rules_grazing = alt.Chart(pd.DataFrame({
+                'Grazing': grazing_dates_to_plot
+            })).mark_rule(color='lightgreen').encode(
+                x=alt.X('Grazing:T'),
+                #,
+               
+            )
+            base_chart_COH_tf += rules_grazing
+        st.write('Chart of Sentinel-1 COH reads seperated per relative orbit and IW')
+        st.altair_chart(base_chart_COH_tf.interactive(), use_container_width=True)
+
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
@@ -656,9 +720,6 @@ container.markdown(
     - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
     - **The indices do not add any discriminative power for grassland monitoring.**
     """)
-# part on COHERENCE
-
-
 
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
