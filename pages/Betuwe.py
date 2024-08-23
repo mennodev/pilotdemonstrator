@@ -737,7 +737,7 @@ container.markdown(
     - **Coherence seems to be a usefull metric for event detection like mowing**
     - **A increased cadency (e.g. 6 days) will likely show clearer dips**
     - **Coherence reads are probably more robust with increased resolution or larger fields compared to the size of grassland fields in the AOI**
-    - **Coherence also drops to phenological changes during the season and field circumstances like moisture on the leaves** 
+    - **Coherence also drops to phenological changes during the season and field circumstances like moisture on the leaves, making the methodolgy less robust** 
     """)
 
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
