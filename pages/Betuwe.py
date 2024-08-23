@@ -674,6 +674,9 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         )
         # parse to date
         df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
+        # drop na if date cannot be parsed
+        df_melted_tf_COH.dropna(subset=['date'], inplace=True)
+
         st.write(df_melted_tf_COH['date'].values)
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
