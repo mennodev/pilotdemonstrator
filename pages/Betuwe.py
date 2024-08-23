@@ -667,13 +667,14 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         # Melt the DataFrame to have a long format suitable for Altair
         df_melted_tf_COH = df_selection_COH_tf.melt(id_vars=['fid','field_2','field_3','field_4','field_5','field_7','gid','landgebrui','gws_gewas','gewascode','area','mowed','grazed','geometry'],
         var_name='coherence_identifier', value_name='COH12')
+        st.dataframe(df_melted_tf_COH)
         # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
         df_melted_tf_COH[['Polarization', 'date_range', 'IW', 'Relative Orbit']] = df_melted_tf_COH['coherence_identifier'].str.extract(
         r'(cohvv|cohvh)_(\d+T\d+_\d+T\d+)_IW(\d+)_(\w+)'
         )
         # parse to date
         df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
-
+        st.write(df_melted_tf_COH['date'].values)
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
         base_chart_COH_tf = alt.Chart(df_melted_tf_COH).mark_line(point={
