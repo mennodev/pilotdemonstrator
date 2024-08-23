@@ -687,8 +687,8 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             y=alt.Y('COH12:Q'),
             #scale = alt.Scale(domain=[min_RVI,max_RVI])), 
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
-            strokeDash='Polarization:N',
+            #color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
+            #strokeDash='Polarization:N',
             #detail='IW:N',
             tooltip=['gid','date', 'value', 'IW', 'Relative Orbit']
         ).properties(height=320).interactive()
