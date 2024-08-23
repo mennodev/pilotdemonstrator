@@ -154,7 +154,7 @@ def load_GRD_parquet_tf():
     return df
 
 def load_coh_csv():
-    df = pd.read_parquet("data/dataframes/coh_grassland_parcels_maurik.csv")
+    df = pd.read_csv("data/dataframes/coh_grassland_parcels_maurik.csv")
     return df
 
 
