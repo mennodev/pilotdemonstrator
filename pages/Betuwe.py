@@ -698,7 +698,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
             strokeDash='Polarization:N',
             detail='IW:N',
-            tooltip=['gid','date', 'value', 'IW', 'Relative Orbit']
+            
         ).properties(height=320).interactive()
         #
         # Check if list_1_dates is not empty and create vertical line rules
@@ -710,7 +710,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
                 #,
                 
             )
-            #base_chart_COH_tf += rules_mowing
+            base_chart_COH_tf += rules_mowing
 
         if len(grazing_dates_to_plot) != 0:
             rules_grazing = alt.Chart(pd.DataFrame({
@@ -720,7 +720,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
                 #,
                
             )
-            #base_chart_COH_tf += rules_grazing
+            base_chart_COH_tf += rules_grazing
         st.write('Chart of Sentinel-1 COH reads seperated per relative orbit and IW')
         st.altair_chart(base_chart_COH_tf.interactive(), use_container_width=True)
 
