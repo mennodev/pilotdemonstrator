@@ -893,20 +893,20 @@ map_bs = st_folium(
     layer_control=control
 )
 st.write("Browsing through the map and checking both the winter as summer images often is sufficient to check the declaration of bufferstrips and the area between waterbodies and fruit plantations.Below two cases are presented as examples.")
-st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], width=350, caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
-st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=350, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
+st.image(["data/images/CorrectDecl_1.png","data/images/CorrectDecl_2.png"], width=350,height=210, caption=["Winter image showing correct delineation of bufferstrip and presence of vegetation","Summer image showing correct delineation of bufferstrip and presence of vegetation"])
+st.image(["data/images/ProbWrongDecl_1.png","data/images/ProbWrongDecl_2.png"],width=350,height=210, caption=["Winter image showing incorrect delineation of fallow land and no vegetation","Winter image showing incorrect delineation of fallow land and no vegetation"])
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write(f"""In order to investigate more in depth the field which is probably wrongly declared as fallow land more in depth we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
 For the AOI Betuwe in 2023 43 images are available. Please note that the footprints of these images do not overlap the AOI entirely and can include some cloudcover. For the field to investigate there are 4 cloudfree images available through the entire year (April 30th, May 14th, June 3rd and September 8th). These images are displayed below as static images to support that the declaration is not correct.
 """)
-st.image(["data/images/ProbWrongDecl_NEO4.png","data/images/ProbWrongDecl_NEO3.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
-st.image(["data/images/ProbWrongDecl_NEO2.png","data/images/ProbWrongDecl_NEO1.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
+st.image(["data/images/ProbWrongDecl_NEO4.png","data/images/ProbWrongDecl_NEO3.png"], width=350,height=210, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
+st.image(["data/images/ProbWrongDecl_NEO2.png","data/images/ProbWrongDecl_NEO1.png"],width=350,height=210, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
 st.write(f"""In order to make even more clear whether vegetation is present the Infra-red channel of the VHR can be leveraged""")
 
-st.image(["data/images/ProbWrongDecl_NEO4_IRG.png","data/images/ProbWrongDecl_NEO3_IRG.png"], width=350, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
-st.image(["data/images/ProbWrongDecl_NEO2_IRG.png","data/images/ProbWrongDecl_NEO1_IRG.png"],width=350, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
+st.image(["data/images/ProbWrongDecl_NEO4_IRG.png","data/images/ProbWrongDecl_NEO3_IRG.png"], width=350,height=210, caption=["Pleiades NEO captured April 30th","Pleiades NEO captured May 14th"])
+st.image(["data/images/ProbWrongDecl_NEO2_IRG.png","data/images/ProbWrongDecl_NEO1_IRG.png"],width=350,height=210, caption=["Pleiades NEO captured June 3d","SuperView NEO captured September 8th"])
 
 container = st.container(border=True)
 container.write(f"**Conclusion on field investigation**")
