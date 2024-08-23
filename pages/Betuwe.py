@@ -670,7 +670,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         
         # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
         df_melted_tf_COH[['Polarization', 'date_range', 'IW', 'Relative Orbit']] = df_melted_tf_COH['coherence_identifier'].str.extract(
-        r'(cohvv|cohvh)_(\d+T\d+_\d+T\d+)_(\d+)_(\w+)'
+        r'(cohvv|cohvh)_(\d+T\d+_\d+T\d+)_IW(\d+)_(\w+)'
         )
         # parse to date
         df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
@@ -689,7 +689,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
             strokeDash='Polarization:N',
-            detail='IW:N',
+            detail='IW:Q',
             tooltip=['gid','date', 'value', 'IW', 'Relative Orbit']
         ).properties(height=320).interactive()
         #
