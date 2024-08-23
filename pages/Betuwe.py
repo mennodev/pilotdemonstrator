@@ -693,8 +693,7 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             "filled": False,
             "fill": "white"}).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('COH12:Q'),
-            scale = alt.Scale(domain=[40,110]), 
+            y=alt.Y('COH12:Q',scale = alt.Scale(domain=[40,110])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
             strokeDash='Polarization:N',
