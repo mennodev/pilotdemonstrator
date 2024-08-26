@@ -848,6 +848,7 @@ df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].
         )
 # parse to date
 df_mean_gws_melt['Date'] = pd.to_datetime(df_mean_gws_melt['Date'])
+st.dateframe(df_mean_gws_melt.head(10))
 # Now group by gws_gewas, date, and convolution to get the mean
 df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'Date', 'Convolution']).mean().reset_index()
 # instantiate altair chart
