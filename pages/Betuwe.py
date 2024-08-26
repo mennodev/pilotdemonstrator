@@ -847,10 +847,10 @@ df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].
         r'(\w+)_(\d+)'
         )
 # parse to date
-df_mean_gws_melt['Date'] = pd.to_datetime(df_mean_gws_melt['Date'])
+df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
 st.dataframe(df_mean_gws_melt.head(10))
 # Now group by gws_gewas, date, and convolution to get the mean
-df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'Date', 'Convolution']).mean().reset_index()
+df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution']).mean().reset_index()
 # instantiate altair chart
 # add means per gws categories here
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
