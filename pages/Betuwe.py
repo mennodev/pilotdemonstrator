@@ -847,12 +847,11 @@ df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].
         r'(\w+)_(\d+)'
         )
 # parse to date
+"""
 df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
-st.dataframe(df_mean_gws_melt.head(10))
 # Now group by gws_gewas, date, and convolution to get the mean
 # Convert the 'read_value' column to numeric, coercing errors to NaN
 df_mean_gws_melt['Mean SD'] = pd.to_numeric(df_mean_gws_melt['Mean SD'], errors='coerce')
-st.dataframe(df_mean_gws_melt.head(10))
 df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution']).mean().reset_index()
 # instantiate altair chart
 # add means per gws categories here
@@ -861,7 +860,8 @@ mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     y=alt.Y('Mean per crop SD:Q'),
     color=alt.Color('Convolution:N', title='Convolution'),
     strokeDash=alt.StrokeDash('gws_gewas:N', title='Crop type'),
-)  
+)
+"""
 # rename
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
     gid_to_plot_pf = 657116
@@ -882,6 +882,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         df_melted_pf_conv[['Convolution', 'Date']] = df_melted_pf_conv['conv_identifier'].str.extract(
         r'(\w+)_(\d+)'
         )
+        st.dataframe(df_melted_pf_conv.head(10))
         # parse to date
         df_melted_pf_conv['date'] = pd.to_datetime(df_melted_pf_conv['Date'])
         # drop na if date cannot be parsed
