@@ -838,14 +838,14 @@ container.markdown(
     - **Not all dips are explained by mowing events. Natural drying of grass is also a reason for NDVI dips.**
     """)
 
-df_conf_pf = load_conv_csv()
+df_conv_pf = load_conv_csv()
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
     gid_to_plot_pf = 657116
     if map_pf.get("last_object_clicked_tooltip"):
         gid_to_plot_pf = get_gid_from_tooltip(map_pf["last_object_clicked_tooltip"])
     if gid_to_plot_pf is not None:
         # subselect data
-        df_selection_conv_pf = df_conv_pf.loc[df_conf_pf['gid'] == gid_to_plot_pf]
+        df_selection_conv_pf = df_conv_pf.loc[df_conv_pf['gid'] == gid_to_plot_pf]
         
         #min_COH = df_selection_COH_tf['RVI'].values.min()
         #max_COH = df_selection_COH_tf['RVI'].values.max()
