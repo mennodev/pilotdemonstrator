@@ -161,6 +161,9 @@ def load_coh_csv():
     df = pd.read_csv("data/dataframes/coh_grassland_parcels_maurik.csv")
     return df
 
+def load_conv_csv():
+    df = pd.read_csv("data/dataframes/conv_grassland_parcels_maurik.csv")
+    return df
 
 def load_geojson():
     # Read GeoJSON data into a GeoDataFrame
@@ -834,6 +837,74 @@ container.markdown(
     - **It allows for smooth timeseries and clearer determination of dips indicating mowing events**
     - **Not all dips are explained by mowing events. Natural drying of grass is also a reason for NDVI dips.**
     """)
+
+df_conf_pf = load_conv_csv()
+with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
+    if map_pf.get("last_object_clicked_tooltip"):
+        gid_to_plot_pf = get_gid_from_tooltip(map_pf["last_object_clicked_tooltip"])
+    if gid_to_plot_pf is not None:
+        # subselect data
+        df_selection_conv_pf = df_conv_pf.loc[df_COH_tf['fid'] == gid_to_plot_pf]
+        
+        #min_COH = df_selection_COH_tf['RVI'].values.min()
+        #max_COH = df_selection_COH_tf['RVI'].values.max()
+        #st.dataframe(data=df_selection_GRD_tf.head(20))
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted_pf_conv = df_selection_conv_f.melt(id_vars=['gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+        var_name='conv_identifier', value_name='Mean SD')
+        
+        # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
+        df_melted_pf_conv[['Convolution', 'Date']] = df_melted_pf_conv['conv_identifier'].str.extract(
+        r'(\w+)_(\d+)'
+        )
+        # parse to date
+        df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['Date'])
+        # drop na if date cannot be parsed
+        df_melted_tf_COH.dropna(subset=['Date'], inplace=True)
+        # Create the Altair chart
+        base_chart_conv_pf = alt.Chart(df_melted_pf_conv).mark_line(point={
+            "filled": False,
+            "fill": "white"}).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('Mean SD:Q'),#,scale = alt.Scale(domain=[40,110])),
+            #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
+            color=alt.Color('Convolution:N', title='Convolution'),
+            #strokeDash='Polarization:N',
+            #detail='IW:N',
+            
+        ).properties(height=320).interactive()
+        #
+        # plot in a graph if available
+        if gid_to_plot_pf in mowing_dates_pf.keys():
+            mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
+        else: mowing_dates_to_plot = []
+        if gid_to_plot_pf in grazing_dates_pf.keys():
+            grazing_dates_to_plot = grazing_dates_pf[gid_to_plot_pf]
+        else: grazing_dates_to_plot = []
+        # combine the two lists into dataframe and add event type
+        event_data = []
+        # Add mowing dates to the event data
+        if mowing_dates_to_plot:
+            event_data.extend([{'Event Date': date, 'Event': 'Mowing'} for date in mowing_dates_to_plot])
+        # Add grazing dates to the event data
+        if grazing_dates:
+            event_data.extend([{'Event Date': date, 'Event': 'Grazing'} for date in grazing_dates_to_plot])
+        # Convert to a DataFrame
+        event_df = pd.DataFrame(event_data)
+        
+        # add mowing and grazing dates if df is not empty
+        if not event_df.empty:
+            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
+                x='Event Date:T',
+                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                size=alt.value(2),  # Set line width
+            )
+            # update final chart
+            base_chart_conv_pf += rules_mowing_grazing
+        st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
+        st.altair_chart(base_chart_conv_pf.interactive(), use_container_width=True)
+
 
 st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
 st.write(f"""
