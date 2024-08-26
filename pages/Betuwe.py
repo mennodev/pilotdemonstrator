@@ -889,7 +889,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             "filled": False,
             "fill": "white"}).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Mean SD:Q', title- 'Mean SD for selected field',scale = alt.Scale(domain=[0,0.20])),
+            y=alt.Y('Mean SD:Q', title= 'Mean SD for selected field',scale = alt.Scale(domain=[0,0.20])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('gws_gewas:N', title='Selected crop'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
             strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
