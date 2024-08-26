@@ -881,7 +881,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         df_melted_pf_conv[['Convolution', 'Date']] = df_melted_pf_conv['conv_identifier'].str.extract(
         r'(\w+)_(\d+)'
         )
-        #st.dataframe(df_melted_pf_conv.head(10))
+        st.dataframe(df_melted_pf_conv.head(10))
         # parse to date
         df_melted_pf_conv['date'] = pd.to_datetime(df_melted_pf_conv['Date'])
         # drop na if date cannot be parsed
