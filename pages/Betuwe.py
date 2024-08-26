@@ -852,14 +852,14 @@ st.dataframe(df_mean_gws_melt)
 # Now group by gws_gewas, date, and convolution to get the mean
 # Convert the 'read_value' column to numeric, coercing errors to NaN
 df_mean_gws_melt['Mean SD'] = pd.to_numeric(df_mean_gws_melt['Mean SD'], errors='coerce')
-df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution']).mean().reset_index()
+df_mean_gws = df_mean_gws_melt.groupby(['gewascode', 'date', 'Convolution']).mean().reset_index()
 # instantiate altair chart
 # add means per gws categories here
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     x=alt.X('date:T', title='Date'),
     y=alt.Y('Mean per crop SD:Q'),
     color=alt.Color('Convolution:N', title='Convolution'),
-    strokeDash=alt.StrokeDash('gws_gewas:N', title='Crop type'),
+    strokeDash=alt.StrokeDash('gewascode:N', title='Crop type'),
 )
 # rename
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
