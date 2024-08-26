@@ -850,6 +850,8 @@ df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].
 df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
 st.dataframe(df_mean_gws_melt.head(10))
 # Now group by gws_gewas, date, and convolution to get the mean
+# Convert the 'read_value' column to numeric, coercing errors to NaN
+df_mean_gws_melt['Mean SD'] = pd.to_numeric(df_mean_gws_melt['Mean SD'], errors='coerce')
 df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution']).mean().reset_index()
 # instantiate altair chart
 # add means per gws categories here
