@@ -874,7 +874,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         #max_COH = df_selection_COH_tf['RVI'].values.max()
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted_pf_conv = df_selection_conv_pf.melt(id_vars=['gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+        df_melted_pf_conv = df_selection_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
         var_name='conv_identifier', value_name='Mean SD')
         
         # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
@@ -902,7 +902,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         # update final chart
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
-        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart).interactive(), use_container_width=True)
+        st.altair_chart(alt.vconcat(base_chart_conv_pf,mean_chart).interactive(), use_container_width=True)
 
 
 st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
