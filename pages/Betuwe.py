@@ -839,6 +839,26 @@ container.markdown(
     """)
 
 df_conv_pf = load_conv_csv()
+# calculate mean of SD for each date, each conv and each gws_gewas type
+df_mean_gws_melt = df_conv_pf.melt(id_vars=['gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+        var_name='conv_identifier', value_name='Mean SD')
+# seperate date and convolution
+df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].str.extract(
+        r'(\w+)_(\d+)'
+        )
+# parse to date
+df_mean_gws_melt['Date'] = pd.to_datetime(df_mean_gws_melt['Date'])
+# Now group by gws_gewas, date, and convolution to get the mean
+df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'Date', 'Convolution']).mean().reset_index()
+# instantiate altair chart
+# add means per gws categories here
+mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
+    x=alt.X('date:T', title='Date'),
+    y=alt.Y('Mean per crop SD:Q'),
+    color=alt.Color('Convolution:N', title='Convolution'),
+    strokeDash=alt.StrokeDash('gws_gewas:N', title='Crop type'),
+)  
+# rename
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
     gid_to_plot_pf = 657116
     if map_pf.get("last_object_clicked_tooltip"):
@@ -874,35 +894,9 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             #detail='IW:N',
             
         ).properties(height=320).interactive()
-        #
-        # plot in a graph if available
-        if gid_to_plot_pf in mowing_dates_pf.keys():
-            mowing_dates_to_plot = mowing_dates_pf[gid_to_plot_pf]
-        else: mowing_dates_to_plot = []
-        if gid_to_plot_pf in grazing_dates_pf.keys():
-            grazing_dates_to_plot = grazing_dates_pf[gid_to_plot_pf]
-        else: grazing_dates_to_plot = []
-        # combine the two lists into dataframe and add event type
-        event_data = []
-        # Add mowing dates to the event data
-        if mowing_dates_to_plot:
-            event_data.extend([{'Event Date': date, 'Event': 'Mowing'} for date in mowing_dates_to_plot])
-        # Add grazing dates to the event data
-        if grazing_dates:
-            event_data.extend([{'Event Date': date, 'Event': 'Grazing'} for date in grazing_dates_to_plot])
-        # Convert to a DataFrame
-        event_df = pd.DataFrame(event_data)
-        
-        # add mowing and grazing dates if df is not empty
-        if not event_df.empty:
-            rules_mowing_grazing = alt.Chart(event_df).mark_rule().encode(
-                x='Event Date:T',
-                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
-                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
-                size=alt.value(2),  # Set line width
-            )
-            # update final chart
-            base_chart_conv_pf += rules_mowing_grazing
+         
+        # update final chart
+        base_chart_conv_pf += mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
         st.altair_chart(base_chart_conv_pf.interactive(), use_container_width=True)
 
