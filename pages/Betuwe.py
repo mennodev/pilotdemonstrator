@@ -840,15 +840,15 @@ container.markdown(
 
 df_conv_pf = load_conv_csv()
 # calculate mean of SD for each date, each conv and each gws_gewas type
-df_mean_gws_melt = df_conv_pf.melt(id_vars=['gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+df_mean_gws_melt = df_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
         var_name='conv_identifier', value_name='Mean SD')
 # seperate date and convolution
 df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].str.extract(
         r'(\w+)_(\d+)'
         )
 # parse to date
-"""
 df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
+st.dataframe(df_mean_gws_melt)
 # Now group by gws_gewas, date, and convolution to get the mean
 # Convert the 'read_value' column to numeric, coercing errors to NaN
 df_mean_gws_melt['Mean SD'] = pd.to_numeric(df_mean_gws_melt['Mean SD'], errors='coerce')
@@ -861,7 +861,6 @@ mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     color=alt.Color('Convolution:N', title='Convolution'),
     strokeDash=alt.StrokeDash('gws_gewas:N', title='Crop type'),
 )
-"""
 # rename
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
     gid_to_plot_pf = 657116
