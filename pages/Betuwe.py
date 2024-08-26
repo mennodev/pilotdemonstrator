@@ -861,7 +861,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         # parse to date
         df_melted_pf_conv['date'] = pd.to_datetime(df_melted_pf_conv['Date'])
         # drop na if date cannot be parsed
-       df_melted_pf_conv.dropna(subset=['Date'], inplace=True)
+        df_melted_pf_conv.dropna(subset=['Date'], inplace=True)
         # Create the Altair chart
         base_chart_conv_pf = alt.Chart(df_melted_pf_conv).mark_line(point={
             "filled": False,
