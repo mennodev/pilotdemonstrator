@@ -163,6 +163,8 @@ def load_coh_csv():
 
 def load_conv_csv():
     df = pd.read_csv("data/dataframes/conv_grassland_parcels_maurik.csv")
+    df['management'] = df['gws_gewas'].map(translation_dict)
+    df['color'] = df['gws_gewas'].map(color_dict)
     return df
 
 def load_geojson():
@@ -839,8 +841,10 @@ container.markdown(
     """)
 
 df_conv_pf = load_conv_csv()
+# map gws gewas to english names
+
 # calculate mean of SD for each date, each conv and each gws_gewas type
-df_mean_gws_melt = df_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+df_mean_gws_melt = df_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry','color','management'],
         var_name='conv_identifier', value_name='Mean SD grouped per crop')
 # seperate date and convolution
 df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].str.extract(
@@ -851,13 +855,13 @@ df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
 # Now group by gws_gewas, date, and convolution to get the mean
 # Convert the 'read_value' column to numeric, coercing errors to NaN
 df_mean_gws_melt['Mean SD grouped per crop'] = pd.to_numeric(df_mean_gws_melt['Mean SD grouped per crop'], errors='coerce')
-df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution'])['Mean SD grouped per crop'].mean().reset_index()
+df_mean_gws = df_mean_gws_melt.groupby(['management', 'date', 'Convolution'])['Mean SD grouped per crop'].mean().reset_index()
 # instantiate altair chart
 # add means per gws categories here
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     x=alt.X('date:T', title='Date'),
     y=alt.Y('Mean SD grouped per crop:Q',scale = alt.Scale(domain=[0,0.20])),
-    color=alt.Color('gws_gewas:N', title='Crop type').scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
+    color=alt.Color('color:N', title='Crop type'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
     strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
 )
 # rename
@@ -873,7 +877,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         #max_COH = df_selection_COH_tf['RVI'].values.max()
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted_pf_conv = df_selection_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
+        df_melted_pf_conv = df_selection_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry','management','color'],
         var_name='conv_identifier', value_name='Mean SD')
         
         # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
@@ -891,7 +895,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Mean SD:Q', title= 'Mean SD for selected field',scale = alt.Scale(domain=[0,0.20])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            color=alt.Color('gws_gewas:N', title='Selected crop'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
+            color=alt.Color('color:N', title='Selected crop'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
             strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
             #strokeDash='Polarization:N',
             #detail='IW:N',
