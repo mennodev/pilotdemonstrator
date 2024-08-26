@@ -858,8 +858,8 @@ st.dataframe(df_mean_gws)
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     x=alt.X('date:T', title='Date'),
     y=alt.Y('Mean per crop SD:Q'),
-    color=alt.Color('Convolution:N', title='Convolution'),
-    strokeDash=alt.StrokeDash('gws_gewas:N', title='Crop type'),
+    color=alt.Color('gws_gewas:N', title='Crop type').scale(domain=list(color_dict.keys()), range=list(color_dict.values())),
+    strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
 )
 # rename
 with st.expander("Toggle standard deviation convolution plot from RadarSat-2 reads",expanded=True):
@@ -900,9 +900,9 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         ).properties(height=320).interactive()
          
         # update final chart
-        base_chart_conv_pf + mean_chart
+        #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
-        st.altair_chart(base_chart_conv_pf.interactive(), use_container_width=True)
+        st.altair_chart(alt.layer(base_chart_conv_pf,mean_chart).interactive(), use_container_width=True)
 
 
 st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
