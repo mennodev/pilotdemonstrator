@@ -841,7 +841,7 @@ container.markdown(
 df_conv_pf = load_conv_csv()
 # calculate mean of SD for each date, each conv and each gws_gewas type
 df_mean_gws_melt = df_conv_pf.melt(id_vars=['index','gid','landgebrui','gws_gewas','gewascode','ptype','area','geometry'],
-        var_name='conv_identifier', value_name='Mean SD')
+        var_name='conv_identifier', value_name='Mean per crop SD')
 # seperate date and convolution
 df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].str.extract(
         r'(\w+)_(\d+)'
@@ -850,8 +850,8 @@ df_mean_gws_melt[['Convolution', 'Date']] = df_mean_gws_melt['conv_identifier'].
 df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
 # Now group by gws_gewas, date, and convolution to get the mean
 # Convert the 'read_value' column to numeric, coercing errors to NaN
-df_mean_gws_melt['Mean SD'] = pd.to_numeric(df_mean_gws_melt['Mean SD'], errors='coerce')
-df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution'])['Mean SD'].mean().reset_index()
+df_mean_gws_melt['Mean per crop SD'] = pd.to_numeric(df_mean_gws_melt['Mean per crop SD'], errors='coerce')
+df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution'])['Mean per crop SD'].mean().reset_index()
 st.dataframe(df_mean_gws)
 # instantiate altair chart
 # add means per gws categories here
