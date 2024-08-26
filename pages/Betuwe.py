@@ -897,12 +897,12 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             #strokeDash='Polarization:N',
             #detail='IW:N',
             
-        )
+        ).properties(height=320)
          
         # update final chart
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
-        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart).properties(height=320).interactive(), use_container_width=True)
+        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart).interactive(), use_container_width=True)
 
 
 st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
