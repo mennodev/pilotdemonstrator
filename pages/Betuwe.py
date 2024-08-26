@@ -901,7 +901,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         # update final chart
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
-        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart), use_container_width=True)
+        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart))
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
