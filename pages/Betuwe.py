@@ -900,7 +900,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         ).properties(height=320).interactive()
          
         # update final chart
-        base_chart_conv_pf += mean_chart
+        base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
         st.altair_chart(base_chart_conv_pf.interactive(), use_container_width=True)
 
