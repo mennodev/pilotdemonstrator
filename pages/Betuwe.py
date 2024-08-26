@@ -852,7 +852,6 @@ df_mean_gws_melt['date'] = pd.to_datetime(df_mean_gws_melt['Date'])
 # Convert the 'read_value' column to numeric, coercing errors to NaN
 df_mean_gws_melt['Mean per crop SD'] = pd.to_numeric(df_mean_gws_melt['Mean per crop SD'], errors='coerce')
 df_mean_gws = df_mean_gws_melt.groupby(['gws_gewas', 'date', 'Convolution'])['Mean per crop SD'].mean().reset_index()
-st.dataframe(df_mean_gws)
 # instantiate altair chart
 # add means per gws categories here
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
@@ -881,7 +880,6 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         df_melted_pf_conv[['Convolution', 'Date']] = df_melted_pf_conv['conv_identifier'].str.extract(
         r'(\w+)_(\d+)'
         )
-        st.dataframe(df_melted_pf_conv.head(10))
         # parse to date
         df_melted_pf_conv['date'] = pd.to_datetime(df_melted_pf_conv['Date'])
         # drop na if date cannot be parsed
@@ -903,8 +901,16 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         # update final chart
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
-        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart).interactive(), use_container_width=True)
-
+        st.altair_chart(alt.hconcat(base_chart_conv_pf,mean_chart), use_container_width=True)
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **The above plots clearly shows the added value of calculating the standard deviation for RadarSat-2 backscatter**
+    - **There is a clear in-seasonal change with higher standard deviation in the spring and fall**
+    - **Difference between types of grassland managment are clearly showing, with highest SD for 'Mixed nature and agricultural seeds'**
+    **It can be overall concluded that calculating SD is a good proxy for assessing the 'roughness' of a crop and is a helpfull indicator to discriminate between crops**
+    """)
 
 st.subheader("Topic 3 : Bufferstrips in the AOI the Betuwe")
 st.write(f"""
