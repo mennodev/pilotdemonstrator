@@ -861,7 +861,7 @@ df_mean_gws = df_mean_gws_melt.groupby(['management', 'date', 'Convolution'])['M
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     x=alt.X('date:T', title='Date'),
     y=alt.Y('Mean SD grouped per crop:Q',scale = alt.Scale(domain=[0,0.20])),
-    color=alt.Color('color:N', title='Crop type'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
+    color=alt.Color('management:N', title='Crop type').scale(domain=list(translation_dict.values())[:4], range=list(color_dict.values())[:4]),
     strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
 )
 # rename
@@ -895,7 +895,8 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Mean SD:Q', title= 'Mean SD for selected field',scale = alt.Scale(domain=[0,0.20])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            color=alt.Color('color:N', title='Selected crop'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
+            color=alt.Color('management:N', title='Crop type').scale(domain=list(translation_dict.values())[:4], range=list(color_dict.values())[:4]),
+            #color=alt.Color('management:N', title='Selected crop').scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
             strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
             #strokeDash='Polarization:N',
             #detail='IW:N',
