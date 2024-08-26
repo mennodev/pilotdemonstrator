@@ -857,7 +857,7 @@ st.dataframe(df_mean_gws)
 # add means per gws categories here
 mean_chart = alt.Chart(df_mean_gws).mark_line().encode(
     x=alt.X('date:T', title='Date'),
-    y=alt.Y('Mean per crop SD:Q'),
+    y=alt.Y('Mean per crop SD:Q',scale = alt.Scale(domain=[0,0.20])),
     color=alt.Color('gws_gewas:N', title='Crop type').scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
     strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
 )
@@ -891,7 +891,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
             "filled": False,
             "fill": "white"}).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Mean SD:Q'),#,scale = alt.Scale(domain=[40,110])),
+            y=alt.Y('Mean SD:Q',scale = alt.Scale(domain=[0,0.20])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
             color=alt.Color('gws_gewas:N', title='Selected crop'), #.scale(domain=list(color_dict.keys())[:4], range=list(color_dict.values())[:4]),
             strokeDash=alt.StrokeDash('Convolution:N', title='Convolution'),
