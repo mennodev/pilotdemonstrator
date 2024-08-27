@@ -45,7 +45,7 @@ translation_dict = {
 }
 # Color dictionary
 color_dict = {
-    'Grasland, blijvend': 'green',
+    'Grasland, blijvend': 'darkseagreen',
     'Grasland, natuurlijk. Met landbouwactiviteiten.': 'darkgreen',
     'Agrarisch natuurmengsel': 'yellow',
     'Grasland, tijdelijk': 'orange',
