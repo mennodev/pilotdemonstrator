@@ -907,11 +907,12 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
         st.altair_chart(alt.vconcat(base_chart_conv_pf,mean_chart), use_container_width=True)
+st.image("data/images/RadarSat_S2.png", width=350, caption=["High backscatter standard deviations for mixed nature and agricultural seeds (blue polygons) compared to permanent grassland (green polygons) with 3X3 (left) and 7X7 (right) convolution"])
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **The above plots clearly shows the added value of calculating the standard deviation for RadarSat-2 backscatter**
+    **The above plots and pictures clearly shows the added value of calculating the standard deviation for RadarSat-2 backscatter**
     - **There is a clear in-seasonal change with higher standard deviation in the spring and fall**
     - **Difference between types of grassland managment are clearly showing, with highest SD for 'Mixed nature and agricultural seeds'**
     **It can be overall concluded that calculating SD is a good proxy for assessing the 'roughness' of a crop and is a helpfull indicator to discriminate between different crops and different management**
