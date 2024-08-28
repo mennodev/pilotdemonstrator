@@ -458,7 +458,7 @@ def load_data():
     return df
 
 def load_seasondate_ppi():
-    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
+    df = pd.read_csv("data/dataframes/seasondates_parcels_NOP.csv")
     return df
 
 def load_cloudliness_data():
@@ -477,6 +477,11 @@ def load_meteo_data_daytime():
 
 def load_parquet():
     df = pd.read_parquet("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    return df
+
+def load_ndvi_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/NDVI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
 
 def load_GRD_parquet():
@@ -625,15 +630,16 @@ map = st_folium(
     key="folium_map"
 )
 with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
-    df = load_seasondate_ppi()
-
-    gid_to_plot = 71757
+    df_season_doy = load_seasondate_ppi()
+    df_ndvi = load_ndvi_nop()
+    gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
     if gid_to_plot is not None:
         # subselect data
-        df_selection = df.loc[df['gid'] == gid_to_plot]
-        #st.dataframe(data=df_selection.head(20))
+        df_selection = df_ndvi.loc[df_ndvi['gid'] == gid_to_plot]
+        df_season_doy_selected = df_season_doy.loc[df_season_doy['gid'] == gid_to_plot]
+        st.dataframe(data=df_season_doy_selected.head(20))
         # Display line chart
         chart = alt.Chart(df_selection).mark_line(point={
         "filled": False,
@@ -643,5 +649,19 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
-        st.write('Chart of succesful NDVI reads by Sentinel-2')
+        st.write('Chart of NDVI reads by Sentinel-2 for selected field')
+    
+            # add mowing and grazing dates if df is not empty
+        """
+        if not df_season_doy_selected:
+            rules_mowing_grazing = alt.Chart(df_season_doy_selected).mark_rule().encode(
+                x='Event Date:T',
+                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+                #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
+                size=alt.value(2),  # Set line width
+            )
+            # update final chart
+            chart_tf += rules_mowing_grazing
+        """
         st.altair_chart(chart.interactive(), use_container_width=True)
+
