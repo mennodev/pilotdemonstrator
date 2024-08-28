@@ -9,8 +9,9 @@ from modules.nav import Navbar
 import leafmap.foliumap as leafmap
 from datetime import datetime
 from shapely import wkt
-# Header
-# Navbar()
+
+# display navbar for switching to other topics
+Navbar()
 
 st.title("Pilot demonstrator AOI Noord Oost Polder")
 
@@ -548,7 +549,7 @@ def style_function(x):
     """
     Use color column to assign color
     """
-    return {"color":x['properties']['color'], "weight":2}
+    return {"color":x['properties']['color'], "weight":1}
 
 def style_function_betuwe(x):
     """
@@ -561,6 +562,12 @@ def style_function_bufferstrips(x):
     Use color column to assign color
     """
     return {"color":x['properties']['color'], "weight":2, "fillOpacity":0.0}
+
+def style_function_AOI(x):
+    """
+    Use color column to assign color
+    """
+    return {"color":'blue', "weight":1, "fillOpacity":0.0}
 
 style = {
     "stroke": True,
@@ -596,19 +603,19 @@ geojson_LPIS = load_geojson_LPIS()
 geojson_NOP = load_geojson_NOP()
 m = folium.Map(location=[sum(geojson_NOP.total_bounds[[1, 3]]) / 2, sum(geojson_NOP.total_bounds[[0, 2]]) / 2], zoom_start=11)
 # add geojson and add some styling
+
+# add geojson and add some styling
+folium.GeoJson(data=geojson_NOP,
+                        name = 'AOI NOP',
+                        style_function=style_function_AOI,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m)
+
 folium.GeoJson(data=geojson_LPIS,
                         name = 'Subset of LPIS NOP',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m)
-# add geojson and add some styling
-folium.GeoJson(data=geojson_NOP,
-                        name = 'AOI NOP',
-                        #style_function=style_function,
-                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
-                        ).add_to(m)
-
-
 # Set the basemap URL
 osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
@@ -617,7 +624,7 @@ map = st_folium(
     width=500, height=500,
     key="folium_map"
 )
-with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
+with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
     df = load_seasondate_ppi()
 
     gid_to_plot = 71757
