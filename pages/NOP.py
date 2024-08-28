@@ -456,6 +456,10 @@ def load_data():
     df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
     return df
 
+def load_seasondate_ppi():
+    df = pd.read_csv("data/dataframes/NDVI_GrasslandsParcels_Betuwe2023_pq.csv")
+    return df
+
 def load_cloudliness_data():
     df = pd.read_csv("data/dataframes/cloudliness_betuwe.csv",parse_dates=['datetime'])
     return df
@@ -502,12 +506,17 @@ def load_conv_csv():
 
 def load_geojson_LPIS():
     # Read GeoJSON data into a GeoDataFrame
-    gdf = gpd.read_file("data/vectors/Fields_AOI_NOP_WGS84_brp2023c.geojson")
+    gdf = gpd.read_file("data/vectors/Fields_AOI_NOP_WGS84_brp2023c_subset.geojson")
     # translate to English
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
     gdf['color'] = gdf['gws_gewas'].map(color_dict)
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
+    return gdf
+
+def load_geojson_NOP():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/AOI_NOP.geojson")
     return gdf
 
 def load_geojson_bufferstrips():
@@ -581,17 +590,22 @@ st.markdown(f"""Covering soil with biomass is important since it provides severa
 """)
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
-st.write(f"""LPIS data of 2023 for the AOI shows that 88% of parcels are croplands, with the remaining part predominantly covered with grasslands (11,2%).
-            """)
-
-geojson = load_geojson_LPIS()
-
-m = folium.Map(location=[sum(geojson.total_bounds[[1, 3]]) / 2, sum(geojson.total_bounds[[0, 2]]) / 2], zoom_start=11)
+st.write(f"""LPIS data of 2023 for the AOI reveals that 88% of parcels are croplands, with the remaining part predominantly covered with grasslands (11,2%).
+            The subset below also shows that dominant crops are potatoes (blue polygons) and cereals (yellow polygons)""")
+geojson_LPIS = load_geojson_LPIS()
+geojson_NOP = load_geojson_NOP()
+m = folium.Map(location=[sum(geojson_NOP.total_bounds[[1, 3]]) / 2, sum(geojson_NOP.total_bounds[[0, 2]]) / 2], zoom_start=11)
 # add geojson and add some styling
-folium.GeoJson(data=geojson,
-                        name = 'NOP',
+folium.GeoJson(data=geojson_LPIS,
+                        name = 'Subset of LPIS NOP',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m)
+# add geojson and add some styling
+folium.GeoJson(data=geojson_NOP,
+                        name = 'AOI NOP',
+                        #style_function=style_function,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m)
 
 
@@ -600,11 +614,11 @@ osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
-    width=700, height=300,
+    width=500, height=500,
     key="folium_map"
 )
 with st.expander("Toggle linked Sentinel-2 plot",expanded=True):
-    df = load_parquet()
+    df = load_seasondate_ppi()
 
     gid_to_plot = 71757
     if map.get("last_object_clicked_tooltip"):
