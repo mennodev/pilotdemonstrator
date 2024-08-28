@@ -505,7 +505,7 @@ def load_geojson_LPIS():
     gdf = gpd.read_file("data/vectors/Fields_AOI_NOP_WGS84_brp2023c.geojson")
     # translate to English
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
-    #gdf['color'] = gdf['gws_gewas'].map(color_dict)
+    gdf['color'] = gdf['gws_gewas'].map(color_dict)
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
     return gdf
