@@ -18,7 +18,7 @@ Navbar()
 
 st.title("Pilot demonstrator AOI Betuwe")
 
-st.header("Demonstrator focusing on grassland management in the CAP and relation to cadency")
+st.header("Demonstrator focusing on grassland management and buffer strips in the CAP and relation to cadency")
 st.write(
     """
     Below you find different blocks of data visualization developed in the pilot demonstrator exploring different topics. 
