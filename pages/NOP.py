@@ -662,7 +662,7 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
-        st.write(f'Chart of NDVI reads by Sentinel-2 for selected field with {crop_type}')
+        st.write(f'Chart of NDVI reads by Sentinel-2 and phenological information from CLMS HR-VPP for selected field {gid_to_plot}')
     
             # add mowing and grazing dates if df is not empty
         if not df_season_doy_selected.empty:
