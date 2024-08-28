@@ -598,8 +598,11 @@ style = {
 
 # Add the Folium map to the Streamlit app using the st_folium library
 url_benefits_soilcover = 'https://web.archive.org/web/20210815035434/http://agro.icm.edu.pl/agro/element/bwmeta1.element.agro-f380246b-6231-47a0-86ac-90495cfcd7af/c/Catch_crops_and_the_soil_environment__a_review_of_the_literature.pdf'
-st.subheader("Soil cover in the NOP")
-st.markdown(f"""Covering soil with biomass is important since it provides several services to increase soil capabilities and in turn aid biodiversity and agricultural production ([see also this paper]({url_benefits_soilcover}))
+container = st.container(border=True)
+
+container.write(f"**General benefits of soil cover**")
+container.markdown(f"""
+            Covering soil with biomass is important since it provides several services to increase soil capabilities and in turn aid biodiversity and agricultural production ([see also this paper]({url_benefits_soilcover}))
             - Protects the soil against erosion. In the AOI surface water run-off is not relevant, but wind erosion is.
             - Protects the soil against direct sunlight benefitting soil life and moisture retention
             - Prevents compaction or sealing of the soil, thereby allowing next crops to better root and aiding in moisture retention.
@@ -611,7 +614,9 @@ st.markdown(f"""Covering soil with biomass is important since it provides severa
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
 st.write(f"""LPIS data of 2023 for the AOI reveals that 88% of parcels are croplands, with the remaining part predominantly covered with grasslands (11,2%).
-            The subset below also shows that dominant crops are potatoes (blue polygons) and cereals (yellow polygons)""")
+            The subset of LPIS data below also shows that dominant crops in the AOI are potatoes (blue polygons) and cereals (yellow polygons)
+            """)
+
 geojson_LPIS = load_geojson_LPIS()
 geojson_NOP = load_geojson_NOP()
 m = folium.Map(location=[sum(geojson_NOP.total_bounds[[1, 3]]) / 2, sum(geojson_NOP.total_bounds[[0, 2]]) / 2], zoom_start=11)
@@ -634,7 +639,7 @@ osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
-    width=600, height=400,
+    width=700, height=400,
     key="folium_map"
 )
 with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
@@ -646,8 +651,8 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
     if gid_to_plot is not None:
         # subselect data
         df_selection = df_ndvi.loc[df_ndvi['gid'] == gid_to_plot]
+        crop_type = df_selection['management'].values[0]
         df_season_doy_selected = df_season_doy.loc[df_season_doy['gid'] == gid_to_plot]
-        st.dataframe(data=df_season_doy_selected.head(20))
         # Display line chart
         chart = alt.Chart(df_selection).mark_line(point={
         "filled": False,
@@ -657,7 +662,7 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
                     y=alt.Y('NDVI:Q', title='NDVI'),
                     #color='genre:N'
                     ).properties(height=320)
-        st.write('Chart of NDVI reads by Sentinel-2 for selected field')
+        st.write(f'Chart of NDVI reads by Sentinel-2 for selected field with {crop_type}')
     
             # add mowing and grazing dates if df is not empty
         if not df_season_doy_selected.empty:
@@ -674,4 +679,16 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
             chart += doy_plot
 
         st.altair_chart(chart.interactive(), use_container_width=True)
+
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **The products from the CLMS HRVPP like the layers indicating Start of Season and End of Season dates are very useful
+    - **It directly shows the ammount of seasons, the length of the season, timing of the on-set and harvest of the crop
+    - **This information can be directly linked to the declared crop and whether the season characteristics are logical
+    - **Plotting biomass reads along the layer information confirms in most cases the given seasonal characteristics
+    - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons
+    - **Soil cover analysis requires biomass information of fields also outside the production season
+    """)
 
