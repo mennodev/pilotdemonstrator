@@ -662,7 +662,7 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
             # add mowing and grazing dates if df is not empty
         if not df_season_doy_selected.empty:
             # melt so it is suitable for altair
-            df_long = df.melt(id_vars=['gid'], value_vars=["EOS date season 2","SOS date season 2","SOS date season 1","EOS date season 1"],
+            df_long = df_season_doy_selected.melt(id_vars=['gid'], value_vars=["EOS date season 2","SOS date season 2","SOS date season 1","EOS date season 1"],
                   var_name='date of season variable', value_name='date')
             doy_plot = alt.Chart(df_long).mark_rule().encode(
                 x='date:T',
