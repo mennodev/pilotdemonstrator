@@ -459,6 +459,14 @@ def load_data():
 
 def load_seasondate_ppi():
     df = pd.read_csv("data/dataframes/seasondates_parcels_NOP.csv")
+    # subselect columns and rename for plotting
+    df = df[["gid","EOSD_T31UFU_s2","SOSD_T31UFU_s2","EOSD_T31UFU_s1","SOSD_T31UFU_s1"]]
+
+    df = df.rename(columns={"EOSD_T31UFU_s2":"EOS date season 2",
+                            "SOSD_T31UFU_s2":"SOS date season 2",
+                            "SOSD_T31UFU_s1":"SOS date season 1",
+                            "EOSD_T31UFU_s1":"EOS date season 1" })
+      
     return df
 
 def load_cloudliness_data():
@@ -626,7 +634,7 @@ osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
-    width=500, height=500,
+    width=600, height=400,
     key="folium_map"
 )
 with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
@@ -652,16 +660,18 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
         st.write('Chart of NDVI reads by Sentinel-2 for selected field')
     
             # add mowing and grazing dates if df is not empty
-        """
         if not df_season_doy_selected:
-            rules_mowing_grazing = alt.Chart(df_season_doy_selected).mark_rule().encode(
-                x='Event Date:T',
-                color=alt.Color('Event:N', scale=alt.Scale(domain=list(event_colors.keys()), range=list(event_colors.values())), title='Event Type'),
+            # melt so it is suitable for altair
+            df_long = df.melt(id_vars=['gid'], value_vars=["EOS date season 2","SOS date season 2","SOS date season 1","EOS date season 1"],
+                  var_name='date of season variable', value_name='date')
+            doy_plot = alt.Chart(df_long).mark_rule().encode(
+                x='date:T',
+                color=alt.Color('date of season variable'),
                 #strokeDash=alt.StrokeDash('event:N', title='Event Type'),  # Dash by event type
                 size=alt.value(2),  # Set line width
             )
             # update final chart
-            chart_tf += rules_mowing_grazing
-        """
+            chart += doy_plot
+
         st.altair_chart(chart.interactive(), use_container_width=True)
 
