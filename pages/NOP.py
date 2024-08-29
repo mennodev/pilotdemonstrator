@@ -698,7 +698,7 @@ container.markdown(
     - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons**
     - **Soil cover analysis requires biomass information of fields also outside the production season**
     """)
-st.write(f"""For sensors with capabilities to measure blue, read, near infrared (NIR) and short wave infrared (SWIR) spectral bands the Bare Soil Index (BSI) can be calculated. The rationale behind this index is that the SWIR and red band are used to indicate the soil mineral composition. The blue and NIR are used to indicate the presence of vegetation.Together these are combined (using normalization) in the following formula:""")
+st.write(f"""For sensors with capabilities to measure blue, read, near infrared (NIR) and short wave infrared (SWIR) spectral bands the Bare Soil Index (BSI) can be calculated. The rationale behind this index is that the SWIR and red band are used to indicate the soil mineral composition. The blue and NIR are used to indicate the presence of vegetation. The BSI is than calculated (by normalising the bands bands) using the following formula:""")
 st.latex(r"""
 \text{BSI} = \frac{(\text{red} + \text{SWIR}) - (\text{NIR} + \text{blue})}{(\text{red} + \text{SWIR}) + (\text{NIR} + \text{blue})}
 """)
