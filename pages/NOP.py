@@ -642,9 +642,10 @@ map = st_folium(
     width=700, height=400,
     key="folium_map"
 )
+df_season_doy = load_seasondate_ppi()
+df_ndvi = load_ndvi_nop()
 with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
-    df_season_doy = load_seasondate_ppi()
-    df_ndvi = load_ndvi_nop()
+    
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
@@ -687,8 +688,8 @@ container.markdown(
     - **It directly shows whether there is 1 or 2 crops in a season, the length of the season, timing of the on-set and the harvest of the crop**
     - **This information can be directly linked to the declared crop and whether the season characteristics are logical**
     - **Plotting biomass reads along the layer information confirms in most cases the given seasonal characteristics**
-        -**For example winter wheats have a much earlier onset compared to potatoes**
-        -**Method is applied indiscriminately e.g. also grasslands are also given a EOS and SOS**
+        + **For example winter wheats have a much earlier onset compared to potatoes**
+        + **Method is applied indiscriminately e.g. also grasslands are also given a EOS and SOS**
     - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons**
     - **Soil cover analysis requires biomass information of fields also outside the production season**
     """)
