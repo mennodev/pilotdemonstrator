@@ -683,11 +683,13 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **The products from the CLMS HRVPP like the layers indicating Start of Season and End of Season dates are very useful
-    - **It directly shows the ammount of seasons, the length of the season, timing of the on-set and harvest of the crop
-    - **This information can be directly linked to the declared crop and whether the season characteristics are logical
-    - **Plotting biomass reads along the layer information confirms in most cases the given seasonal characteristics
-    - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons
-    - **Soil cover analysis requires biomass information of fields also outside the production season
+    **The products from the CLMS HRVPP like the layers indicating Start of Season and End of Season dates are very useful**
+    - **It directly shows whether there is 1 or 2 crops in a season, the length of the season, timing of the on-set and the harvest of the crop**
+    - **This information can be directly linked to the declared crop and whether the season characteristics are logical**
+    - **Plotting biomass reads along the layer information confirms in most cases the given seasonal characteristics**
+        -**For example winter wheats have a much earlier onset compared to potatoes**
+        -**Method is applied indiscriminately e.g. also grasslands are also given a EOS and SOS**
+    - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons**
+    - **Soil cover analysis requires biomass information of fields also outside the production season**
     """)
 
