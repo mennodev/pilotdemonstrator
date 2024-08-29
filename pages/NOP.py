@@ -704,8 +704,7 @@ st.latex(r"""
 """)
 st.write(f"""Below the Bare Soil Index is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 # read in BSI data
-#df_bsi = load_bsi_nop()
-"""
+df_bsi = load_bsi_nop()
 with st.expander("Toggle linked BSI plot",expanded=True):
     
     gid_to_plot = 1400841
@@ -725,4 +724,4 @@ with st.expander("Toggle linked BSI plot",expanded=True):
                     ).properties(height=320)
         st.write(f'Chart of BSI reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
-"""
+
