@@ -492,6 +492,11 @@ def load_ndvi_nop():
     df = pd.read_parquet("data/dataframes/NDVI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
 
+def load_bsi_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/BSI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
+    return df
+
 def load_GRD_parquet():
     df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
     # Apply the mapping to the 'orbit' column to change from numbers to string with Ascending and Descending
@@ -689,8 +694,35 @@ container.markdown(
     - **This information can be directly linked to the declared crop and whether the season characteristics are logical**
     - **Plotting biomass reads along the layer information confirms in most cases the given seasonal characteristics**
         + For example winter wheats have a much earlier onset compared to potatoes
-        + Method is applied indiscriminately e.g. also grasslands are also given a EOS and SOS
+        + Method is applied indiscriminately e.g. grasslands are also given a EOS and SOS
     - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons**
     - **Soil cover analysis requires biomass information of fields also outside the production season**
     """)
-
+st.write(f"""For sensors with capabilities to measure blue, read, near infrared (NIR) and short wave infrared (SWIR) spectral bands the Bare Soil Index (BSI) can be calculated. The rationale behind this index is that the SWIR and red band are used to indicate the soil mineral composition. The blue and NIR are used to indicate the presence of vegetation.Together these are combined (using normalization) in the following formula:""")
+st.latex(r"""
+\text{BSI} = \frac{(\text{red} + \text{SWIR}) - (\text{NIR} + \text{blue})}{(\text{red} + \text{SWIR}) + (\text{NIR} + \text{blue})}
+""")
+st.write(f"""Below the Bare Soil Index is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+# read in BSI data
+#df_bsi = load_bsi_nop()
+"""
+with st.expander("Toggle linked BSI plot",expanded=True):
+    
+    gid_to_plot = 1400841
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_bsi = df_bsi.loc[df_bsi['gid'] == gid_to_plot]
+        # Display line chart
+        chart = alt.Chart(df_selection_bsi).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('BSI:Q', title='BSI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write(f'Chart of BSI reads by Sentinel-2 for selected field {gid_to_plot}')
+        st.altair_chart(chart.interactive(), use_container_width=True)
+"""
