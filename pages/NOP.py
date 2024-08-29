@@ -651,7 +651,6 @@ with st.expander("Toggle linked NDVI and phenological DOY plot",expanded=True):
     if gid_to_plot is not None:
         # subselect data
         df_selection = df_ndvi.loc[df_ndvi['gid'] == gid_to_plot]
-        crop_type = df_selection['management'].values[0]
         df_season_doy_selected = df_season_doy.loc[df_season_doy['gid'] == gid_to_plot]
         # Display line chart
         chart = alt.Chart(df_selection).mark_line(point={
