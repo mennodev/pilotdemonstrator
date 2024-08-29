@@ -705,7 +705,6 @@ st.latex(r"""
 st.write(f"""Below the Bare Soil Index is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 # read in BSI data
 df_bsi = load_bsi_nop()
-st.dataframe(df_bsi.head(10))
 with st.expander("Toggle linked BSI plot",expanded=True):
     
     gid_to_plot = 1400841
