@@ -529,7 +529,7 @@ def load_GRD_parquet_tf():
     return df
 
 def load_coh_csv():
-    df = pd.read_csv("data/dataframes/coh_grassland_parcels_maurik.csv")
+    df = pd.read_csv("data/dataframes/coh_parcels_NOP.csv")
     return df
 
 def load_conv_csv():
@@ -797,6 +797,53 @@ container.markdown(
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
     - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
+
+df_COH = load_coh_csv()
+with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
+    if map_tf.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_fid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_COH = df_COH.loc[df_COH['gid'] == gid_to_plot]
+        
+        #min_COH = df_selection_COH_tf['RVI'].values.min()
+        #max_COH = df_selection_COH_tf['RVI'].values.max()
+        #st.dataframe(data=df_selection_GRD_tf.head(20))
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted_tf_COH = df_selection_COH.melt(id_vars=['gid'],
+        var_name='coherence_identifier', value_name='COH12')
+        
+        # Extracting VV/VH, Date, IW, and Orbit number from the 'coherence_type' column
+        df_melted_tf_COH[['Polarization', 'date_range', 'IW', 'Relative Orbit']] = df_melted_tf_COH['coherence_identifier'].str.extract(
+        r'(cohvv|cohvh)_(\d+T\d+_\d+T\d+)_IW(\d+)_(\w+)'
+        )
+        # parse to date
+        df_melted_tf_COH['date'] = pd.to_datetime(df_melted_tf_COH['date_range'].str.split('_').str[-1].str[:8])
+        # drop na if date cannot be parsed
+        df_melted_tf_COH.dropna(subset=['date'], inplace=True)
+        # change naming of cohvv to VV using mapping
+        df_melted_tf_COH['Polarization'] = df_melted_tf_COH['Polarization'].map(coh_mapping)
+        #df_melted_tf_COH = df_melted_tf_COH.convert_dtypes(infer_objects=True)
+        #st.dataframe(df_melted_tf_COH)
+        # get columntypes for debugging
+        #st.write(df_melted_tf_COH.dtypes)
+        #st.write(df_melted_tf_COH['date'].values)
+        #st.dataframe(data=df_melted.head(10))
+        # Create the Altair chart
+        base_chart_COH = alt.Chart(df_melted_tf_COH).mark_line(point={
+            "filled": False,
+            "fill": "white"}).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('COH12:Q',scale = alt.Scale(domain=[40,110])),
+            #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
+            color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
+            strokeDash='Polarization:N',
+            detail='IW:N',
+            
+        ).properties(height=320).interactive()
+        st.write(f'Chart of Sentinel-1 COH reads seperated per relative orbit and IW for field {gid_to_plot}')
+        st.altair_chart(base_chart_COH.interactive(), use_container_width=True)
+
 
 st.write(f"""Below the S2WI is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 
