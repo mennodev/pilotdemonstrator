@@ -723,7 +723,7 @@ st.latex(r"""
 \text{NBR2} = \frac{(B_{11} - B_{12})}{(B_{11} + B_{12})}
 """)
 st.write("In order to filter out soils with dry vegetation, the paper sets the following thresholds for each pixel to be considered truly bare; NDVI < 0.35, NBR2 < 0.125 and BSI < 0.021")
-st.write("Below a chart is presented where the 3 indices are plotted. The green highlights indicate the dates if only BSI is considered, while the orange dots highlight the discriminating addition of NBR2. Please note that the BSI is calcualted using the Sentinel-2 bands B2,B4,B8 and B12. However, some BSI use Sentinel-2 B11 instead of B12, but the pattern remains similar""")
+st.write("Below a chart is presented with 3 indices plotted together. The green circles indicate the dates if only BSI is considered, while the orange circles highlight the discriminating addition of NBR2. Please note that the BSI is calcualted using the Sentinel-2 bands B2,B4,B8 and B12. However, some BSI use Sentinel-2 B11 instead of B12, but the pattern remains similar""")
 # read in BSI data and combine
 df_bsi12 = load_bsi12_nop()
 df_nbr = load_nbr_nop()
@@ -793,7 +793,7 @@ container.markdown(
     """
     **Plotting BSI together with NDVI and NBR2 reveals the following:**
     - **BSI and NDVI are highly (negatively) correlated**
-    - **Introducing NBR2 as an indicator of dry vegetation presences reduces the ammount of soil labeled as bare(see green and orange highlights)**
+    - **Introducing NBR2 as an indicator of dry vegetation presences reduces the ammount of soil labeled as bare (see green vs orange encircled points)**
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
     - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
