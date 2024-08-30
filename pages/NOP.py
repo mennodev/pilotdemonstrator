@@ -717,30 +717,13 @@ st.write(f"""For sensors with capabilities to measure blue, read, near infrared 
 st.latex(r"""
 \text{BSI} = \frac{(\text{red} + \text{SWIR}) - (\text{NIR} + \text{blue})}{(\text{red} + \text{SWIR}) + (\text{NIR} + \text{blue})}
 """)
-st.write(f"""Below the Bare Soil Index is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
-# read in BSI data
-df_bsi = load_bsi_nop()
-with st.expander("Toggle linked BSI plot",expanded=True):
-    
-    gid_to_plot = 1400841
-    if map.get("last_object_clicked_tooltip"):
-        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-    if gid_to_plot is not None:
-        # subselect data
-        df_selection_bsi = df_bsi.loc[df_bsi['gid'] == gid_to_plot]
-        # Display line chart
-        chart = alt.Chart(df_selection_bsi).mark_line(point={
-        "filled": False,
-        "fill": "white"
-        }).encode(
-                    x=alt.X('date:T', title='Date'),
-                    y=alt.Y('BSI:Q', title='BSI'),
-                    #color='genre:N'
-                    ).properties(height=320)
-        st.write(f'Chart of BSI reads by Sentinel-2 for selected field {gid_to_plot}')
-        st.altair_chart(chart.interactive(), use_container_width=True)
-
-st.write(f"""Below the Bare Soil Index with B12 is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+paper_bsi_url = "https://doi.org/10.1016/j.isprsjprs.2023.03.016" 
+st.write(f"""The drawback of only using BSI is discussed in [this paper of Castaldi et. al. (2023)]({paper_bsi_url}); important parts of the BSI are related to vegetation in a photosynthetizing state. However soils can also be covered by crop residue or mulch. In order to discriminate between such soils this paper uses the Normalized Burn Ratio 2 (NBR2). This index flags dry vegetation on the surface. The NBR is calcluated as follows with the Sentinel-2 SWIR1 (B11) and SWIR2 (B12) bands:""")
+st.latex(r"""
+\text{NBR2} = \frac{(B_{11} - B_{12})}{(B_{11} + B_{12})}
+""")
+st.write("In order to filter out soils with dry vegetation, the paper sets the following thresholds for each pixel to be considered truly bare; NDVI < 0.35, NBR2 < 0.125 and BSI < 0.021")
+st.write("Below a chart is presented where the truly bare soils are highlighted in orange and the indices BSI, NDVI and NRB2 are plotted. The BSI is calcualted using the Sentinel-2 bands 2,4,8 and 12. Please note that some BSI use Sentinel-2 B11 instead of B12, however the pattern remains similar""")
 # read in BSI data and combine
 df_bsi12 = load_bsi12_nop()
 df_nbr = load_nbr_nop()
@@ -768,9 +751,17 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
             (df_pivot['NBR2'] < 0.125) &
             (df_pivot['BSI'] > 0.021)
         )
+<<<<<<< HEAD
+        df_selection_combined['highlight_bsi'] = (
+        ((df_selection_combined['index_type'] == 'NDVI') & (df_selection_combined['value'] < 0.35)) &
+        ((df_selection_combined['index_type'] == 'NBR2') & (df_selection_combined['value'] >= 0.125)) &
+        ((df_selection_combined['index_type'] == 'BSI') & (df_selection_combined['value'] > 0.021))
+        )
+=======
         # Melt the pivoted DataFrame back to long format for plotting
         df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight'], value_vars=['NDVI', 'NBR2', 'BSI'], var_name='index_type', value_name='value')
 
+>>>>>>> d7e658b1a7b5a95af33b94df06c9904a144eac82
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
         base_chart = alt.Chart(df_long).encode(
@@ -790,33 +781,26 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
             ).mark_point(size=100).encode(
             color=alt.value('orange')  # Highlight selected data points in red
             )
+        highlight_bsi = base_chart.transform_filter(
+            alt.datum.highlight_bsi == True
+            ).mark_point(size=100).encode(
+            color=alt.value('green')  # Highlight selected data points in red
+            )
         # combine two charts
-        chart = (lines + highlight).properties(height=320,title='NDVI, BSI and NBR2 plotted together with highlighted true bare soil')
-        st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
+        chart = (lines + highlight + highlight_bsi).properties(height=320,title='Chart of NDVI, BSI and NBR2 indices with orange highlighted dates considered bare')
+        #st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
-st.write(f"""Below the NBR is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
-# read in BSI data
-df_nbr = load_nbr_nop()
-with st.expander("Toggle linked NBR plot",expanded=True):
-    
-    gid_to_plot = 1400841
-    if map.get("last_object_clicked_tooltip"):
-        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-    if gid_to_plot is not None:
-        # subselect data
-        df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
-        # Display line chart
-        chart = alt.Chart(df_selection_nbr).mark_line(point={
-        "filled": False,
-        "fill": "white"
-        }).encode(
-                    x=alt.X('date:T', title='Date'),
-                    y=alt.Y('NBR2:Q', title='NBR'),
-                    #color='genre:N'
-                    ).properties(height=320)
-        st.write(f'Chart of NBR reads by Sentinel-2 for selected field {gid_to_plot}')
-        st.altair_chart(chart.interactive(), use_container_width=True)
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **Plotting BSI together with NDVI and NBR2 reveals the following:
+    - **BSI and NDVI are highly (negatively) correlated**
+    - **Introducing NBR2 as an indicator of dry vegetation presences reduces the ammount of soil labeled as bare(see green and orange highlights)**
+    - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
+    - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
+    """)
 
 st.write(f"""Below the S2WI is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 
