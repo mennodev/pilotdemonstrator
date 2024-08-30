@@ -780,7 +780,7 @@ with st.expander("Toggle linked NBR plot",expanded=True):
         "fill": "white"
         }).encode(
                     x=alt.X('date:T', title='Date'),
-                    y=alt.Y('NBR:Q', title='NBR'),
+                    y=alt.Y('NBR2:Q', title='NBR'),
                     #color='genre:N'
                     ).properties(height=320)
         st.write(f'Chart of NBR reads by Sentinel-2 for selected field {gid_to_plot}')
