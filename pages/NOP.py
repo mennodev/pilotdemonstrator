@@ -761,14 +761,19 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
     if gid_to_plot is not None:
         # subselect data
         df_selection_combined = df_combined.loc[df_combined['gid'] == gid_to_plot]
-        df_selection_combined['highlight'] = (
-        ((df_selection_combined['index_type'] == 'NDVI') & (df_selection_combined['value'] < 0.35)) &
-        ((df_selection_combined['index_type'] == 'NBR2') & (df_selection_combined['value'] < 0.125)) &
-        ((df_selection_combined['index_type'] == 'BSI') & (df_selection_combined['value'] > 0.021))
+        # pivot this table to filter indices all at once
+        df_pivot = df_selection_combined.pivot_table(index=['date', 'gid'], columns='index_type', values='value').reset_index()
+        df_pivot['highlight'] = (
+            (df_pivot['NDVI'] < 0.35) &
+            (df_pivot['NBR2'] < 0.125) &
+            (df_pivot['BSI'] > 0.021)
         )
+        # Melt the pivoted DataFrame back to long format for plotting
+        df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight'], value_vars=['NDVI', 'NBR2', 'BSI'], var_name='index_type', value_name='value')
+
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
-        base_chart = alt.Chart(df_selection_combined).encode(
+        base_chart = alt.Chart(df_long).encode(
                     x=alt.X('date:T', title='Date'),
                     y=alt.Y('value:Q', title='Index value'),
                     tooltip=['date:T', 'value:Q', 'index_type:N'],
