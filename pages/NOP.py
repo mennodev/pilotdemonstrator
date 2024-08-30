@@ -497,6 +497,21 @@ def load_bsi_nop():
     df = pd.read_parquet("data/dataframes/BSI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
 
+def load_bsi12_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/BSI12_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
+    return df
+
+def load_NBR_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/NBR_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
+    return df
+
+def load_S2WI_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/S2WI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
+    return df
+
 def load_GRD_parquet():
     df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
     # Apply the mapping to the 'orbit' column to change from numbers to string with Ascending and Descending
@@ -725,3 +740,72 @@ with st.expander("Toggle linked BSI plot",expanded=True):
         st.write(f'Chart of BSI reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
+st.write(f"""Below the Bare Soil Index with B12 is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+# read in BSI data
+df_bsi12 = load_bsi12_nop()
+with st.expander("Toggle linked BSI plot",expanded=True):
+    
+    gid_to_plot = 1400841
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_bsi12 = df_bsi12.loc[df_bsi12['gid'] == gid_to_plot]
+        # Display line chart
+        chart = alt.Chart(df_selection_bsi12).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('BSI:Q', title='BSI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write(f'Chart of BSI 12 reads by Sentinel-2 for selected field {gid_to_plot}')
+        st.altair_chart(chart.interactive(), use_container_width=True)
+
+st.write(f"""Below the NBR is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+# read in BSI data
+df_nbr = load_nbr_nop()
+with st.expander("Toggle linked BSI plot",expanded=True):
+    
+    gid_to_plot = 1400841
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
+        # Display line chart
+        chart = alt.Chart(df_selection_nbr).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('NBR:Q', title='NBR'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write(f'Chart of NBR reads by Sentinel-2 for selected field {gid_to_plot}')
+        st.altair_chart(chart.interactive(), use_container_width=True)
+
+st.write(f"""Below the S2WI is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+
+# read in BSI data
+df_s2wi = load_s2wi_nop()
+with st.expander("Toggle linked s2wi plot",expanded=True):
+    
+    gid_to_plot = 1400841
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_s2wi = df_s2wi.loc[df_s2wi['gid'] == gid_to_plot]
+        # Display line chart
+        chart = alt.Chart(df_selection_s2wi).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('S2WI:Q', title='S2WI'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write(f'Chart of S2WI reads by Sentinel-2 for selected field {gid_to_plot}')
+        st.altair_chart(chart.interactive(), use_container_width=True)
