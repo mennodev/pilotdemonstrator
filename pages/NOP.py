@@ -743,7 +743,7 @@ with st.expander("Toggle linked BSI plot",expanded=True):
 st.write(f"""Below the Bare Soil Index with B12 is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 # read in BSI data
 df_bsi12 = load_bsi12_nop()
-with st.expander("Toggle linked BSI plot",expanded=True):
+with st.expander("Toggle linked BSI12 plot",expanded=True):
     
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
@@ -766,7 +766,7 @@ with st.expander("Toggle linked BSI plot",expanded=True):
 st.write(f"""Below the NBR is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
 # read in BSI data
 df_nbr = load_nbr_nop()
-with st.expander("Toggle linked BSI plot",expanded=True):
+with st.expander("Toggle linked NBR plot",expanded=True):
     
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
@@ -790,7 +790,7 @@ st.write(f"""Below the S2WI is plotted for the selected parcels above using the 
 
 # read in BSI data
 df_s2wi = load_s2wi_nop()
-with st.expander("Toggle linked s2wi plot",expanded=True):
+with st.expander("Toggle linked S2WI plot",expanded=True):
     
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
