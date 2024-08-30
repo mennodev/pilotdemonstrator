@@ -752,9 +752,8 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
             (df_pivot['BSI'] > 0.021)
         )
         df_pivot['highlight_bsi'] = (
-            (df_pivot['NDVI'] < 0.35) &
-            (df_pivot['NBR2'] >= 0.125) &
-            (df_pivot['BSI'] > 0.021)
+            (df_pivot['BSI'] > 0.021) &
+             ~df_pivot['highlight']
         )
         # Melt the pivoted DataFrame back to long format for plotting
         df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight'], value_vars=['NDVI', 'NBR2', 'BSI'], var_name='index_type', value_name='value')
