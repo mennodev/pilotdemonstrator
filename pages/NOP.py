@@ -741,26 +741,37 @@ with st.expander("Toggle linked BSI plot",expanded=True):
         st.altair_chart(chart.interactive(), use_container_width=True)
 
 st.write(f"""Below the Bare Soil Index with B12 is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
-# read in BSI data
+# read in BSI data and combine
 df_bsi12 = load_bsi12_nop()
-with st.expander("Toggle linked BSI12 plot",expanded=True):
+df_nbr = load_nbr_nop()
+# Rename the NBR2 and BSI columns to differentiate them
+df_nbr.rename(columns={'NBR2': 'value'}, inplace=True)
+df_bsi12.rename(columns={'BSI': 'value'}, inplace=True)
+df_ndvi.rename(columns={'NDVI': 'value'}, inplace=True)
+# add index type to track which is NBR and which is BSI
+df_nbr['index_type']='NBR2'
+df_bsi12['index_type']='BSI'
+df_ndvi['index_type'] = 'NDVI'
+df_combined = pd.concat([df_nbr,df_bsi12,df_ndvi])
+with st.expander("Toggle linked BSI12 and NBR2 plot",expanded=True):
     
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
     if gid_to_plot is not None:
         # subselect data
-        df_selection_bsi12 = df_bsi12.loc[df_bsi12['gid'] == gid_to_plot]
+        df_selection_combined = df_combined.loc[df_combined['gid'] == gid_to_plot]
+        #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
-        chart = alt.Chart(df_selection_bsi12).mark_line(point={
+        chart = alt.Chart(df_selection_combined).mark_line(point={
         "filled": False,
         "fill": "white"
         }).encode(
                     x=alt.X('date:T', title='Date'),
-                    y=alt.Y('BSI:Q', title='BSI'),
-                    #color='genre:N'
+                    y=alt.Y('value:Q', title='Index value'),
+                    color='index_type:N'
                     ).properties(height=320)
-        st.write(f'Chart of BSI 12 reads by Sentinel-2 for selected field {gid_to_plot}')
+        st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
 st.write(f"""Below the NBR is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
