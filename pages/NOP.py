@@ -792,7 +792,7 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **Plotting BSI together with NDVI and NBR2 reveals the following:
+    **Plotting BSI together with NDVI and NBR2 reveals the following:**
     - **BSI and NDVI are highly (negatively) correlated**
     - **Introducing NBR2 as an indicator of dry vegetation presences reduces the ammount of soil labeled as bare(see green and orange highlights)**
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
