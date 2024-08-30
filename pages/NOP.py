@@ -718,12 +718,12 @@ st.latex(r"""
 \text{BSI} = \frac{(\text{red} + \text{SWIR}) - (\text{NIR} + \text{blue})}{(\text{red} + \text{SWIR}) + (\text{NIR} + \text{blue})}
 """)
 paper_bsi_url = "https://doi.org/10.1016/j.isprsjprs.2023.03.016" 
-st.write(f"""The drawback of only using BSI is discussed in [this paper of Castaldi et. al. (2023)]({paper_bsi_url}); important parts of the BSI are related to vegetation in a photosynthetizing state. However soils can also be covered by crop residue or mulch. In order to discriminate between such soils this paper uses the Normalized Burn Ratio 2 (NBR2). This index flags dry vegetation on the surface. The NBR is calcluated as follows with the Sentinel-2 SWIR1 (B11) and SWIR2 (B12) bands:""")
+st.write(f"""The drawback of only using BSI is discussed in [the paper of Castaldi et. al. (2023)]({paper_bsi_url}); important parts of the BSI are related to vegetation in a photosynthetizing state. However soils can also be covered by crop residue or mulch. In order to discriminate between such soils this paper uses the Normalized Burn Ratio 2 (NBR2). This index flags dry vegetation on the surface. The NBR is calcluated as follows with the Sentinel-2 SWIR1 (B11) and SWIR2 (B12) bands:""")
 st.latex(r"""
 \text{NBR2} = \frac{(B_{11} - B_{12})}{(B_{11} + B_{12})}
 """)
 st.write("In order to filter out soils with dry vegetation, the paper sets the following thresholds for each pixel to be considered truly bare; NDVI < 0.35, NBR2 < 0.125 and BSI < 0.021")
-st.write("Below a chart is presented where the truly bare soils are highlighted in orange and the indices BSI, NDVI and NRB2 are plotted. The BSI is calcualted using the Sentinel-2 bands 2,4,8 and 12. Please note that some BSI use Sentinel-2 B11 instead of B12, however the pattern remains similar""")
+st.write("Below a chart is presented where the 3 indices are plotted. The green highlights indicate the dates if only BSI is considered, while the orange dots highlight the discriminating addition of NBR2. Please note that the BSI is calcualted using the Sentinel-2 bands B2,B4,B8 and B12. However, some BSI use Sentinel-2 B11 instead of B12, but the pattern remains similar""")
 # read in BSI data and combine
 df_bsi12 = load_bsi12_nop()
 df_nbr = load_nbr_nop()
@@ -749,6 +749,11 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
         df_pivot['highlight'] = (
             (df_pivot['NDVI'] < 0.35) &
             (df_pivot['NBR2'] < 0.125) &
+            (df_pivot['BSI'] > 0.021)
+        )
+        df_pivot['highlight_bsi'] = (
+            (df_pivot['NDVI'] < 0.35) &
+            (df_pivot['NBR2'] >= 0.125) &
             (df_pivot['BSI'] > 0.021)
         )
         # Melt the pivoted DataFrame back to long format for plotting
@@ -779,7 +784,7 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
             color=alt.value('green')  # Highlight selected data points in red
             )
         # combine two charts
-        chart = (lines + highlight + highlight_bsi).properties(height=320,title='Chart of NDVI, BSI and NBR2 indices with orange highlighted dates considered bare')
+        chart = (lines + highlight + highlight_bsi).properties(height=320,title=f'Chart of NDVI, BSI and NBR2 indices from Sentinel-2 reads for field {gid_to_plot}')
         #st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
