@@ -784,7 +784,7 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
             color=alt.value('green')  # Highlight selected data points in red
             )
         # combine two charts
-        chart = (lines + highlight_bsi).properties(height=320,title=f'Chart of NDVI, BSI and NBR2 indices from Sentinel-2 reads for field {gid_to_plot}')
+        chart = (lines + highlight + highlight_bsi).properties(height=320,title=f'Chart of NDVI, BSI and NBR2 indices from Sentinel-2 reads for field {gid_to_plot}')
         #st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
