@@ -800,7 +800,7 @@ container.markdown(
 
 df_COH = load_coh_csv()
 with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
-    if map_tf.get("last_object_clicked_tooltip"):
+    if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_fid_from_tooltip(map["last_object_clicked_tooltip"])
     if gid_to_plot is not None:
         # subselect data
