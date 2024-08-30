@@ -761,16 +761,32 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
     if gid_to_plot is not None:
         # subselect data
         df_selection_combined = df_combined.loc[df_combined['gid'] == gid_to_plot]
+        df_selection_combined['highlight'] = (
+        ((df_selection_combined['index_type'] == 'NDVI') & (df_selection_combined['value'] < 0.35)) |
+        ((df_selection_combined['index_type'] == 'NBR2') & (df_selection_combined['value'] < 0.125)) |
+        ((df_selection_combined['index_type'] == 'BSI') & (df_selection_combined['value'] > 0.021))
+        )
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
-        chart = alt.Chart(df_selection_combined).mark_line(point={
-        "filled": False,
-        "fill": "white"
-        }).encode(
+        base_chart = alt.Chart(df_selection_combined).encode(
                     x=alt.X('date:T', title='Date'),
                     y=alt.Y('value:Q', title='Index value'),
+                    tooltip=['date:T', 'value:Q', 'index_type:N'],
                     color='index_type:N'
-                    ).properties(height=320)
+                    )
+        # add all different lines with lower opacity
+        lines = base_chart.mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(opacity=alt.value(0.7))
+        # add highlighted values with higher opacity
+        highlight = base_chart.transform_filter(
+            alt.datum.highlight == True
+            ).mark_point(size=100).encode(
+            color=alt.value('orange')  # Highlight selected data points in red
+            )
+        # combine two charts
+        chart = (lines + highlight).properties(height=320,title='NDVI, BSI and NBR2 plotted together with highlighted true bare soil')
         st.write(f'Chart of BSI,NDVI and NBR reads by Sentinel-2 for selected field {gid_to_plot}')
         st.altair_chart(chart.interactive(), use_container_width=True)
 
