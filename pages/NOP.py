@@ -753,7 +753,7 @@ df_nbr['index_type']='NBR2'
 df_bsi12['index_type']='BSI'
 df_ndvi['index_type'] = 'NDVI'
 df_combined = pd.concat([df_nbr,df_bsi12,df_ndvi])
-with st.expander("Toggle linked BSI12 and NBR2 plot",expanded=True):
+with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
     
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
