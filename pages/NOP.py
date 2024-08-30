@@ -762,8 +762,8 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
         # subselect data
         df_selection_combined = df_combined.loc[df_combined['gid'] == gid_to_plot]
         df_selection_combined['highlight'] = (
-        ((df_selection_combined['index_type'] == 'NDVI') & (df_selection_combined['value'] < 0.35)) |
-        ((df_selection_combined['index_type'] == 'NBR2') & (df_selection_combined['value'] < 0.125)) |
+        ((df_selection_combined['index_type'] == 'NDVI') & (df_selection_combined['value'] < 0.35)) &
+        ((df_selection_combined['index_type'] == 'NBR2') & (df_selection_combined['value'] < 0.125)) &
         ((df_selection_combined['index_type'] == 'BSI') & (df_selection_combined['value'] > 0.021))
         )
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
