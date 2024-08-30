@@ -502,7 +502,7 @@ def load_bsi12_nop():
     df = pd.read_parquet("data/dataframes/BSI12_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
 
-def load_NBR_nop():
+def load_nbr_nop():
     # parquet file
     df = pd.read_parquet("data/dataframes/NBR_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
