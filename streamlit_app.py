@@ -12,12 +12,15 @@ Navbar()
 url_pd2 = 'https://pilotdemonstrator2regionalbiodiversity.streamlit.app/'
 st.sidebar.success("Select a tab above to choose the AOI for PD1")
 
+st.title("Copernicus High-Cadence Monitoring for the EU Green Deal")
 st.header("Welcome to the webapp landing page showcasing the pilot demonstrators")
 st.write("Webapps are additional visualization for the reports written for the project")
-st.header("Copernicus High-Cadence Monitoring for the EU Green Deal")
+
 st.image("data/logos/logos_companies.png", width=600, caption=["Companies in the consortium executing DEFIS/2022/OP/0012"])
-st.subheader("Use the tabs in the sidebar to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
-st.subheader(f"Use the [link]({url_pd2}) to explore pilot demonstrator 2 Regional biodiversity monitoring")
+container = st.container(border=True)
+container.write(f"**Pilot demonstrator navigation**")
+container.write("Use the tabs in the sidebar to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
+container.write(f"Use the [link]({url_pd2}) to explore pilot demonstrator 2 Regional biodiversity monitoring")
 st.write(
     """
     Click on the AOIs in the map to get a small description.
