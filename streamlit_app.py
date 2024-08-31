@@ -8,11 +8,17 @@ from streamlit_folium import st_folium
 from modules.nav import Navbar
 # setup page config using modules
 Navbar()
-st.sidebar.success("Select a tab above to choose the AOI")
+# url PD2
+url_pd2 = 'https://pilotdemonstrator2regionalbiodiversity.streamlit.app/'
+st.sidebar.success("Select a tab above to choose the AOI for PD1")
 
-st.title("Pilot demonstrator CAP showcase")
+st.header("Welcome to the webapp landing page showcasing the pilot demonstrators")
+st.write("Pilot demonstrators are additional visualization for the reports written for the project")
+st.title("Copernicus High-Cadence Monitoring for the EU Green Deal")
+st.image("data/logos/logoscompanies.png", width=600, caption=["Companies in the consortium"])
 
-st.header("Welcome to the webapp landing page showcasing Common Agricultural Policy (CAP) pilot demonstrator elements.")
+st.header("Use the tabs to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
+st.header(f"Use the [link to explore pilot demonstrator 2 Regional biodiversity monitoring]({url_pd2})")
 st.write(
     """
     Click on the AOIs in the map to get a small description.
@@ -27,17 +33,24 @@ st.write(
 # reruns (e.g. if the user interacts with the widgets).
 @st.cache_data
 
+def load_geojson():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file('data/vectors/LPIS_Grasslands.geojson')
+    # Convert the GeoDataFrame to a DataFrame
+    df = pd.DataFrame(gdf)
+    return df
 
 def load_AOIs_geojsons():
     # Read GeoJSON data into a GeoDataFrame
     gdf1 = gpd.read_file("data/vectors/AOI_Betuwe.geojson")
     gdf2 = gpd.read_file("data/vectors/AOI_NOP.geojson")
     gdf3 = gpd.read_file("data/vectors/AOI_FrieseWouden.geojson")
+    gdf4 = gpd.read_file("data/vectors/AOI_StBrieuc.geojson")
     # concat
     
     # Convert the GeoDataFrame to a DataFrame
     #df = pd.DataFrame(gdf)
-    return gdf1,gdf2,gdf3
+    return gdf1,gdf2,gdf3,gdf4
 
 def style_function_betuwe(x):
     """
@@ -79,6 +92,11 @@ def get_AOI_to_describe(tooltip_info):
     Furthermore this areas holds also many natural ponds created by collapsing ice lumps (so-called Pingo ruines) during melting after the ice-age and also has many water draining ditches. 
     This AOI is selected to demonstrate **High Diversity Landscape Features** within the CAP since the area is packed with both the 'green' and 'blue' landscape features.
     """
+    stbr_description = f"""
+    The Bay of Saint-Brieuc is located in Brittany, France. The region faces significant environmental challenges due to intensive agriculture and livestock farming, which lead to excessive nitrogen emissions. These emissions negatively impact wetlands, Natura2000 protected areas, and coastal ecosystems, causing issues like large algae blooms.
+    This AOI is selected for Pilotdemonstrator 2 and is deployed on [a seperate website]({url_pd2}). Pilotdemonstrator 2 visualizes Earth Observation (EO) technology to monitor the effects of intensive farming on these ecosystems and assess the effectiveness of current Copernicus Land Monitoring Services (CLMS) and new EO sensors in supporting biodiversity and ecosystem protection.
+    """
+
     AOI = str(tooltip_info).split('AOI')[1]
     if 'Betuwe' in AOI:
         return betuwe_description
@@ -86,12 +104,14 @@ def get_AOI_to_describe(tooltip_info):
         return nop_description
     elif 'Friese Wouden' in AOI:
         return fw_description
+    elif 'Saint-Brieuc' in AOI:
+        return stbr_description
     else: return AOI
 
-betuwe,nop,fw = load_AOIs_geojsons()
+betuwe,nop,fw,stbr = load_AOIs_geojsons()
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=8)
+m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=7)
 
 
 # Set the basemap URL
@@ -117,6 +137,12 @@ folium.GeoJson(data=nop,
 
 folium.GeoJson(data=fw,
                         name = 'Friese wouden',
+                        style_function=style_function_fw,
+                        tooltip = folium.GeoJsonTooltip(fields=['AOI'])
+            ).add_to(m)
+
+folium.GeoJson(data=stbr,
+                        name = 'Saint-Brieuc',
                         style_function=style_function_fw,
                         tooltip = folium.GeoJsonTooltip(fields=['AOI'])
             ).add_to(m)
