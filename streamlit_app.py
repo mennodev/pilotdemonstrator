@@ -13,12 +13,11 @@ url_pd2 = 'https://pilotdemonstrator2regionalbiodiversity.streamlit.app/'
 st.sidebar.success("Select a tab above to choose the AOI for PD1")
 
 st.header("Welcome to the webapp landing page showcasing the pilot demonstrators")
-st.write("Pilot demonstrators are additional visualization for the reports written for the project")
-st.title("Copernicus High-Cadence Monitoring for the EU Green Deal")
-st.image("data/logos/logos_companies.png", width=600, caption=["Companies in the consortium"])
-
-st.header("Use the tabs to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
-st.header(f"Use the [link to explore pilot demonstrator 2 Regional biodiversity monitoring]({url_pd2})")
+st.write("Webapps are additional visualization for the reports written for the project")
+st.header("Copernicus High-Cadence Monitoring for the EU Green Deal")
+st.image("data/logos/logos_companies.png", width=600, caption=["Companies in the consortium executing DEFIS/2022/OP/0012"])
+st.subheader("Use the tabs in the sidebar to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
+st.subheader(f"Use the [link]({url_pd2}) to explore pilot demonstrator 2 Regional biodiversity monitoring")
 st.write(
     """
     Click on the AOIs in the map to get a small description.
@@ -111,7 +110,7 @@ def get_AOI_to_describe(tooltip_info):
 betuwe,nop,fw,stbr = load_AOIs_geojsons()
 
 # Create a map with the GeoJSON data using folium
-m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=7)
+m = folium.Map(location=[sum(nop.total_bounds[[1, 3]]) / 2, sum(nop.total_bounds[[0, 2]]) / 2], zoom_start=5)
 
 
 # Set the basemap URL
