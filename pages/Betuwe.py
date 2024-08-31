@@ -607,7 +607,7 @@ container.markdown(
     """)
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
 url_sentinel_hub = 'https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-1/radar_vegetation_index/'
-url_sentinel_hub_paper - 'https://doi.org/10.1016/j.rse.2022.112900'
+url_sentinel_hub_paper = 'https://doi.org/10.1016/j.rse.2022.112900'
 st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
 See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). Also the coherence between two reads can be a useful metric to flag changes. The higher the coherence the lower the changes measured. With events like mowing a dip in coherence is expected. 
 The SentinelHub platform also developed a formula based on [the paper by Bhogapurapu et. al. 2022]({url_sentinel_hub_paper}) and is called 'RVI4S1' with expected values between 0-1, where 0 indicate bare soil and 1 full developed canopy. The algorithm and example visualizations of the index are presented on [this website]({url_sentinel_hub}) the notation of the formula is presented below.
