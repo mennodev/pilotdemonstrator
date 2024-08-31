@@ -743,8 +743,8 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
     """
-    **The plot of the RVI (and the VV/VH below) does not show clear dips, peaks or other features around mowing events. Therefore it can be concluded that:** 
-    - **The RVI and the VV/VH are not suitable or not robust enough to indicate mowing and/or grazing events**
+    **The plot of the RVI (and the RVI4S1 and  VH/VV below) does not show clear dips, peaks or other features around mowing events. Therefore it can be concluded that:** 
+    - **The RVI and the VH/VV seem not suitable or not robust enough to indicate mowing and/or grazing events**
     - **The indices do not add any discriminative power for grassland monitoring.**
     
     **The plot of the COH12 do show lower coherence around the mowing dates and an increasing coherence between mowing dates. Therefore it can be concluded that:** 
