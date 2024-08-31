@@ -802,6 +802,7 @@ df_GRD = load_GRD_parquet()
 # add vv vh and RVI
 df_GRD['RVI'] = (4*df_GRD['VH'])/(df_GRD['VH']+df_GRD['VV'])
 df_GRD['VV/VH'] = df_GRD['VV']/df_GRD['VH']
+st.dataframe(df_GRD.head())
 
 with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
     # Define available polarizations
@@ -809,7 +810,7 @@ with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
     # Use multiselect to allow users to choose which series to plot
     # Set default selection to RVI and VV/VH
     selected_values = st.multiselect(
-        'Select values to Display',
+        'Select index or polarization to plot in the chart',
         options=select_options,
         default=['RVI', 'VV/VH']
     )
