@@ -513,7 +513,7 @@ def load_s2wi_nop():
     return df
 
 def load_GRD_parquet():
-    df = pd.read_parquet("data/dataframes/GRD_GrasslandsParcels_Betuwe2023_pq.parquet", engine='pyarrow')
+    df = pd.read_parquet("data/dataframes/GRD_VV_VH_parcels_NOP.parquet", engine='pyarrow')
     # Apply the mapping to the 'orbit' column to change from numbers to string with Ascending and Descending
     df['orbit'] = df['orbit'].map(orbit_mapping)
     return df
@@ -797,6 +797,32 @@ container.markdown(
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
     - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
+df_GRD = load_GRD_parquet()
+with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
+        #st.dataframe(data=df_selection_GRD_tf.head(20))
+        # Melt the DataFrame to have a long format suitable for Altair
+        df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
+        #st.dataframe(data=df_melted.head(10))
+        # Create the Altair chart
+        chart_grd = alt.Chart(df_melted).mark_line(point={
+            "filled": False,
+            "fill": "white"
+        }).encode(
+            x=alt.X('date:T', title='Date'),
+            y=alt.Y('Value:Q', title='Value (dB)'),
+            color=alt.Color('orbit:N', title='Relative Orbit'),
+            strokeDash='Polarization',  # Different lines for VV and VH
+        ).properties(height=320)
+        
+        
+        st.write('Chart of Sentinel-1 reads seperated per orbit')
+        st.altair_chart(chart_grd.interactive(), use_container_width=True)
+
 
 df_COH = load_coh_csv()
 with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
