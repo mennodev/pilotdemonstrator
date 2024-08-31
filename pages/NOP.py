@@ -413,7 +413,8 @@ orbit_mapping = {
     161: 'A161',
     88: 'A088',
     37: 'D037',
-    110: 'D110'
+    110: 'D110',
+    15: 'A015',
 }
 
 coh_mapping = {
@@ -798,29 +799,43 @@ container.markdown(
     - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
 df_GRD = load_GRD_parquet()
+# add vv vh and RVI
+df_GRD['RVI'] = (4*df_GRD['VH'])/(df_GRD['VH']+df_GRD['VV'])
+df_GRD['VV/VH'] = df_GRD['VV']/df_GRD['VH']
+
 with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
+    # Define available polarizations
+    select_options = ['VV', 'VH', 'RVI', 'VV/VH']
+    # Use multiselect to allow users to choose which series to plot
+    # Set default selection to RVI and VV/VH
+    selected_values = st.multiselect(
+        'Select values to Display',
+        options=select_options,
+        default=['RVI', 'VV/VH']
+    )
+
     if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
     if gid_to_plot is not None:
         # subselect data
         df_selection_GRD = df_GRD.loc[df_GRD['gid'] == gid_to_plot]
+        
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=['VV', 'VH'], var_name='Polarization', value_name='Value')
-        #st.dataframe(data=df_melted.head(10))
+        df_melted = df_selection_GRD.melt(id_vars=['date', 'gid', 'orbit'], value_vars=selected_values, var_name='Polarization / Index', value_name='Value')
         # Create the Altair chart
         chart_grd = alt.Chart(df_melted).mark_line(point={
             "filled": False,
             "fill": "white"
         }).encode(
             x=alt.X('date:T', title='Date'),
-            y=alt.Y('Value:Q', title='Value (dB)'),
+            y=alt.Y('Value:Q', title='Value (dB) / Index'),
             color=alt.Color('orbit:N', title='Relative Orbit'),
             strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         
         
-        st.write('Chart of Sentinel-1 reads seperated per orbit')
+        st.write('Chart of Sentinel-1 reads and RVI VV/VH index seperated per orbit')
         st.altair_chart(chart_grd.interactive(), use_container_width=True)
 
 
