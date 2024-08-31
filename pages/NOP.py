@@ -804,6 +804,9 @@ df_GRD['VV/VH'] = df_GRD['VV']/df_GRD['VH']
 df_GRD['RVI'] = (4*df_GRD['VH'])/(df_GRD['VH']+df_GRD['VV'])
 df_GRD['RVI4S1'] = (df_GRD['VV/VH']*(df_GRD['VV/VH']+3))/((df_GRD['VV/VH']+1)*(df_GRD['VV/VH']+1))
 
+st.latex(r'''
+RVI4S1 = \frac{VV/VH \cdot (VV/VH + 3)}{(VV/VH + 1)^{2}}
+''')
 
 with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
     # Define available polarizations
