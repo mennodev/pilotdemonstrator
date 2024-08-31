@@ -15,7 +15,7 @@ st.sidebar.success("Select a tab above to choose the AOI for PD1")
 st.header("Welcome to the webapp landing page showcasing the pilot demonstrators")
 st.write("Pilot demonstrators are additional visualization for the reports written for the project")
 st.title("Copernicus High-Cadence Monitoring for the EU Green Deal")
-st.image("data/logos/logoscompanies.png", width=600, caption=["Companies in the consortium"])
+st.image("data/logos/logos_companies.png", width=600, caption=["Companies in the consortium"])
 
 st.header("Use the tabs to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
 st.header(f"Use the [link to explore pilot demonstrator 2 Regional biodiversity monitoring]({url_pd2})")
