@@ -832,7 +832,7 @@ with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB) / Index'),
             color=alt.Color('orbit:N', title='Relative Orbit'),
-            strokeDash='Polarization',  # Different lines for VV and VH
+            strokeDash='Polarization / Index',  # Different lines for VV and VH
         ).properties(height=320)
         
         
