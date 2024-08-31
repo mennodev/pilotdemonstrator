@@ -798,25 +798,24 @@ container.markdown(
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
     - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
+
+
 df_GRD = load_GRD_parquet()
 # add vv vh and RVI
-df_GRD['VV/VH'] = df_GRD['VV']/df_GRD['VH']
+df_GRD['VH/VV'] = df_GRD['VH']/df_GRD['VV']
 df_GRD['RVI'] = (4*df_GRD['VH'])/(df_GRD['VH']+df_GRD['VV'])
-df_GRD['RVI4S1'] = (df_GRD['VV/VH']*(df_GRD['VV/VH']+3))/((df_GRD['VV/VH']+1)*(df_GRD['VV/VH']+1))
+df_GRD['RVI4S1'] = (df_GRD['VH/VV']*(df_GRD['VH/VV']+3))/((df_GRD['VH/VV']+1)*(df_GRD['VH/VV']+1))
 
-st.latex(r'''
-RVI4S1 = \frac{VV/VH \cdot (VV/VH + 3)}{(VV/VH + 1)^{2}}
-''')
 
 with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
     # Define available polarizations
-    select_options = ['VV', 'VH', 'RVI', 'VV/VH','RVI4S1']
+    select_options = ['VV', 'VH', 'RVI', 'VH/VV','RVI4S1']
     # Use multiselect to allow users to choose which series to plot
-    # Set default selection to RVI and VV/VH
+    # Set default selection to RVI and VH/VV
     selected_values = st.multiselect(
         'Select index or polarization to plot in the chart',
         options=select_options,
-        default=['RVI4S1', 'VV/VH']
+        default=['RVI4S1', 'VH/VV']
     )
 
     if map.get("last_object_clicked_tooltip"):

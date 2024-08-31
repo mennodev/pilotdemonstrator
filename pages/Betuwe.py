@@ -608,17 +608,17 @@ container.markdown(
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
 url_sentinel_hub = 'https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-1/radar_vegetation_index/'
 url_sentinel_hub_paper = 'https://doi.org/10.1016/j.rse.2022.112900'
-st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VV and VH can be useful to better discriminate vegetational patterns.
+st.write(f"""For Sentinel-1 reads the so-called Radar Vegetation Index (see formula below) and the ratio between VH and VV can be useful to better discriminate vegetational patterns.
 See example this paper on [Grassland mowing event detection]({url_paper_grassland_mowing}). Also the coherence between two reads can be a useful metric to flag changes. The higher the coherence the lower the changes measured. With events like mowing a dip in coherence is expected. 
-The SentinelHub platform also developed a formula based on [the paper by Bhogapurapu et. al. 2022]({url_sentinel_hub_paper}) and is called 'RVI4S1' with expected values between 0-1, where 0 indicate bare soil and 1 full developed canopy. The algorithm and example visualizations of the index are presented on [this website]({url_sentinel_hub}) the notation of the formula is presented below.
-The plots below shows the plot of RVI, the RVI4S1 and VV/VH ratio. The second plot shows the coherence of images with 12 days apart during a large part of the growing season. It is good to note that since 2021 one Sentinel-1 sensor is available and therefore the cadency of the coherence product is reduced from 6 to 12 days. Also coherence products are not readily available for these seasons on Dataspace providers, therefore the graph is showing self-processed coherence reads and is limited to a part of the season (march - july).
+The SentinelHub platform also developed a formula based on [the paper by Bhogapurapu et. al. (2022)]({url_sentinel_hub_paper}) and is called 'RVI4S1' with expected values between 0-1, where 0 indicate bare soil and 1 full developed canopy. The algorithm and example visualizations of the index are presented on [this website]({url_sentinel_hub}) the notation of the formula is presented below.
+The plots below shows the plot of RVI, the RVI4S1 and VH/VV ratio. The second plot shows the coherence of images with 12 days apart during a large part of the growing season. It is good to note that since 2021 one Sentinel-1 sensor is available and therefore the cadency of the coherence product is reduced from 6 to 12 days. Also coherence products are not readily available for these seasons on Dataspace providers, therefore the graph is showing self-processed coherence reads and is limited to a part of the season (march - july).
 """)
 st.latex(r'''
     RVI = \frac{4 \cdot V H}{V H + V V}
     ''')
 
 st.latex(r'''
-RVI4S1 = \frac{VV/VH \cdot (VV/VH + 3)}{(VV/VH + 1)^{2}}
+RVI4S1 = \frac{VH/VV \cdot (VH/VV + 3)}{(VH/VV + 1)^{2}}
 ''')
 
 with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
@@ -627,14 +627,14 @@ with st.expander("Toggle indices plot from Sentinel-1 reads",expanded=True):
     if fid_to_plot_tf is not None:
         # subselect data
         df_selection_GRD_tf = df_GRD_tf.loc[df_GRD_tf['fid'] == fid_to_plot_tf]
-        df_selection_GRD_tf['VV/VH'] = df_selection_GRD_tf['VV']/df_selection_GRD_tf['VH']
+        df_selection_GRD_tf['VH/VV'] = df_selection_GRD_tf['VH']/df_selection_GRD_tf['VV']
         # calculated RVI4S1
-        df_selection_GRD_tf['RVI4S1'] = (df_selection_GRD_tf['VV/VH']*(df_selection_GRD_tf['VV/VH']+3))/((df_selection_GRD_tf['VV/VH']+1)*(df_selection_GRD_tf['VV/VH']+1))
+        df_selection_GRD_tf['RVI4S1'] = (df_selection_GRD_tf['VH/VV']*(df_selection_GRD_tf['VH/VV']+3))/((df_selection_GRD_tf['VH/VV']+1)*(df_selection_GRD_tf['VH/VV']+1))
         min_RVI = df_selection_GRD_tf['RVI'].values.min()
         max_RVI = df_selection_GRD_tf['RVI'].values.max()
         #st.dataframe(data=df_selection_GRD_tf.head(20))
         # Melt the DataFrame to have a long format suitable for Altair
-        df_melted_tf_rvi = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['RVI','VV/VH','RVI4S1'], var_name='Indices', value_name='Value')
+        df_melted_tf_rvi = df_selection_GRD_tf.melt(id_vars=['date', 'fid', 'orbit'], value_vars=['RVI','VH/VV','RVI4S1'], var_name='Indices', value_name='Value')
         #st.dataframe(data=df_melted.head(10))
         # Create the Altair chart
         base_chart_grd_tf_rvi = alt.Chart(df_melted_tf_rvi).mark_line(point={
