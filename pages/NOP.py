@@ -913,13 +913,14 @@ with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
     if gid_to_plot is not None:
         # subselect data
         df_selection_sd = df_ndvi_sd.loc[df_ndvi_sd['gid'] == gid_to_plot]
+        #st.dataframe(df_selection_sd)
         # Display line chart
         chart = alt.Chart(df_selection_sd).mark_line(point={
         "filled": False,
         "fill": "white"
         }).encode(
                     x=alt.X('date:T', title='Date'),
-                    y=alt.Y('NDVI SD:Q', title='NDVI SD'),
+                    y=alt.Y('NDVI_SD:Q', title='NDVI Std Dev'),
                     #color='genre:N'
                     ).properties(height=320)
         st.write(f'Chart of NDVI standard deviation reads by Sentinel-2 for selected field {gid_to_plot}')
