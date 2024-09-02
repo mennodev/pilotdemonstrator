@@ -952,8 +952,8 @@ container.markdown(
     """
     **The in-field standard deviation plot reveals the following:**
     - **It is a useful metric to flag fields for further investigation**
-    - **Further investigation needs visual assessment of imagery or an assessment using all in-field pixels
-    - **Reasons for high standard deviation can be various beside soil coverage:
+    - **Further investigation needs visual assessment of imagery or an assessment using all in-field pixels**
+    - **Reasons for high standard deviation can be various beside soil coverage:**
         + Wrong parcel delineation 
         + Different conditions in the field due to fertilizer application, soil compaction, shade, crop emergence or water puddles
         + Management choices like mixed/strip cropping
@@ -961,18 +961,19 @@ container.markdown(
 url_nso = "https://www.spaceoffice.nl/en/"
 url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write("Browsing through the standard deviation for example GID 1586904 and 1192749 show high standard deviations throughout the season. These fields are presented as examples below.")
-st.image(["data/images/SD_soilcover.png"], width=600, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
+st.image(["data/images/SD_soilcover.png"], width=700, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
 st.write(f"""In order to investigate the reasons for this high standard deviations during the season and end of season we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
 For the subset fields within the AOI there are 14 VHR images available. Below two images are displayed where numer 1 (in yellow) indicate the sugar beet field and number 2 (in yellow) indicate the rape seed field.""")
-st.image(["data/images/Soil_cover.png"], width=600, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
+st.image(["data/images/Soil_cover.png"], width=700, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
-    **The images together with the plots clearly indicate the following:
-    - **One cause of the high deviation is the wrong delineation between the two fields. This causes the rapeseed field to have a high standard deviation during the growing season of this crop (March to July).
-    - **The cover crop after the rapeseed has high standard deviation due to the partial cover (74% covered)
-    - ** The cover crop after the sugarbeet has very high standard deviation late in the season due to partial cover (58%)
-    - **Both fields would not be eligible for subsidy or points within the CAP""") 
+    **The images together with the plots clearly indicate the following:**
+    - **One cause of the high deviation is the wrong delineation between the two fields. This causes the rapeseed field to have a high standard deviation during the growing season of this crop (March to July).**
+    - **The cover crop after the rapeseed has high standard deviation due to the partial cover (74% covered)**
+    - ** The cover crop after the sugarbeet has very high standard deviation late in the season due to partial cover (58%)**
+    - **Both fields would not be eligible for subsidy or points within the CAP**
+    """) 
 
 catchcrops = load_geojson_catchcrops()
 
