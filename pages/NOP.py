@@ -15,7 +15,7 @@ Navbar()
 
 st.title("Pilot demonstrator AOI Noord Oost Polder")
 
-st.header("Demonstrator focusing on soil cover regulations in the CAP and relation to cadency")
+st.header("Demonstrator focusing on soil cover regulations in the CAP and relation to cadence")
 st.write(
     """
     Below you find different blocks of data visualization developed in the pilot demonstrator exploring the topic in AOI NOP. 
@@ -554,6 +554,16 @@ def load_geojson_LPIS():
     #df = pd.DataFrame(gdf)
     return gdf
 
+def load_geojson_catchcrops():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/Fields_AOI_NOP_WGS84_brp2023c_catchcrops.geojson")
+    # translate to English
+    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
+    gdf['color'] = gdf['gws_gewas'].map(color_dict)
+    # Convert the GeoDataFrame to a DataFrame
+    #df = pd.DataFrame(gdf)
+    return gdf
+
 def load_geojson_NOP():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/AOI_NOP.geojson")
@@ -665,7 +675,7 @@ osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
 folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
 map = st_folium(
     m,
-    width=700, height=400,
+    width=600, height=400,
     key="folium_map"
 )
 df_season_doy = load_seasondate_ppi()
@@ -808,8 +818,11 @@ container.markdown(
     - **BSI and NDVI are highly (negatively) correlated**
     - **Introducing NBR2 as an indicator of dry vegetation presences reduces the ammount of soil labeled as bare (see green vs orange encircled points)**
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
-    - **In terms of cadency the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
+    - **In terms of cadence the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
+
+st.write("""To explore the added value of Sentinel-1 data for soil cover several indices like RVI, RVI4S1, VH/VV ratio are plotted below for the field selected in the map above.
+The indices are explained and the formulas presented in the tab for the Betuwe AOI.""")
 
 
 df_GRD = load_GRD_parquet()
@@ -819,7 +832,7 @@ df_GRD['RVI'] = (4*df_GRD['VH'])/(df_GRD['VH']+df_GRD['VV'])
 df_GRD['RVI4S1'] = (df_GRD['VH/VV']*(df_GRD['VH/VV']+3))/((df_GRD['VH/VV']+1)*(df_GRD['VH/VV']+1))
 
 
-with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
+with st.expander("Toggle linked Sentinel-1 GRD and indices plot",expanded=True):
     # Define available polarizations
     select_options = ['VV', 'VH', 'RVI', 'VH/VV','RVI4S1']
     # Use multiselect to allow users to choose which series to plot
@@ -853,8 +866,6 @@ with st.expander("Toggle linked Sentinel-1 GRD plot",expanded=True):
         
         st.write('Chart of Sentinel-1 reads and RVI VV/VH index seperated per orbit')
         st.altair_chart(chart_grd.interactive(), use_container_width=True)
-
-
 df_COH = load_coh_csv()
 with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
     if map.get("last_object_clicked_tooltip"):
@@ -901,8 +912,16 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
         st.write(f'Chart of Sentinel-1 COH reads seperated per relative orbit and IW for field {gid_to_plot}')
         st.altair_chart(base_chart_COH.interactive(), use_container_width=True)
 
-
-st.write(f"""Below the S2WI is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **Plotting Sentinel-1 backscatter derived data like RVI4S1, VH/VV ratio and COH12 reveal the following:**
+    - **VH/VV ratio show clear changes thoughout the growing season, but is not a clear indicator for soil cover**
+    - **RVI and RVI4S1 do not seem to produce robust timeseries to indicate the temporal pin-pointing of soil cover**
+    - **Coherence plotting does in specific cases aid in a more precise pin-point of field preperation and is a good addition to optical biomass timeseries**
+    - **In terms of cadence soil cover is often a long period of time and therefore cadence is not of utmost importance. However the precise dates in legislation (like 15th of June) sometimes require a high temporal cadence, especially for Coherence products**
+    """)
 
 df_ndvi_sd = load_ndvi_sd_nop()
 with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
@@ -927,25 +946,49 @@ with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
     
         st.altair_chart(chart.interactive(), use_container_width=True)
 
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(
+    """
+    **The in-field standard deviation plot reveals the following:**
+    - **It is a useful metric to flag fields for further investigation**
+    - **Further investigation needs visual assessment of imagery or an assessment using all in-field pixels
+    - **Reasons for high standard deviation can be various beside soil coverage:
+        + Wrong parcel delineation 
+        + Different conditions in the field due to fertilizer application, soil compaction, shade, crop emergence or water puddles
+        + Management choices like mixed/strip cropping
+    """)
 
-# read in BSI data
-df_s2wi = load_s2wi_nop()
-with st.expander("Toggle linked S2WI plot",expanded=True):
-    
-    gid_to_plot = 1400841
-    if map.get("last_object_clicked_tooltip"):
-        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
-    if gid_to_plot is not None:
-        # subselect data
-        df_selection_s2wi = df_s2wi.loc[df_s2wi['gid'] == gid_to_plot]
-        # Display line chart
-        chart = alt.Chart(df_selection_s2wi).mark_line(point={
-        "filled": False,
-        "fill": "white"
-        }).encode(
-                    x=alt.X('date:T', title='Date'),
-                    y=alt.Y('S2WI:Q', title='S2WI'),
-                    #color='genre:N'
-                    ).properties(height=320)
-        st.write(f'Chart of S2WI reads by Sentinel-2 for selected field {gid_to_plot}')
-        st.altair_chart(chart.interactive(), use_container_width=True)
+st.write("Browsing through the standard deviation for example GID 1586904 and 1192749 show high standard deviations throughout the season. These fields are presented as examples below.")
+st.image(["SD_soilcover.png"], width=600, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
+st.write(f"""In order to investigate the reasons for this high standard deviations during the season and end of season we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
+Below two images are displayed where numer 1 (in yellow) indicate the sugar beet field and number 2 (in yellow) indicate the rape seed field.""")
+st.image(["Soil_cover.png"], width=600, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The images together with the plots clearly indicate the following:
+    - **One cause of the high deviation is the wrong delineation between the two fields. This causes the rapeseed field to have a high standard deviation during the growing season of this crop (March to July).
+    - **The cover crop after the rapeseed has high standard deviation due to the partial cover (74% covered)
+    - ** The cover crop after the sugarbeet has very high standard deviation late in the season due to partial cover (58%)
+    - **Both fields would not be eligible for subsidy or points within the CAP""") 
+
+catchcrops = load_geojson_catchcrops()
+
+m_cc = folium.Map(location=[sum(catchcrops.total_bounds[[1, 3]]) / 2, sum(catchcrops.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add geojson and add some styling
+
+folium.GeoJson(data=catchcrops,
+                        name = 'Crops in catchcrop list NOP',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_cc)
+# Set the basemap URL
+osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m_cc)
+map_cc = st_folium(
+    m_cc,
+    width=600, height=400,
+    key="folium_map"
+)
+
