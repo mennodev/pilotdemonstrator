@@ -741,7 +741,7 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
     select_options = ['BSI', 'NDVI', 'NBR2']
     # Use multiselect to allow users to choose which series to plot
     # Set default selection to RVI and VH/VV
-    selected_values = st.multiselect(
+    selected_values_index = st.multiselect(
         'Select index or polarization to plot in the chart',
         options=select_options,
         default=['BSI', 'NDVI', 'NBR2']
@@ -764,7 +764,7 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
              ~df_pivot['highlight']
         )
         # Melt the pivoted DataFrame back to long format for plotting
-        df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight', 'highlight_bsi'], value_vars=selected_values, var_name='index_type', value_name='value')
+        df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight', 'highlight_bsi'], value_vars=selected_values_index, var_name='index_type', value_name='value')
 
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
