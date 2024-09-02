@@ -723,7 +723,7 @@ st.write(f"""The drawback of only using BSI is discussed in [the paper of Castal
 st.latex(r"""
 \text{NBR2} = \frac{(B_{11} - B_{12})}{(B_{11} + B_{12})}
 """)
-st.write("In order to filter out soils with dry vegetation, the paper sets the following thresholds for each pixel to be considered truly bare; NDVI < 0.35, NBR2 < 0.125 and BSI < 0.021")
+st.write("In order to filter out soils with dry vegetation, the paper sets the following thresholds for each pixel to be considered truly bare; NDVI < 0.35, NBR2 < 0.125 and BSI > 0.021")
 st.write("Below a chart is presented with 3 indices plotted together. The green circles indicate the dates if only BSI is considered, while the orange circles highlight the discriminating addition of NBR2. Please note that the BSI is calcualted using the Sentinel-2 bands B2,B4,B8 and B12. However, some BSI use Sentinel-2 B11 instead of B12, but the pattern remains similar""")
 # read in BSI data and combine
 df_bsi12 = load_bsi12_nop()
@@ -738,7 +738,14 @@ df_bsi12['index_type']='BSI'
 df_ndvi['index_type'] = 'NDVI'
 df_combined = pd.concat([df_nbr,df_bsi12,df_ndvi])
 with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
-    
+    select_options = ['BSI', 'NDVI', 'NBR2']
+    # Use multiselect to allow users to choose which series to plot
+    # Set default selection to RVI and VH/VV
+    selected_values = st.multiselect(
+        'Select index or polarization to plot in the chart',
+        options=select_options,
+        default=['BSI', 'NDVI', 'NBR2']
+    )
     gid_to_plot = 1400841
     if map.get("last_object_clicked_tooltip"):
         gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
@@ -757,7 +764,7 @@ with st.expander("Toggle linked BSI12,NDVI and NBR2 plot",expanded=True):
              ~df_pivot['highlight']
         )
         # Melt the pivoted DataFrame back to long format for plotting
-        df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight', 'highlight_bsi'], value_vars=['NDVI', 'NBR2', 'BSI'], var_name='index_type', value_name='value')
+        df_long = df_pivot.melt(id_vars=['date', 'gid', 'highlight', 'highlight_bsi'], value_vars=selected_values, var_name='index_type', value_name='value')
 
         #df_selection_nbr = df_nbr.loc[df_nbr['gid'] == gid_to_plot]
         # Display line chart
