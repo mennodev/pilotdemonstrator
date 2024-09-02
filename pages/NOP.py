@@ -493,6 +493,11 @@ def load_ndvi_nop():
     df = pd.read_parquet("data/dataframes/NDVI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
     return df
 
+def load_ndvi_sd_nop():
+    # parquet file
+    df = pd.read_parquet("data/dataframes/NDVI_SD_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
+    return df
+
 def load_bsi_nop():
     # parquet file
     df = pd.read_parquet("data/dataframes/BSI_AOI_NOP_BRP2023c.parquet", engine='pyarrow')
@@ -898,6 +903,29 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
 
 
 st.write(f"""Below the S2WI is plotted for the selected parcels above using the Sentinel-2 bands 2,4,8 and 11""")
+
+df_ndvi_sd = load_ndvi_sd_nop()
+with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
+    
+    gid_to_plot = 1400841
+    if map.get("last_object_clicked_tooltip"):
+        gid_to_plot = get_gid_from_tooltip(map["last_object_clicked_tooltip"])
+    if gid_to_plot is not None:
+        # subselect data
+        df_selection_sd = df_ndvi_sd.loc[df_ndvi_sd['gid'] == gid_to_plot]
+        # Display line chart
+        chart = alt.Chart(df_selection_sd).mark_line(point={
+        "filled": False,
+        "fill": "white"
+        }).encode(
+                    x=alt.X('date:T', title='Date'),
+                    y=alt.Y('NDVI SD:Q', title='NDVI SD'),
+                    #color='genre:N'
+                    ).properties(height=320)
+        st.write(f'Chart of NDVI standard deviation reads by Sentinel-2 for selected field {gid_to_plot}')
+    
+        st.altair_chart(chart.interactive(), use_container_width=True)
+
 
 # read in BSI data
 df_s2wi = load_s2wi_nop()
