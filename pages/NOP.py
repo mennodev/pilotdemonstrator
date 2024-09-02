@@ -965,13 +965,14 @@ st.image(["data/images/SD_soilcover.png"], width=700, caption=["Two plots of NDV
 st.write(f"""In order to investigate the reasons for this high standard deviations during the season and end of season we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
 For the subset fields within the AOI there are 14 VHR images available. Below two images are displayed where numer 1 (in yellow) indicate the sugar beet field and number 2 (in yellow) indicate the rape seed field.""")
 st.image(["data/images/Soil_cover.png"], width=700, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
+
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
     **The images together with the plots clearly indicate the following:**
     - **One cause of the high deviation is the wrong delineation between the two fields. This causes the rapeseed field to have a high standard deviation during the growing season of this crop (March to July).**
     - **The cover crop after the rapeseed has high standard deviation due to the partial cover (74% covered)**
-    - ** The cover crop after the sugarbeet has very high standard deviation late in the season due to partial cover (58%)**
+    - **The cover crop after the sugarbeet has very high standard deviation late in the season due to partial cover (58%)**
     - **Both fields would not be eligible for subsidy or points within the CAP**
     """) 
 
