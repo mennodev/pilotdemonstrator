@@ -6,6 +6,9 @@ from streamlit_folium import folium_static
 import folium
 from streamlit_folium import st_folium
 from modules.nav import Navbar
+# set icon for tabs in internet browsers
+# setup page config
+st.set_page_config(page_title="Pilot demonstrator", page_icon="🌍")
 # setup page config using modules
 Navbar()
 # url PD2
