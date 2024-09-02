@@ -977,6 +977,8 @@ container.markdown(r"""
     """) 
 
 catchcrops = load_geojson_catchcrops()
+st.write("""To focus on crops which can be sown as catchcrops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
+Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store a catchcrop, so the fields primarily serve as a examples of crop types available as an catchcrop""")
 
 m_cc = folium.Map(location=[sum(catchcrops.total_bounds[[1, 3]]) / 2, sum(catchcrops.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
@@ -995,3 +997,11 @@ map_cc = st_folium(
     key="folium_map"
 )
 
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The map shows the following:**
+    - **Only 7 unique crop types of a list of 59 possible catch crops are presented in this subset**
+    - **The EO community would benefit much in terms of developing catch crop monitoring systems if catchcrops are stored in the LPIS or other type of open source data**
+    - **The fields in the AOI are not obliged to sow catch crops after maize, so no further direct investigation is done**
+    """)
