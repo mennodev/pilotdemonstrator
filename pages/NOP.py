@@ -977,8 +977,8 @@ container.markdown(r"""
     """) 
 
 catchcrops = load_geojson_catchcrops()
-st.write("""To focus on crops which can be sown as catchcrops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
-Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store a catchcrop, so the fields primarily serve as a examples of crop types available as an catchcrop""")
+st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
+Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
 m_cc = folium.Map(location=[sum(catchcrops.total_bounds[[1, 3]]) / 2, sum(catchcrops.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
