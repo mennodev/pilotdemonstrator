@@ -960,10 +960,10 @@ container.markdown(
     """)
 
 st.write("Browsing through the standard deviation for example GID 1586904 and 1192749 show high standard deviations throughout the season. These fields are presented as examples below.")
-st.image(["SD_soilcover.png"], width=600, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
+st.image(["data/images/SD_soilcover.png"], width=600, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
 st.write(f"""In order to investigate the reasons for this high standard deviations during the season and end of season we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
-Below two images are displayed where numer 1 (in yellow) indicate the sugar beet field and number 2 (in yellow) indicate the rape seed field.""")
-st.image(["Soil_cover.png"], width=600, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
+For the subset fields within the AOI there are 14 VHR images available. Below two images are displayed where numer 1 (in yellow) indicate the sugar beet field and number 2 (in yellow) indicate the rape seed field.""")
+st.image(["data/images/Soil_cover.png"], width=600, caption=["Two VHR images with captured 6 September 2023 (left) and 9 November 2023 (right)"])
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
