@@ -958,7 +958,8 @@ container.markdown(
         + Different conditions in the field due to fertilizer application, soil compaction, shade, crop emergence or water puddles
         + Management choices like mixed/strip cropping
     """)
-
+url_nso = "https://www.spaceoffice.nl/en/"
+url_sattelietdataportaal = "https://viewer.satellietdataportaal.nl/"
 st.write("Browsing through the standard deviation for example GID 1586904 and 1192749 show high standard deviations throughout the season. These fields are presented as examples below.")
 st.image(["data/images/SD_soilcover.png"], width=600, caption=["Two plots of NDVI Standard Deviation with left a rapeseed field and right a sugar beet field"])
 st.write(f"""In order to investigate the reasons for this high standard deviations during the season and end of season we can visually inspect available VHR. The [Netherlands Space Office]({url_nso}) provides a [sattelite imagery portal]({url_sattelietdataportaal}) for Dutch users including Pleiades NEO and SuperView NEO. 
