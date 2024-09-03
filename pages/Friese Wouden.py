@@ -3,6 +3,13 @@ import pandas as pd
 import geopandas as gpd
 import streamlit as st
 from modules.nav import Navbar
+from streamlit_folium import folium_static
+import folium
+from streamlit_folium import st_folium
+from modules.nav import Navbar
+import leafmap.foliumap as leafmap
+from datetime import datetime
+from shapely import wkt
 # setup page config using modules
 Navbar()
 
@@ -162,7 +169,7 @@ def load_conv_csv():
     df['color'] = df['gws_gewas'].map(color_dict)
     return df
 
-def load_geojson():
+def load_geojson_LE():
     # Read GeoJSON data into a GeoDataFrame
     gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
     # translate to English
@@ -172,24 +179,9 @@ def load_geojson():
     #df = pd.DataFrame(gdf)
     return gdf
 
-def load_geojson_testfields():
+def load_geojson_FW():
     # Read GeoJSON data into a GeoDataFrame
-    gdf = gpd.read_file("data/vectors/Fields_AOI_Betuwe_WGS84_grassland_maurik_brp_gid.geojson")
-    # translate to English
-    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
-    gdf['color'] = gdf['mowed'].map(color_dict_testfields)
-    # Convert the GeoDataFrame to a DataFrame
-    #df = pd.DataFrame(gdf)
-    return gdf
-
-def load_geojson_bufferstrips():
-    # Read GeoJSON data into a GeoDataFrame
-    gdf = gpd.read_file("data/vectors/Fields_AOI_Betuwe_WGS84_bufferstrips_fruit_brp_gid.geojson")
-    # translate to English
-    gdf['management'] = gdf['gws_gewas'].map(translation_dict)
-    gdf['color'] = gdf['gws_gewas'].map(color_dict)
-    # Convert the GeoDataFrame to a DataFrame
-    #df = pd.DataFrame(gdf)
+    gdf = gpd.read_file("data/vectors/AOI_FrieseWouden.geojson")
     return gdf
 
 
@@ -233,6 +225,12 @@ style = {
     "fillColor": "darkgreen",
     "fillOpacity": 0.1,
 }
+
+def style_function_AOI(x):
+    """
+    Use color column to assign color
+    """
+    return {"color":'blue', "weight":1, "fillOpacity":0.0}
 
 # Add the Folium map to the Streamlit app using the st_folium library
 url_benefits_lf = 'https://publications.jrc.ec.europa.eu/repository/bitstream/JRC128297/JRC128297_01.pdf'
@@ -288,5 +286,45 @@ container.markdown(f"""Agricultural landscape features in the context of EU are:
 st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
 container = st.container(border=True) 
 container.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
-container.table(df_LE_ammounts)
+container.table(df_LE_ammounts,hide_index=True)
+st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains")
+st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
+LE_geojson = load_geojson_LE()
+FW_geojson = load_geojson_FW()
+st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
+Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
+m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
+# add geojson and add some styling
+# add geojson and add some styling
+folium.GeoJson(data=geojson_FW,
+                        name = 'AOI Friese Wouden',
+                        style_function=style_function_AOI,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m)
+
+folium.GeoJson(data=LE_geojson,
+                        name = 'Landscape Features in NOP',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m)
+# Set the basemap URL
+osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
+
+ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
+folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
+# add control to switch between baselayers
+control = folium.LayerControl(collapsed=False)
+map = st_folium(
+    m,
+    width=600, height=400,
+    key="folium_map",
+    layer_control=control
+)
+
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The map shows the following:**
+    """)
