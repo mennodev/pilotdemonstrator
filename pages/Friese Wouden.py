@@ -171,7 +171,7 @@ def load_conv_csv():
 
 def load_geojson_LE():
     # Read GeoJSON data into a GeoDataFrame
-    gdf = gpd.read_file("data/vectors/LPIS_Grasslands.geojson")
+    gdf = gpd.read_file("data/vectors/Fields_AOI_FW_WGS84_brp2023c_LE.geojson")
     # translate to English
     gdf['management'] = gdf['gws_gewas'].map(translation_dict)
     gdf['color'] = gdf['gws_gewas'].map(color_dict)
