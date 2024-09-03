@@ -291,7 +291,7 @@ container.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains")
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
-FW_geojson = load_geojson_FW()
+geojson_FW = load_geojson_FW()
 st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
 Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
