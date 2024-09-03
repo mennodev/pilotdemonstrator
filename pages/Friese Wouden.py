@@ -265,6 +265,7 @@ ammount_dict = {"Water carying ditch":"50379",
 "Feed hedge":"1"}
 
 df_LE_ammounts = pd.DataFrame(list(ammount_dict.items()), columns=['LF type','Occurence'])
+df_LE_ammounts = df_LE_ammounts.set_index(df_LE_ammounts.columns[0])
 
 container = st.container(border=True) 
 container.write(f"**Types of agricultural landscape features**")
@@ -286,7 +287,7 @@ container.markdown(f"""Agricultural landscape features in the context of EU are:
 st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
 container = st.container(border=True) 
 container.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
-container.table(df_LE_ammounts,hide_index=True)
+container.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains")
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
