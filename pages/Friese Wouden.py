@@ -295,6 +295,14 @@ geojson_FW = load_geojson_FW()
 st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
 Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
+
+# Set the basemap URL
+#osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+#folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors',name='Esri ').add_to(m)
+
+ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
+folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',name='ESRI World Imagery').add_to(m)
+# add control to switch between baselayers
 m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add geojson and add some styling
 # add geojson and add some styling
@@ -309,13 +317,6 @@ folium.GeoJson(data=LE_geojson,
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m)
-# Set the basemap URL
-osm_tiles = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-folium.TileLayer(osm_tiles, attr='Map data © OpenStreetMap contributors').add_to(m)
-
-ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
-folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community').add_to(m)
-# add control to switch between baselayers
 control = folium.LayerControl(collapsed=False)
 map = st_folium(
     m,
