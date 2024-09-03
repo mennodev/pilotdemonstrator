@@ -235,7 +235,7 @@ def style_function_AOI(x):
 # Add the Folium map to the Streamlit app using the st_folium library
 url_benefits_lf = 'https://publications.jrc.ec.europa.eu/repository/bitstream/JRC128297/JRC128297_01.pdf'
 container = st.container(border=True)
-container.write(f"**Defenition of agricultural landscape features**")
+container.write(f"**Definition of agricultural landscape features**")
 container.markdown(f"""Landscape features are small fragments of 
 non-productive natural or semi-natural vegetation in agricultural landscape which provide 
 ecosystem services and support for biodiversity ([source: Technical Report JRC]({url_benefits_lf}))""")
@@ -267,9 +267,8 @@ ammount_dict = {"Water carying ditch":"50379",
 df_LE_ammounts = pd.DataFrame(list(ammount_dict.items()), columns=['LF type','Occurence'])
 df_LE_ammounts = df_LE_ammounts.set_index(df_LE_ammounts.columns[0])
 
-container = st.container(border=True) 
-container.write(f"**Types of agricultural landscape features**")
-container.markdown(f"""Agricultural landscape features in the context of EU are:
+st.write(f"**Types of agricultural landscape features**")
+st.markdown(f"""Agricultural landscape features in the context of EU are:
         - 'Blue' features:
         + historical ponds
         + water carying ditches
@@ -285,9 +284,8 @@ container.markdown(f"""Agricultural landscape features in the context of EU are:
         + terraces
         """)
 st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
-container = st.container(border=True) 
-container.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
-container.table(df_LE_ammounts)
+st.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
+st.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains")
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
@@ -295,7 +293,7 @@ geojson_FW = load_geojson_FW()
 st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
 Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
-m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
+m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
 ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
 folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',name='ESRI World Imagery').add_to(m)
 # add control to switch between baselayers
