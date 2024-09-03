@@ -266,7 +266,7 @@ ammount_dict = {"Water carying ditch":"50379",
 "Earth banks and sand walls":"3",
 "Feed hedge":"1"}
 
-df_LE_ammounts = pd.DataFrame.from_dict(list(ammount_dict.items()), columns=['LF type','Occurence'])
+df_LE_ammounts = pd.DataFrame.from_dict(list(ammount_dict.items()))
 
 container = st.container(border=True) 
 container.write(f"**Types of agricultural landscape features**")
