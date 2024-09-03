@@ -1,3 +1,6 @@
+import altair as alt
+import pandas as pd
+import geopandas as gpd
 import streamlit as st
 from modules.nav import Navbar
 # setup page config using modules
