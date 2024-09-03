@@ -266,7 +266,7 @@ ammount_dict = {"Water carying ditch":"50379",
 "Earth banks and sand walls":"3",
 "Feed hedge":"1"}
 
-df_LE_ammounts = pd.DataFrame(ammount_dict)
+df_LE_ammounts = pd.DataFrame.from_dict(ammount_dict)
 
 container = st.container(border=True) 
 container.write(f"**Types of agricultural landscape features**")
