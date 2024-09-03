@@ -268,21 +268,23 @@ df_LE_ammounts = pd.DataFrame(list(ammount_dict.items()), columns=['LF type','Oc
 df_LE_ammounts = df_LE_ammounts.set_index(df_LE_ammounts.columns[0])
 
 st.write(f"**Types of agricultural landscape features**")
-st.markdown(f"""Agricultural landscape features in the context of EU are:
-        - 'Blue' features:
-        + historical ponds
-        + water carying ditches
-        + springs
-        + historic canal network 
-        - 'Green' features:
-        + hedges
-        + trees in line, grouped or isolated
-        + planted areas
-        + field margins
-        - 'Grey' features:
-        + stone/earth walls
-        + terraces
+st.markdown(f"""
+        **Agricultural landscape features in the context of EU are:**
+        - **'Blue' features:**
+            + historical ponds
+            + water carying ditches
+            + springs
+            + historic canal network 
+        - **'Green' features:**
+            + hedges
+            + trees in line, grouped or isolated
+            + planted areas
+            + field margins
+        - **'Grey' features:**
+            + stone/earth walls
+            + terraces
         """)
+
 st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
 st.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
 st.table(df_LE_ammounts)
@@ -313,7 +315,7 @@ folium.GeoJson(data=LE_geojson,
 control = folium.LayerControl(collapsed=False)
 map = st_folium(
     m,
-    width=600, height=400,
+    width=700, height=500,
     key="folium_map",
     layer_control=control
 )
