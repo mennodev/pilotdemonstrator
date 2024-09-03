@@ -270,17 +270,17 @@ df_LE_ammounts = df_LE_ammounts.set_index(df_LE_ammounts.columns[0])
 st.write(f"**Types of agricultural landscape features**")
 st.markdown(f"""
         **Agricultural landscape features in the context of EU are:**
-        - **'Blue' features:**
+        - 'Blue' features:
             + historical ponds
             + water carying ditches
             + springs
             + historic canal network 
-        - **'Green' features:**
+        - 'Green' features:
             + hedges
             + trees in line, grouped or isolated
             + planted areas
             + field margins
-        - **'Grey' features:**
+        - 'Grey' features:
             + stone/earth walls
             + terraces
         """)
@@ -292,8 +292,6 @@ st.write("From the table it is clear that water carying ditches are dominant. Al
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
 geojson_FW = load_geojson_FW()
-st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
-Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")
 
 m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
 ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
@@ -324,4 +322,7 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
     **The map shows the following:**
+    - Not all landscape features are (yet) declared / delineated in 2023
+    - Some ponds are cross-cut along parcel boundaries not natural boundaries
+    - Some mistakes can be identified e.g. row of trees overlapping ditches
     """)
