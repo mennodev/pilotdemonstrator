@@ -266,7 +266,7 @@ ammount_dict = {"Water carying ditch":"50379",
 "Earth banks and sand walls":"3",
 "Feed hedge":"1"}
 
-df_LE_ammounts = pd.DataFrame.from_dict(list(ammount_dict.items()))
+df_LE_ammounts = pd.DataFrame(list(ammount_dict.items()), columns=['LF type','Occurence'])
 
 container = st.container(border=True) 
 container.write(f"**Types of agricultural landscape features**")
@@ -285,7 +285,7 @@ container.markdown(f"""Agricultural landscape features in the context of EU are:
         + stone/earth walls
         + terraces
         """)
-st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K landscape elements")
+st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
 container = st.container(border=True) 
 container.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
 container.table(df_LE_ammounts)
