@@ -317,6 +317,7 @@ st.write("Within the Dutch context not all landscape features are relevant and i
 st.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
 st.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains.")
+
 st.write("To assess the usefullness of the CLMS High Resolution Small Woody Features layer regarding CAP regulation a very small subset is shown in the map below")
 SWF_geojson = load_geojson_SWF()
 geojson_FW = load_geojson_FW()
@@ -325,7 +326,7 @@ m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_
 
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
-                layers = '2018_orthoHR',
+                layers = '2018_ortho25',
                 transparent = True, 
                 control = True,
                 fmt="image/jpeg",
