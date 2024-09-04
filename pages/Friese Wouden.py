@@ -317,7 +317,7 @@ st.write(f"**Types and occurence frequency of agricultural landscape features in
 st.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains.")
 
-st.title("CLMS HR SWF layer assessment")
+st.subheader("CLMS HR SWF layer assessment")
 st.write("To assess the usefullness of the CLMS High Resolution Small Woody Features layer regarding CAP regulation a very small subset is shown in the map below")
 SWF_geojson = load_geojson_SWF()
 geojson_FW = load_geojson_FW()
@@ -364,6 +364,7 @@ container.markdown(r"""
     - In general the area covered by the woody feature is overestimated
     - The polygons are not straight probably since it is derived from a 5 meter raster with jagged edges
     - Some tree lines seem to be ommitted
+    
     **For CAP Landscape Features monitoring it means the following:**
     - Layer is usefull to get an overall indication of SWF density in a country
     - There is not distinction between SWF associated to agricultural parcels or outsided agricultural areas
@@ -372,14 +373,28 @@ container.markdown(r"""
     - Cadence and delay in production is not sufficient for yearly monitoring
     """)
 
-
+st.subheader("Assessment of Landscape Features declared in the LPIS")
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
 geojson_FW = load_geojson_FW()
 
 m = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
-ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
-folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',name='ESRI World Imagery').add_to(m)
+
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
+                layers = '2023_ortho25',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image 2023 RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m)
+
+#ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
+#folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',name='ESRI World Imagery').add_to(m)
 # add control to switch between baselayers
 # add geojson and add some styling
 # add geojson and add some styling
@@ -407,6 +422,6 @@ container.write(f"**Conclusion**")
 container.markdown(r"""
     **The map shows the following:**
     - Not all landscape features are (yet) declared / delineated in 2023
-    - Some ponds are cross-cut along parcel boundaries not natural boundaries
-    - Some mistakes can be identified e.g. row of trees overlapping ditches
+    - Some ponds are cross-cut along parcel boundaries and do not form natural boundaries
+    - Some mistakes can be identified e.g. row of trees overlapping ditches or overextending wooded banks
     """)
