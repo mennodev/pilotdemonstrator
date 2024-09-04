@@ -345,7 +345,7 @@ folium.GeoJson(data=geojson_FW,
                         ).add_to(m_swf)
 
 folium.GeoJson(data=SWF_geojson,
-                        name = 'Landscape Features in NOP',
+                        name = 'HR SWF',
                         style_function=style_function_AOI,
                         #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m_swf)
@@ -405,7 +405,7 @@ folium.GeoJson(data=geojson_FW,
                         ).add_to(m)
 
 folium.GeoJson(data=LE_geojson,
-                        name = 'Landscape Features in NOP',
+                        name = 'Landscape Features in FW',
                         style_function=style_function,
                         tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
                         ).add_to(m)
