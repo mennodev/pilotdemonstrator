@@ -249,22 +249,21 @@ ecosystem services and support for biodiversity ([source: Technical Report JRC](
 container.write(f"**Benefits of agricultural landscape features**")
 container.markdown(f"""
     Agricultural benefits
-    - providing wood
-    - shelter for livestock
-    - barriers and demarcation between agricultural properties
-    - windbreaks
-    - increase productivity on steep slopes
+    - Providing wood
+    - Shelter for livestock
+    - Barriers and demarcation between agricultural parcels
+    - Windbreaks for crops
+    - Increase productivity on steep slopes
     Societal benefits
-    - improved air quality
-    - improved water quality
-    - water quantity
-    - reduction of greenhouse gas emissions
-    - carbon sequestration
-    - climate change adaptation
-    - regulation of soil erosion and soil quality
-    - support biodiversity and pollination 
-))
-""")
+    - Improved air quality
+    - Improved water quality
+    - Water quantity
+    - Reduction of greenhouse gas emissions
+    - Carbon sequestration
+    - Climate change adaptation
+    - Regulation of soil erosion and soil quality
+    - Support biodiversity and pollination
+    """)
 
 
 
@@ -318,11 +317,12 @@ st.write(f"**Types and occurence frequency of agricultural landscape features in
 st.table(df_LE_ammounts)
 st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains.")
 
+st.title("CLMS HR SWF layer assessment")
 st.write("To assess the usefullness of the CLMS High Resolution Small Woody Features layer regarding CAP regulation a very small subset is shown in the map below")
 SWF_geojson = load_geojson_SWF()
 geojson_FW = load_geojson_FW()
 
-m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
+m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_geojson.total_bounds[[0, 2]]) / 2], zoom_start=14)
 
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
@@ -364,6 +364,12 @@ container.markdown(r"""
     - In general the area covered by the woody feature is overestimated
     - The polygons are not straight probably since it is derived from a 5 meter raster with jagged edges
     - Some tree lines seem to be ommitted
+    **For CAP Landscape Features monitoring it means the following:**
+    - Layer is usefull to get an overall indication of SWF density in a country
+    - There is not distinction between SWF associated to agricultural parcels or outsided agricultural areas
+    - Resolution is not sufficient for delineation checks or correct area estimates
+    - Categorically it does not provide sufficient information to distinguish between different types of features
+    - Cadence and delay in production is not sufficient for yearly monitoring
     """)
 
 
