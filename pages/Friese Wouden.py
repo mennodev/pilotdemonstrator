@@ -184,6 +184,11 @@ def load_geojson_FW():
     gdf = gpd.read_file("data/vectors/AOI_FrieseWouden.geojson")
     return gdf
 
+def load_geojson_SWF():
+    # Read GeoJSON data into a GeoDataFrame
+    gdf = gpd.read_file("data/vectors/SWF_AOI_SUBSET_FW_WGS84_small.geojson")
+    return gdf
+
 
 def load_planet_fusion_csv():
     df = pd.read_csv("data/dataframes/PlanetFusionNDVI.csv")
@@ -232,13 +237,36 @@ def style_function_AOI(x):
     """
     return {"color":'blue', "weight":1, "fillOpacity":0.0}
 
+
 # Add the Folium map to the Streamlit app using the st_folium library
 url_benefits_lf = 'https://publications.jrc.ec.europa.eu/repository/bitstream/JRC128297/JRC128297_01.pdf'
 container = st.container(border=True)
 container.write(f"**Definition of agricultural landscape features**")
 container.markdown(f"""Landscape features are small fragments of 
 non-productive natural or semi-natural vegetation in agricultural landscape which provide 
-ecosystem services and support for biodiversity ([source: Technical Report JRC]({url_benefits_lf}))""")
+ecosystem services and support for biodiversity ([source: Technical Report JRC]({url_benefits_lf}))
+""")
+container.write(f"**Benefits of agricultural landscape features**")
+container.markdown(f"""
+    Agricultural benefits
+    - providing wood
+    - shelter for livestock
+    - barriers and demarcation between agricultural properties
+    - windbreaks
+    - increase productivity on steep slopes
+    Societal benefits
+    - improved air quality
+    - improved water quality
+    - water quantity
+    - reduction of greenhouse gas emissions
+    - carbon sequestration
+    - climate change adaptation
+    - regulation of soil erosion and soil quality
+    - support biodiversity and pollination 
+))
+""")
+
+
 
 ammount_dict = {"Water carying ditch":"50379",
 "Wooded bank and tree row":"5191",
@@ -288,7 +316,56 @@ st.markdown(f"""
 st.write("Within the Dutch context not all landscape features are relevant and included as such in the CAP regulations. Since 2023 landscape features are included in the subsidy scheme and farmers need to declare those elements. This also mean that the LPIS is extended with many more polygons delineating the features. For example in the AOI there are about 116K parcels of which 65,4K are landscape elements")
 st.write(f"**Types and occurence frequency of agricultural landscape features in the AOI**")
 st.table(df_LE_ammounts)
-st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains")
+st.write("From the table it is clear that water carying ditches are dominant. Also within the AOI almost all types of LF possible within the Dutch CAP are present apart from windhedge in orchards, earthen walls and terraces with shrubs. The latter only exists in province Limburg at some sloping terrains.")
+st.write("To assess the usefullness of the CLMS High Resolution Small Woody Features layer regarding CAP regulation a very small subset is shown in the map below")
+SWF_geojson = load_geojson_SWF()
+geojson_FW = load_geojson_FW()
+
+m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
+
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
+                layers = '2018_orthoHR',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image 2018 RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_swf)
+# add geojson and add some styling
+# add geojson and add some styling
+folium.GeoJson(data=geojson_FW,
+                        name = 'AOI Friese Wouden',
+                        style_function=style_function_AOI,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_swf)
+
+folium.GeoJson(data=SWF_geojson,
+                        name = 'Landscape Features in NOP',
+                        style_function=style_function_AOI,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_swf)
+control = folium.LayerControl(collapsed=False)
+map = st_folium(
+    m_swf,
+    width=700, height=500,
+    key="folium_map",
+    layer_control=control
+)
+
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The map shows the following:**
+    - In general the area covered by the woody feature is overestimated
+    - The polygons are not straight probably since it is derived from a 5 meter raster with jagged edges
+    - Some tree lines seem to be ommitted
+    """)
+
+
 st.write("To get an overview of landscape features a subset of the AOI is shown in the map below")
 LE_geojson = load_geojson_LE()
 geojson_FW = load_geojson_FW()
