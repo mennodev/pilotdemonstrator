@@ -367,7 +367,7 @@ container.markdown(r"""
     
     **For CAP Landscape Features monitoring it means the following:**
     - Layer is usefull to get an overall indication of SWF density in a country
-    - There is not distinction between SWF associated to agricultural parcels or outsided agricultural areas
+    - There is no distinction between SWF along or inside agricultural parcels and outside agricultural areas
     - Resolution is not sufficient for delineation checks or correct area estimates
     - Categorically it does not provide sufficient information to distinguish between different types of features
     - Cadence and delay in production is not sufficient for yearly monitoring
