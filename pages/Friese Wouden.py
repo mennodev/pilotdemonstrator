@@ -322,7 +322,7 @@ st.write("To assess the usefullness of the CLMS High Resolution Small Woody Feat
 SWF_geojson = load_geojson_SWF()
 geojson_FW = load_geojson_FW()
 
-m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_geojson.total_bounds[[0, 2]]) / 2], zoom_start=14)
+m_swf = folium.Map(location=[sum(SWF_geojson.total_bounds[[1, 3]]) / 2, sum(SWF_geojson.total_bounds[[0, 2]]) / 2], zoom_start=15)
 
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
@@ -474,7 +474,5 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
     **The map shows the following:**
-    - Not all landscape features are (yet) declared / delineated in 2023
-    - Some ponds are cross-cut along parcel boundaries and do not form natural boundaries
-    - Some mistakes can be identified e.g. row of trees overlapping ditches or overextending wooded banks
+    - 
     """)
