@@ -489,7 +489,7 @@ container.markdown(r"""
     - Ponds and some water carrying ditch  are clearly distinguisable as NoData
     - Many landscape features are not declared in the LPIS
     - LPIS declarations are often clearly visible in the DSM of 2020 meaning that not many mutation happen in the landscape
-    - Cadence of the DSM would ideally increase to at least yearly to match CAP regulation
+    - Cadence of the DSM would ideally increase to at least yearly measurement to match CAP regulation
     """)
 url_bag = 'https://bagviewer.kadaster.nl/lvbag/bag-viewer/?theme=BRT+Achtergrond&geometry.x=211126.63057978588&geometry.y=575577.8156218333&zoomlevel=12.028149392472756'
 st.write('In order to make the altimetry data more useful for automated landscape feature analysis the data can be segmented into a binary layer with high objects and low objects. Further the open-source layer BAG (Administration of Buildings and Adresses) can be leveraged to filter out all buildings. ([see for example of buildings in the AOI this viewer]({url_bag})). This results in a vector layer which can be used in geometric analysis for example by querying whether the declared LPIS is overlapping a feature classified as a high object without being a building')
