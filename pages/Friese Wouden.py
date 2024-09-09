@@ -504,6 +504,7 @@ container.markdown(r"""
     **The displayed images shows the following:**
     - Additioanl techniques can be leveraged to aid in landscape feature detection like using altimetry, shadow and altimetry
     - Continuity of presence and type of landscape feature can be determined
+    
     **Overal conclusion:**
     - Management like pruning woody features, trimming hedges and removal of exotic species within the feature are hardly visible with spaceborne and aerial EO
     - Side looking images and reporting during management is key. Mobile applications like RVO GeoTAG are probably the best monitoring tool for landscape feature management 
