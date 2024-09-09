@@ -485,5 +485,8 @@ container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(r"""
     **The map shows the following:**
-    - 
+    - The DSM is very suitable to discriminate between landscape features and surrounding fields
+    - Ponds and some water carrying ditch  are clearly distinguisable as NoData
+    - Many landscape features are not declared in the LPIS
+    - LPIS declarations are often clearly visible in the DSM of 2020 meaning that not many mutation happen in the landscape
     """)
