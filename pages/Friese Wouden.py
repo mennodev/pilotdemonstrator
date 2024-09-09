@@ -425,13 +425,13 @@ container.markdown(r"""
     - Some ponds are cross-cut along parcel boundaries and do not form natural boundaries
     - Some mistakes can be identified e.g. row of trees overlapping ditches or overextending wooded banks
     """)
-
+url_ahn = 'https://ahn.arcgisonline.nl/ahnviewer/'
 st.subheader("Assessment of added values of altimetry data for Landscape Features monitoring")
-st.write("To get an overview of the use of altimetry a Digital Surface Model is in the map below")
+st.write("In the Netherlands elevation data (AHN4) with 5 cm horizontal and 50cm vertical resolution is freely available ([see also this viewer]({url_ahn})). To get an overview of how altimetry can be used a Digital Surface Model is displayed in the map below")
 #LE_geojson = load_geojson_LE()
 #geojson_FW = load_geojson_FW()
 
-m_ahn = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
+m_ahn = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=12)
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
                 layers = '2020_ortho25',
@@ -490,4 +490,23 @@ container.markdown(r"""
     - Many landscape features are not declared in the LPIS
     - LPIS declarations are often clearly visible in the DSM of 2020 meaning that not many mutation happen in the landscape
     - Cadence of the DSM would ideally increase to at least yearly to match CAP regulation
+    """)
+url_bag = 'https://bagviewer.kadaster.nl/lvbag/bag-viewer/?theme=BRT+Achtergrond&geometry.x=211126.63057978588&geometry.y=575577.8156218333&zoomlevel=12.028149392472756'
+st.write('In order to make the altimetry data more useful for automated landscape feature analysis the data can be segmented into a binary layer with high objects and low objects. Further the open-source layer BAG (Administration of Buildings and Adresses) can be leveraged to filter out all buildings. ([see for example of buildings in the AOI this viewer]({url_bag})). This results in a vector layer which can be used in geometric analysis for example by querying whether the declared LPIS is overlapping a feature classified as a high object without being a building')
+st.image("data/images/SegmentedAHN.png", width=700, caption=["Creating a categorical vector layer from the DSM representing all high objects in the landscape for automated landscape feature analysis"])
+st.write('Such layers or the LPIS itself can be enriched with statistics from the altimetry. For example the average height of the polygon can be represented. With a scrub hedge lower heights are being to be expected compared to a tree-lined avenue. Also a timeserie of optical data can be processed to determine a shadow score. Using the sun and satellite angle and a stack of optical data all polygons are given a shadow score. Meaning that if all pixels in the vector can be associated with an expected shadow the score is high and low if no shadows can be found. This number is associated with the feature being sparse and not generating much shadow')
+st.image("data/images/WeighedAHNvectors.png", width=700, caption=["Enriching vector layers with average height (left) or a shadow score (right) with purple values being low values and green/yellow high values"])
+st.write("An additional technology to get categorical data on landscape features is to deploy machine learning techniques like object detection to distinguish between different types of landscape features. Within an innovation trajectory by the paying agency in 2020 two companies from the Netherlands (TerraSphere and Arcadis) showed that using VHR optical data and aerial imagery could reliably detect landscape features on scale (1.1 milion elements in 3 Dutch provinces).")
+st.image("data/images/DeepLearningResult.png", width=700, caption=["Vector layer displaying the result of deep learning object segementation using aerial imagery"])
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The displayed images shows the following:**
+    - Additioanl techniques can be leveraged to aid in landscape feature detection like using altimetry, shadow and altimetry
+    - Continuity of presence and type of landscape feature can be determined
+    **Overal conclusion:**
+    - Management like pruning woody features, trimming hedges and removal of exotic species within the feature are hardly visible with spaceborne and aerial EO
+    - Side looking images and reporting during management is key. Mobile applications like RVO GeoTAG are probably the best monitoring tool for landscape feature management 
+    - SLI can aid in generating large ins-itu datasets for algorithm training for automated landscape feature detection
+    - Deep learning algorithms can help paying agencies to automate checks in landscape feature monitoring
     """)
