@@ -489,4 +489,5 @@ container.markdown(r"""
     - Ponds and some water carrying ditch  are clearly distinguisable as NoData
     - Many landscape features are not declared in the LPIS
     - LPIS declarations are often clearly visible in the DSM of 2020 meaning that not many mutation happen in the landscape
+    - Cadence of the DSM would ideally increase to at least yearly to match CAP regulation
     """)
