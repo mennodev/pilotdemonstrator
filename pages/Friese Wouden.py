@@ -432,14 +432,25 @@ st.write("To get an overview of the use of altimetry a Digital Surface Model is 
 #geojson_FW = load_geojson_FW()
 
 m_ahn = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
-
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0',
+                layers = '2020_ortho25',
+                transparent = True, 
+                control = True,
+                fmt="image/jpeg",
+                name = 'Aerial Image 2020 RGB',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_ahn)
 # add ortho aerial imagery
 folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/rws/ahn/wms/v1_0',
                 layers = 'dsm_05m',
                 transparent = True, 
                 control = True,
                 fmt="image/png",
-                name = 'DSM AHN4',
+                name = 'DSM AHN4 2020',
                 attr = 'PDOK / opendata.beeldmaterial.nl',
                 overlay = True,
                 show = True,
