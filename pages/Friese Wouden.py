@@ -425,3 +425,56 @@ container.markdown(r"""
     - Some ponds are cross-cut along parcel boundaries and do not form natural boundaries
     - Some mistakes can be identified e.g. row of trees overlapping ditches or overextending wooded banks
     """)
+
+st.subheader("Assessment of added values of altimetry data for Landscape Features monitoring")
+st.write("To get an overview of the use of altimetry a Digital Surface Model is in the map below")
+#LE_geojson = load_geojson_LE()
+#geojson_FW = load_geojson_FW()
+
+m_ahn = folium.Map(location=[sum(LE_geojson.total_bounds[[1, 3]]) / 2, sum(LE_geojson.total_bounds[[0, 2]]) / 2], zoom_start=10)
+
+# add ortho aerial imagery
+folium.raster_layers.WmsTileLayer(url=r'https://service.pdok.nl/rws/ahn/wms/v1_0',
+                layers = 'dsm_05m',
+                transparent = True, 
+                control = True,
+                fmt="image/png",
+                name = 'DSM AHN4',
+                attr = 'PDOK / opendata.beeldmaterial.nl',
+                overlay = True,
+                show = True,
+                #CRS = 'EPSG:4326',
+                ).add_to(m_ahn)
+
+#ESRI_tiles = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png'
+#folium.TileLayer(ESRI_tiles, attr='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',name='ESRI World Imagery').add_to(m)
+# add control to switch between baselayers
+# add geojson and add some styling
+# add geojson and add some styling
+folium.GeoJson(data=geojson_FW,
+                        name = 'AOI Friese Wouden',
+                        style_function=style_function_AOI,
+                        #tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_ahn)
+
+folium.GeoJson(data=LE_geojson,
+                        name = 'Landscape Features in FW',
+                        style_function=style_function,
+                        tooltip = folium.GeoJsonTooltip(fields=['gid','management','gewascode'])
+                        ).add_to(m_ahn)
+control = folium.LayerControl(collapsed=False)
+map = st_folium(
+    m_ahn,
+    width=700, height=500,
+    key="folium_map",
+    layer_control=control
+)
+
+container = st.container(border=True)
+container.write(f"**Conclusion**")
+container.markdown(r"""
+    **The map shows the following:**
+    - Not all landscape features are (yet) declared / delineated in 2023
+    - Some ponds are cross-cut along parcel boundaries and do not form natural boundaries
+    - Some mistakes can be identified e.g. row of trees overlapping ditches or overextending wooded banks
+    """)
