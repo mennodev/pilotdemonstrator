@@ -649,6 +649,7 @@ container.markdown(f"""
 """)
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
+st.subheader("Assessing usefulness of biomass index with Sentinel-2 and CLMS HR VPP information")
 st.write(f"""LPIS data of 2023 for the AOI reveals that 88% of parcels are croplands, with the remaining part predominantly covered with grasslands (11,2%).
             The subset of LPIS data below also shows that dominant crops in the AOI are potatoes (blue polygons) and cereals (yellow polygons)
             """)
@@ -729,6 +730,7 @@ container.markdown(
     - **Only HR VPP information is not sufficient to answer all question on soil cover since it only provided information for distinguished seasons**
     - **Soil cover analysis requires biomass information of fields also outside the production season**
     """)
+st.subheader("Assessing usefulness of bare soil indices")
 st.write(f"""For sensors with capabilities to measure blue, read, near infrared (NIR) and short wave infrared (SWIR) spectral bands the Bare Soil Index (BSI) can be calculated. The rationale behind this index is that the SWIR and red band are used to indicate the soil mineral composition. The blue and NIR are used to indicate the presence of vegetation. The BSI is than calculated (by normalising the bands bands) using the following formula:""")
 st.latex(r"""
 \text{BSI} = \frac{(\text{red} + \text{SWIR}) - (\text{NIR} + \text{blue})}{(\text{red} + \text{SWIR}) + (\text{NIR} + \text{blue})}
@@ -820,7 +822,7 @@ container.markdown(
     - **Plotting these indices gives a clear overview of presence of bare soils throughout the season**
     - **In terms of cadence the revisit frequency of Sentinel-2 seem sufficient to have at least a few measurements during the intervals where soil cover can be obliged**
     """)
-
+st.subheader("Usefulness of radar data for soil cover assessments")
 st.write("""To explore the added value of Sentinel-1 data for soil cover several indices like RVI, RVI4S1, VH/VV ratio are plotted below for the field selected in the map above.
 The indices are explained and the formulas presented in the tab for the Betuwe AOI.""")
 
@@ -923,6 +925,7 @@ container.markdown(
     - **In terms of cadence soil cover is often a long period of time and therefore cadence is not of utmost importance. However the precise dates in legislation (like 15th of June) sometimes require a high temporal cadence, especially for Coherence products**
     """)
 
+st.subheader("Assessing usefulness of field statistics for soil cover")
 df_ndvi_sd = load_ndvi_sd_nop()
 with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
     
@@ -976,6 +979,7 @@ container.markdown(r"""
     - **Both fields would not be eligible for subsidy or points within the CAP**
     """) 
 
+st.subheader("Assessing catch crop monitoring in the AOI")
 catchcrops = load_geojson_catchcrops()
 st.write("""To focus on crops which can be sown as catch crops a selection is made from the LPIS data and below the 126 selected fields are plotted. 
 Please note that these crops presented here are a main crop (many winter wheats) or used as a fallow crop. The open source LPIS data do not store the catch crops planted, so the fields primarily serve as a examples of crop types used in the AOI eligible as a catch crop""")

@@ -271,8 +271,9 @@ st.altair_chart(chart.interactive(), use_container_width=True)
 st.write(f"""Found **{total_reads}** total Sentinel-2 reads!
     With **{unclouded_reads}** unclouded results yielding about **{percentage} %** usable imagery!            
         """)
-st.write(f"""Check whether the cloudiness is spatially distributed within the AOI.
-In order to check the spatial distribution in the AOI the following method is applied.
+st.subheader("Assessing the spatial distribution of cloudiness")
+st.write(f"""
+In order to check the spatial distribution within the AOI the following method is applied.
 Use the cloud identification per pixel per read in the years ranging from 2016 to 2024 and calculate the percentage of unclouded pixels"""
 )
 
@@ -303,7 +304,8 @@ map = st_folium(
 )
 st.write(f"The cloud free pixel values are represented ranging from darkorange (35% cloud free) to green (40% cloud free). So it can be seen that the cloudiness variability in the AOI is very low, but there is some spatial distribution.")
 url_knmi = 'https://www.knmi.nl/home'
-st.write(f"Check whether the reads are in line with meteorological reads by the [KNMI]({url_knmi})")
+st.subheader("Assessing alignment of EO sensor reads with meteorological cloudiness reads")
+st.write(f"To check whether the cloudiness of the Sentinel-2 reads are in line with meteorological reads the hourly cloudiness data by the royal Dutch meteoroligical insitutue [KNMI]({url_knmi}) is presented below.")
 
 df_debilt = load_meteo_data()
 date_range_slider_meteo = st.slider(
@@ -481,6 +483,7 @@ container.markdown(
 
 # When the user interacts with the map
 # Create a map with the GeoJSON data using folium
+st.subheader("Mowing and grazing detection assessment")
 st.write(f"""For some fields in the AOI some in-situ data on mowing and grazing exists for the year 2022. This is used to elaborate on the Sentinel-1 and Sentinel-2 reads.
 """)
 
@@ -605,6 +608,8 @@ container.markdown(
     - **The analysis ready sigma0 Sentinel-1 VV and VH plots do not seem suitable to indicate mowing events. Probably this is also related to the structure of the grass not changing that much after mowing** 
     - **The question remains whether the radar data can be manipulated or using the complex values to generate robust indices.**
     """)
+
+st.subheader("Assessing mowing and grazing detection with radar calculations")
 url_paper_grassland_mowing = 'https://doi.org/10.1016/j.rse.2023.113680'
 url_sentinel_hub = 'https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-1/radar_vegetation_index/'
 url_sentinel_hub_paper = 'https://doi.org/10.1016/j.rse.2022.112900'
@@ -754,6 +759,7 @@ container.markdown(
     - **Coherence also drops to phenological changes during the season and field circumstances like moisture on the leaves, making the methodolgy less robust** 
     """)
 
+st.subheader("Assessing mowing and grazing detection using fusion products")
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.
 A solution to circumvent this problem of cadency is to use optical sensors in a large constellation like the Planet superdoves, Pleiades NEO or Superview NEO are offering. 
@@ -848,7 +854,8 @@ container.markdown(
     - **It allows for smooth timeseries and clearer determination of dips indicating mowing events**
     - **Not all dips are explained by mowing events. Natural drying of grass is also a reason for NDVI dips.**
     """)
-
+    
+st.subheader("Assessing grassland type detection with RadarSat-2")
 df_conv_pf = load_conv_csv()
 # map gws gewas to english names
 
