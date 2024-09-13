@@ -570,7 +570,8 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB)'),
             color=alt.Color('orbit:N', title='Relative Orbit'),
-            strokeDash='Polarization',  # Different lines for VV and VH
+            strokeDash=alt.StrokeDash('Polarization:N', title='Polarization'),
+            #strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
         # Check if list_1_dates is not empty and create vertical line rules
