@@ -571,8 +571,14 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             y=alt.Y('Value:Q', title='Value (dB)'),
             color=alt.Color('orbit:N', title='Relative Orbit'),
             strokeDash=alt.StrokeDash('Polarization:N', title='Polarization', legend=alt.Legend(
-            title='Polarization', orient='left',# Position the legend to the right of the chart
-            offset=100 )),
+            title='Polarization',
+            orient='right',  # Position the legend to the right of the chart
+            offset=100,      # Adjust the offset to position the legends properly
+            symbolType='stroke',  # Ensure the stroke dash patterns are shown
+            symbolDash='Polarization:N',  # Use actual stroke patterns
+            symbolDashOffset=0,   # Align the dashes
+            symbolStrokeWidth=2   # Adjust stroke width for visibility
+        )),
             #strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
