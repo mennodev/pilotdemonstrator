@@ -570,16 +570,7 @@ with st.expander("Toggle linked Sentinel-1 plot",expanded=True):
             x=alt.X('date:T', title='Date'),
             y=alt.Y('Value:Q', title='Value (dB)'),
             color=alt.Color('orbit:N', title='Relative Orbit'),
-            strokeDash=alt.StrokeDash('Polarization:N', title='Polarization', legend=alt.Legend(
-            title='Polarization',
-            orient='right',  # Position the legend to the right of the chart
-            offset=100,      # Adjust the offset to position the legends properly
-            symbolType='stroke',  # Ensure the stroke dash patterns are shown
-            #symbolDash='Polarization:N',  # Use actual stroke patterns
-            symbolDashOffset=0,   # Align the dashes
-            symbolStrokeWidth=2   # Adjust stroke width for visibility
-        )),
-            #strokeDash='Polarization',  # Different lines for VV and VH
+            strokeDash='Polarization',  # Different lines for VV and VH
         ).properties(height=320)
         #
         # Check if list_1_dates is not empty and create vertical line rules
@@ -724,26 +715,8 @@ with st.expander("Toggle coherence plot from Sentinel-1 reads",expanded=True):
             x=alt.X('date:T', title='Date'),
             y=alt.Y('COH12:Q',scale = alt.Scale(domain=[40,110])),
             #scale=alt.Scale(domain=[min_RVI, max_RVI])), 
-            color=alt.Color(
-                'Relative Orbit:N', 
-                title='Relative Orbit',
-                legend=alt.Legend(
-                    title='Relative Orbit',
-                    orient='right',  # Position the legend to the right of the chart
-                    offset=10        # Offset from the chart
-                )
-            ),
-            strokeDash=alt.StrokeDash(
-                'Polarization:N',
-                title='Polarization',
-                legend=alt.Legend(
-                    title='Polarization',
-                    orient='right',  # Position the legend to the right of the chart
-                    offset=100,      # Adjust the offset to position the legends properly
-                    symbolType='stroke',  # Display as stroke type to show dash patterns
-                    symbolStrokeWidth=3   # Adjust stroke width for better visibility
-                )
-            ),
+            color=alt.Color('Relative Orbit:N', title='Relative Orbit'),
+            strokeDash='Polarization:N',
             detail='IW:N',
             
         ).properties(height=320).interactive()
