@@ -932,6 +932,7 @@ container.markdown(
     **The above plots and pictures clearly shows the added value of calculating the standard deviation for RadarSat-2 backscatter**
     - **There is a clear in-seasonal change with higher standard deviation in the spring and fall**
     - **Difference between types of grassland managment are clearly showing, with highest SD for 'Mixed nature and agricultural seeds'**
+    
     **It can be overall concluded that calculating SD is a good proxy for assessing the 'roughness' of a crop and is a helpfull indicator to discriminate between different crops and different management**
     """)
 

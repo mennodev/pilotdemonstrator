@@ -24,6 +24,7 @@ container = st.container(border=True)
 container.write(f"**Pilot demonstrator navigation**")
 container.write("Use the tabs in the sidebar to explore pilot demonstrator 1 Common Agricultural Policy (CAP) subsidy monitoring")
 container.write(f"Use the [link]({url_pd2}) to explore pilot demonstrator 2 Regional biodiversity monitoring")
+container.write(f"Please note that this demonstrator is information dense and currently hosted on a community cloud. Therefore loading the data can take some time. For the best experience ensure a good internet connection and use a wide screen.")
 st.write(
     """
     Click on the AOIs in the map to get a small description.
