@@ -750,7 +750,7 @@ container.markdown(
     """
     **The plot of the RVI (and the RVI4S1 and  VH/VV below) does not show clear dips, peaks or other features around mowing events. Therefore it can be concluded that:** 
     - **The RVI and the VH/VV seem not suitable or not robust enough to indicate mowing and/or grazing events**
-    - **The indices do not add any discriminative power for grassland monitoring.**
+    - **The indices do not add any discriminative power for grassland monitoring***
     
     **The plot of the COH12 do show lower coherence around the mowing dates and an increasing coherence between mowing dates. Therefore it can be concluded that:** 
     - **Coherence seems to be a usefull metric for event detection like mowing**
@@ -758,7 +758,7 @@ container.markdown(
     - **Coherence reads are probably more robust with increased resolution or larger fields compared to the size of grassland fields in the AOI**
     - **Coherence also drops to phenological changes during the season and field circumstances like moisture on the leaves, making the methodolgy less robust** 
     """)
-
+st.write("""*Remark: We have to be aware that field sizes differ and therefore the noise level is different for different field sizes. RVI and RVI4S1 are based on power representations of radar backscatter, maybe complex polarimetric analysis leads to slightly better results. Nevertheless, the spatial resolution of Sentinel-1 (nominally 20 m) and presence of speckle noise in respect to the agricultural field sizes will remain a drawback for using radar in small fields""")
 st.subheader("Assessing mowing and grazing detection using fusion products")
 url_planet_fusion_white_paper = r"https://learn.planet.com/rs/997-CHH-265/images/Planet%20Fusion%20Monitoring%20Datasheet_Letter_Web.pdf"
 st.write(f"""In the previous section one of the conclusions was that Sentinel-2 timeseries had gaps preventing a clear determination of dips in the NDVI indicating mowing events.

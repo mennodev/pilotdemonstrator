@@ -920,11 +920,11 @@ container.markdown(
     """
     **Plotting Sentinel-1 backscatter derived data like RVI4S1, VH/VV ratio and COH12 reveal the following:**
     - **VH/VV ratio show clear changes thoughout the growing season, but is not a clear indicator for soil cover**
-    - **RVI and RVI4S1 do not seem to produce robust timeseries to indicate the temporal pin-pointing of soil cover**
+    - **RVI and RVI4S1 do not seem to produce robust timeseries to indicate the temporal pin-pointing of soil cover***
     - **Coherence plotting does in specific cases aid in a more precise pin-point of field preperation and is a good addition to optical biomass timeseries**
     - **In terms of cadence soil cover is often a long period of time and therefore cadence is not of utmost importance. However the precise dates in legislation (like 15th of June) sometimes require a high temporal cadence, especially for Coherence products**
     """)
-
+st.write("""We have to be aware that field sizes differ and therefore the noise level is different for different field sizes. RVI and RVI4S1 are based on power representations of radar backscatter, maybe complex polarimetric analysis leads to better results. Nevertheless, the spatial resolution of Sentinel-1 (nominally 20 m) and presence of speckle noise in respect to the agricultural field sizes will remain a drawback for using radar in small fields especially with mixed vegetation and bare soil""")
 st.subheader("Assessing usefulness of field statistics for soil cover")
 df_ndvi_sd = load_ndvi_sd_nop()
 with st.expander("Toggle linked NDVI standard deviation plot",expanded=True):
