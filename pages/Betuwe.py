@@ -856,6 +856,7 @@ container.markdown(
     """)
 
 st.subheader("Assessing grassland type detection with RadarSat-2")
+st.write("As mentioned discussing Sentinel-1 in general and the RVI in particular different radar sources and techniques can be explored. RadarSat-2 also has a Syntetic Aperature Radar (SAR) like Sentinel-1 but has higher nominal resolution. To explore whether in-field radar measurements can be used to highlight crop structure characteristics the differences in pixel reads compared to neighbouring pixels is calculated and a standard deviation per convolution is presented. The RadarSat-2 is can be used free-of-charge in the Netherlands and could therefore be included in the national AMS""")
 df_conv_pf = load_conv_csv()
 # map gws gewas to english names
 
@@ -923,7 +924,7 @@ with st.expander("Toggle standard deviation convolution plot from RadarSat-2 rea
         #base_chart_conv_pf + mean_chart
         st.write('Chart of RadarSat-2 standard deviation reads seperated by convolution size')
         st.altair_chart(alt.vconcat(base_chart_conv_pf,mean_chart), use_container_width=True)
-st.image("data/images/RadarSat_S2.png", width=350, caption=["High backscatter standard deviations for mixed nature and agricultural seeds (blue polygons) compared to permanent grassland (green polygons) with 3X3 (left) and 7X7 (right) convolution"])
+st.image("data/images/RadarSat_S2.png", width=700, caption=["High backscatter standard deviations for mixed nature and agricultural seeds (blue polygons) compared to permanent grassland (green polygons) with 3X3 (left) and 7X7 (right) convolution"])
 container = st.container(border=True)
 container.write(f"**Conclusion**")
 container.markdown(
