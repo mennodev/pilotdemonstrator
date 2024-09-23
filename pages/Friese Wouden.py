@@ -254,6 +254,7 @@ container.markdown(f"""
     - Barriers and demarcation between agricultural parcels
     - Windbreaks for crops
     - Increase productivity on steep slopes
+    
     Societal benefits
     - Improved air quality
     - Improved water quality
